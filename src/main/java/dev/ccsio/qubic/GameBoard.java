@@ -1,5 +1,8 @@
 package dev.ccsio.qubic;
 
+/**
+ * The GameBoard class.
+ */
 public class GameBoard {
     int[][][] board;
 
@@ -7,6 +10,11 @@ public class GameBoard {
         board = new int[4][4][4];
     }
 
+    /**
+     * A method to update the GameBoard.
+     * @param coordinates - The coordinates on the board to be updated.
+     * @param mark - The mark of the player that should go there.
+     */
     public void placeMark(Coordinates coordinates, int mark) {
 
     }
