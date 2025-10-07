@@ -51,6 +51,9 @@
 - Demo: a move-history timeline is shown at the bottom of the window. 
 - Notes: Show moves done by both players.
 
+## Lan Multiplayer
+- Possible lan multiplayer that works cross-platform on a local network.
+
 # Learning Objectives
 ## Git & GitHub
 - The project is (privately) hosted on GitHub and version-controlled using git. -- add branching, popping (multiple commands)
