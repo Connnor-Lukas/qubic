@@ -56,6 +56,10 @@
 - The project is (privately) hosted on GitHub and version-controlled using git.
 - Frequent commits are made by both developers to ensure consistency & constant functionality. 
 
+## Maven Build System
+- The project will be built using Maven, the structure is defined by our [pom.xml](pom.xml) file.
+- Our individual ide's and github itself have been configured to use Maven and autobuild on each commit.
+
 ## 3D View
 - Find and use an appropriate library to display the 3D view of the Qubic.
 - Implement the library & code into the existing Swing infrastructure.
