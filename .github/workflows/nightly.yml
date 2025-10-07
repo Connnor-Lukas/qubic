@@ -29,9 +29,12 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
+      - name: Rename JAR file
+        run: mv target/qubic-*.jar target/qubic-nightly-${{ steps.sha.outputs.sha }}.jar
+
       - name: Upload nightly build
         uses: actions/upload-artifact@v4
         with:
           name: qubic-nightly-${{ steps.sha.outputs.sha }}
-          path: target/*.jar
+          path: target/qubic-nightly-${{ steps.sha.outputs.sha }}.jar
           retention-days: 14  # Keep builds for 2 weeks
