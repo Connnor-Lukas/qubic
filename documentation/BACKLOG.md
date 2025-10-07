@@ -60,7 +60,7 @@
 - Frequent commits are made by both developers to ensure consistency & constant functionality. 
 
 ## Maven Build System
-- The project will be built using Maven, the structure is defined by our [pom.xml](pom.xml) file.
+- The project will be built using Maven, the structure is defined by our [pom.xml](../pom.xml) file.
 - Our individual ide's and github itself have been configured to use Maven and autobuild on each commit.
 
 ## 3D View
