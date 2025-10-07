@@ -53,7 +53,7 @@
 
 # Learning Objectives
 ## Git & GitHub
-- The project is (privately) hosted on GitHub and version-controlled using git.
+- The project is (privately) hosted on GitHub and version-controlled using git. -- add branching, popping (multiple commands)
 - Frequent commits are made by both developers to ensure consistency & constant functionality. 
 
 ## Maven Build System
