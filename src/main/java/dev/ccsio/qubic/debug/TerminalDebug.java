@@ -1,4 +1,7 @@
-package dev.ccsio.qubic;
+package dev.ccsio.qubic.debug;
+
+import dev.ccsio.qubic.types.Coordinates;
+import dev.ccsio.qubic.game.GameBoard;
 
 import java.util.Scanner;
 
@@ -36,7 +39,7 @@ public class TerminalDebug {
             printSpaces();
             System.out.println("Current Player: " + player);
             System.out.println();
-            TerminalDebug.printBoard(gameBoard.board);
+            TerminalDebug.printBoard(gameBoard.getBoard());
             int x = scanner.nextInt();
             int y = scanner.nextInt();
             int z = scanner.nextInt();

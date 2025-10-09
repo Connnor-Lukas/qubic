@@ -1,4 +1,7 @@
-package dev.ccsio.qubic;
+package dev.ccsio.qubic.game;
+
+import dev.ccsio.qubic.types.Coordinates;
+import dev.ccsio.qubic.types.MoveHistory;
 
 import java.util.List;
 
@@ -9,16 +12,16 @@ public class GameBoard {
     int[][][] board;
     MoveHistory moveHistory = new MoveHistory();
 
-    GameBoard() {
+    public GameBoard() {
         board = new int[4][4][4];  // z, y, x
         LinkedHistory.addMoveHistory(this, moveHistory);
     }
 
     public boolean canPlaceMark(Coordinates coordinates, int mark) {
         boolean canPlace = true;
-        int x = coordinates.x;
-        int y = coordinates.y;
-        int z = coordinates.z;
+        int x = coordinates.getX();
+        int y = coordinates.getY();
+        int z = coordinates.getZ();
 
         if ((x > 3)
             || (x < 0)
@@ -38,19 +41,27 @@ public class GameBoard {
      * @param mark - The mark of the player that should go there.
      */
     public void placeMark(Coordinates coordinates, int mark) {
-        int x = coordinates.x;
-        int y = coordinates.y;
-        int z = coordinates.z;
+        int x = coordinates.getX();
+        int y = coordinates.getY();
+        int z = coordinates.getZ();
 
         board[z][y][x] = mark;
         moveHistory.addMove(coordinates, mark);
     }
 
+    public int[][][]  getBoard() {
+        return board;
+    }
+
     private Boolean winningStraight(Coordinates coordinates) {
+        int x = coordinates.getX();
+        int y = coordinates.getY();
+        int z = coordinates.getZ();
+
         // check x-axis
         int sum = 0;
         for (int i = 0; i < 4; i++) {
-            sum += this.board[coordinates.z][coordinates.y][i];
+            sum += this.board[z][y][i];
         }
         if (Math.abs(sum) == 4) {
             return true;
@@ -59,7 +70,7 @@ public class GameBoard {
         // check y-axis
         sum = 0;
         for (int i = 0; i < 4; i++) {
-            sum += this.board[coordinates.z][i][coordinates.x];
+            sum += this.board[z][i][x];
         }
         if (Math.abs(sum) == 4) {
             return true;
@@ -68,7 +79,7 @@ public class GameBoard {
         // check z-axis
         sum = 0;
         for (int i = 0; i < 4; i++) {
-            sum += this.board[i][coordinates.y][coordinates.x];
+            sum += this.board[i][y][x];
         }
         return Math.abs(sum) == 4;
     }
@@ -86,7 +97,7 @@ public class GameBoard {
         int sum = 0;
 
         for (Coordinates c : coordinateList) {
-            sum += this.board[c.z][c.y][c.x];
+            sum += this.board[c.getZ()][c.getY()][c.getX()];
         }
         return Math.abs(sum) == 4;
     }

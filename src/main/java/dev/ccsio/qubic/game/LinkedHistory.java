@@ -1,5 +1,6 @@
-package dev.ccsio.qubic;
+package dev.ccsio.qubic.game;
 
+import dev.ccsio.qubic.types.MoveHistory;
 import java.util.HashMap;
 import java.util.Map;
 

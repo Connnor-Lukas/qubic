@@ -1,4 +1,6 @@
-package dev.ccsio.qubic;
+package dev.ccsio.qubic.game;
+
+import dev.ccsio.qubic.types.Coordinates;
 
 import java.util.ArrayList;
 import java.util.HashMap;

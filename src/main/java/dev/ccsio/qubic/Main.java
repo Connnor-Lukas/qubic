@@ -1,6 +1,7 @@
 package dev.ccsio.qubic;
 
-import java.util.Scanner;
+import dev.ccsio.qubic.debug.TerminalDebug;
+import dev.ccsio.qubic.game.GameBoard;
 
 /**
  * The games main class, used to build everything.

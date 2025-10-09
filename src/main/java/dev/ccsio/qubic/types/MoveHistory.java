@@ -1,4 +1,4 @@
-package dev.ccsio.qubic;
+package dev.ccsio.qubic.types;
 
 import java.util.ArrayList;
 import java.util.List;

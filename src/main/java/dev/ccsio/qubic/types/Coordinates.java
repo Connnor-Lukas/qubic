@@ -1,4 +1,4 @@
-package dev.ccsio.qubic;
+package dev.ccsio.qubic.types;
 
 /**
  * A custom class for coordinates.
@@ -18,6 +18,18 @@ public class Coordinates {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getZ() {
+        return z;
     }
 
     // ensures that Coordinates with the same x, y, z are equal objects.
