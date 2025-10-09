@@ -21,3 +21,10 @@ Our plans have been split into 2 levels, top level and second level. The level s
 | b04 |             [VFX](documentation/VFX.md)              |        und        |  TODO  |
 | b05 |        [UI Polish](documentation/UIPolish.md)        |        und        |  TODO  |
 | b06 |  [Opponent Algorithm](documentation/OpponentAI.md)   |        und        |  TODO  |
+
+## Used Resources
+
+|                                                                                                                                                                                                       References                                                                                                                                                                                                       |                               Used For                                |
+|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------:|
+| Wikipedia Contributors. (2019, June 7). Prime number. Wikipedia; Wikimedia Foundation. https://en.wikipedia.org/wiki/Prime_number <br/> AnimationTimer (JavaFX 8). (n.d.). Docs.oracle.com. https://docs.oracle.com/javase/8/javafx/api/javafx/animation/AnimationTimer.html <br/> Rotate (JavaFX 8). (2015, February 10). Oracle.com. https://docs.oracle.com/javase/8/javafx/api/javafx/scene/transform/Rotate.html  | [3D Animation](src/main/java/dev/ccsio/qubic/ui/common/Render3D.java) |
+
