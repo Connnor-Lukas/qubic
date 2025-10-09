@@ -16,6 +16,11 @@ public class GameBoard {
      * @param mark - The mark of the player that should go there.
      */
     public void placeMark(Coordinates coordinates, int mark) {
-
+        int x = coordinates.x;
+        int y = coordinates.y;
+        int z = coordinates.z;
+        if ((mark == -1 || mark == 1) && (board[z][y][x] == 0)) {
+            board[z][y][x] = mark;
+        }
     }
 }
