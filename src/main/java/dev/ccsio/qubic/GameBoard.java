@@ -78,12 +78,8 @@ public class GameBoard {
         // relevantDiagonals = List.of(List.of());
 
         for (int i = 0; i < DiagonalsRecord.Diagonals.size(); i++) {
-            System.out.println(i);
-            System.out.println(DiagonalsRecord.Diagonals.get(i));
-
             if (DiagonalsRecord.Diagonals.get(i).contains(coordinates)) {
                 // relevantDiagonals.add(DiagonalsRecord.Diagonals.get(i));
-                System.out.println("hello");
                 if (winningCoordinateSet(DiagonalsRecord.Diagonals.get(i))) {
                     return true;
                 }
