@@ -1,4 +1,4 @@
-package dev.ccsio.qubic;
+package dev.ccsio.qubic.game;
 
 public class GameBoard {
     int[][][] board;
