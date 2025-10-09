@@ -12,22 +12,27 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javafx.version>25</javafx.version>
+        <javafx.version>21</javafx.version>
+        <flatlaf.version>3.6.1</flatlaf.version>
     </properties>
 
     <dependencies>
-        <!-- JavaFX Controls (includes javafx.graphics transitively) -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
         </dependency>
 
-        <!-- JavaFX Swing integration - provides JFXPanel -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
             <version>${javafx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>${flatlaf.version}</version>
         </dependency>
     </dependencies>
 
@@ -56,5 +61,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

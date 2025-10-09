@@ -1,4 +1,4 @@
-package dev.ccsio.qubic;
+package dev.ccsio.qubic.debug;
 
 public class TerminalDebug {
     public void printBoard(int[][][] board) {
