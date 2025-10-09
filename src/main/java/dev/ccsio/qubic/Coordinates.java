@@ -19,4 +19,26 @@ public class Coordinates {
         this.y = y;
         this.z = z;
     }
+
+    // ensures that Coordinates with the same x, y, z are equal objects.
+    @Override
+    public boolean equals(Object o) {
+        // same reference   
+        if (this == o) {
+            return true; 
+        }
+
+        // not same type 
+        if (!(o instanceof Coordinates)) {
+            return false;
+        }
+
+        Coordinates other = (Coordinates) o;  
+        return x == other.x && y == other.y && z == other.z; // value equality  
+    }
+  
+    @Override  
+    public String toString() {  
+        return "Coordinates(" + x + "," + y + "," + z + ")";  
+    }
 }
