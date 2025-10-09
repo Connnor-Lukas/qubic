@@ -1,5 +1,8 @@
 package dev.ccsio.qubic;
 
+import javax.sound.midi.SysexMessage;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
+
 /**
  * A terminal implementation method to access the game used for debugging.
  */
@@ -9,12 +12,17 @@ public class TerminalDebug {
      * @param board - The gameboard which is a 3D int array.
      */
     public void printBoard(int[][][] board) {
-        for (int[][] ints : board) {
-            for (int[] anInt : ints) {
-                for (int i : anInt) {
-                    System.out.print(i + " ");
+        for (int z = 0; z < 4; z++) {
+            for (int y = 0; y < 4; y++) {
+                for (int x = 0; x < 4; x++) {
+                    int i = board[z][y][x];
+                    if (i < 0) {
+                        System.out.print(i + " ");
+                    } else {
+                        System.out.print(" " + i + " ");
+                    }
                 }
-                System.out.println();
+                System.out.println(); 
             }
             System.out.println();
         }
