@@ -1,5 +1,7 @@
 package dev.ccsio.qubic.ui.menu;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import dev.ccsio.qubic.ui.common.Colours;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import javafx.embed.swing.JFXPanel;
@@ -20,31 +22,47 @@ public class MenuUI extends JPanel {
         centerPanel.setLayout(new GridBagLayout());
         centerPanel.setOpaque(false);
 
-        // Title label
-        JLabel titleLabel = new JLabel("Welcome to Qubic");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0)); // bottom padding
+        // Create a panel for the split-colored title
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        titlePanel.setOpaque(false);
+
+        // Title labels
+        JLabel titlePart1 = new JLabel("QUBIC");
+        titlePart1.setFont(new Font("Arial", Font.BOLD, 64));
+        titlePart1.setForeground(Color.decode(Colours.CUSTOM_BLUE));
+
+        JLabel titlePart2 = new JLabel("3D");
+        titlePart2.setFont(new Font("Arial", Font.BOLD, 64));
+        titlePart2.setForeground(Color.decode(Colours.CUSTOM_RED));
+
+        titlePanel.add(titlePart1);
+        titlePanel.add(titlePart2);
+        titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
         // 1-Player Start Button
-        JButton start1PGame = new JButton("1-Player Game");
+        JButton start1PGame = getJButton("1-Player Game", Colours.CUSTOM_BLUE);
+        start1PGame.setPreferredSize(new Dimension(320, 50));
         start1PGame.addActionListener((ActionEvent e) -> {
             System.out.println("Start button clicked!");
         });
 
         // 2-Player Start Button
-        JButton start2PGame = new JButton("2-Player Game");
+        JButton start2PGame = getJButton("2-Player Game", Colours.CUSTOM_BLUE);
+        start2PGame.setPreferredSize(new Dimension(320, 50));
         start2PGame.addActionListener((ActionEvent e) -> {
             System.out.println("Start button clicked!");
         });
 
         // Tutorial Button
-        JButton startTutorial = new JButton("Tutorial");
+        JButton startTutorial = getJButton("Tutorial", Colours.CUSTOM_BLACK);
+        startTutorial.setPreferredSize(new Dimension(155, 40));
         startTutorial.addActionListener((ActionEvent e) -> {
             System.out.println("Start button clicked!");
         });
 
-        // Quite Game Button
-        JButton exitButton = new JButton("Quit");
+        // Quit Game Button
+        JButton exitButton = getJButton("Quit", Colours.CUSTOM_RED);
+        exitButton.setPreferredSize(new Dimension(155, 40));
         exitButton.addActionListener((ActionEvent e) -> {
             System.exit(0);
         });
@@ -53,7 +71,7 @@ public class MenuUI extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.gridx=0;
         c.gridy=0;
-        c.insets = new Insets(0, 0, 5, 0);
+        c.insets = new Insets(0, 0, 15, 0);
 
         // Bottom Side by Side Panel
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
@@ -62,7 +80,7 @@ public class MenuUI extends JPanel {
         bottomPanel.setOpaque(false);
 
         // Add components to center panel
-        centerPanel.add(titleLabel, c);
+        centerPanel.add(titlePanel, c);
         c.gridy=1;
         centerPanel.add(start1PGame, c);
         c.gridy=2;
@@ -72,5 +90,23 @@ public class MenuUI extends JPanel {
 
         // Add center panel to main panel
         backgroundPanel.add(centerPanel);
+    }
+
+    private static JButton getJButton(String text, String colour) {
+        JButton button = new JButton(text);
+        button.putClientProperty(FlatClientProperties.STYLE,
+            "background: " + colour + ";"
+            + "foreground: " + Colours.CUSTOM_WHITE + ";"
+            + "borderWidth: 0;"
+            + "arc: 15;"
+            + "focusWidth: 0;"
+            + "font: bold +2;"
+            + "hoverBackground: darken(" + colour + ", 10%);"
+            + "pressedBackground: " + colour + ";"
+            + "focusedBackground: " + colour + ";"
+            + "selectedBackground: " + colour + ";"
+        );
+
+        return button;
     }
 }
