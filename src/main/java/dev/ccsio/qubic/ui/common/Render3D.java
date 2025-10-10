@@ -35,7 +35,7 @@ public class Render3D extends JFXPanel {
 
         // Setup scene with 3D enabled
         scene = new Scene(root, 800, 600, true);
-        scene.setFill(Color.DARKGRAY);
+        scene.setFill(Color.rgb(16, 0, 41, 1));
 
         // Setup camera
         PerspectiveCamera camera = new PerspectiveCamera(true);
@@ -64,8 +64,8 @@ public class Render3D extends JFXPanel {
 
         // Set material
         PhongMaterial material = new PhongMaterial();
-        material.setDiffuseColor(Color.DODGERBLUE);
-        material.setSpecularColor(Color.LIGHTBLUE);
+        material.setDiffuseColor(Color.rgb(169, 169, 169, 0.1));
+        material.setSpecularColor(Color.rgb(211, 211, 211, 0.1));
         material.setSpecularPower(20.0);
         testBox.setMaterial(material);
 
