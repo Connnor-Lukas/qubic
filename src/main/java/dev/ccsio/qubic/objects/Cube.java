@@ -11,35 +11,56 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.CullFace;
-import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
 
 public class Cube extends Group {
     Map<Coordinates, Group> gameBoard = new HashMap<>();
-    Box theCube = new Box(150, 150, 150);
+    private final Group cubeFramework = new Group();
+    private static final double SIZE = 143;
+    private static final double THICKNESS = 1;
+    private static final double SEPERATION = 36;
 
     public Cube() {
-        // Set material with proper transparency
+        Box[] sheets = new Box[9];
+        for (int i = 0; i < 3; i++) {
+            sheets[i] = new Box(THICKNESS, SIZE, SIZE);
+            sheets[i].setTranslateX(SEPERATION * (i + 0.5));
+            sheets[i].setTranslateY(-54);
+            sheets[i].setTranslateZ(54);
+        }
+        for (int i = 3; i < 6; i++) {
+            sheets[i] = new Box(SIZE, THICKNESS, SIZE);
+            sheets[i].setTranslateY(-SEPERATION * (i - 2) + 18);
+            sheets[i].setTranslateX(54);
+            sheets[i].setTranslateZ(54);
+        }
+        for (int i = 6; i < 9; i++) {
+            sheets[i] = new Box(SIZE, SIZE, THICKNESS);
+            sheets[i].setTranslateY(-54);
+            sheets[i].setTranslateX(54);
+            sheets[i].setTranslateZ(SEPERATION * (i - 5.5));
+        }
+
+        // Create nearly invisible material
         PhongMaterial translucent = new PhongMaterial();
-        translucent.setDiffuseColor(new Color(0.5, 0.6, 0.7, 0.15)); // Reduced alpha to 0.15
-        translucent.setSpecularColor(new Color(1, 1, 1, 0.2));
-        translucent.setSpecularPower(0);
-        theCube.setMaterial(translucent);
+        // Very light blue tint with very low opacity
+        translucent.setDiffuseColor(new Color(0.2, 0.3, 0.4, 0.03));
+        // Remove most of the specular highlight
+        translucent.setSpecularColor(new Color(1, 1, 1, 0.01));
+        translucent.setSpecularPower(0.1);
 
-        // Set proper transparency rendering modes
-        theCube.setDrawMode(DrawMode.FILL);
-        theCube.setCullFace(CullFace.NONE);  // Changed from BACK to NONE
-        theCube.setBlendMode(BlendMode.ADD); // Changed from SRC_OVER to ADD
+        // Apply material and rendering properties to all sheets
+        for (Box sheet : sheets) {
+            sheet.setMaterial(translucent);
+            sheet.setCullFace(CullFace.NONE);
+            sheet.setBlendMode(BlendMode.ADD); // Changed to ADD for softer appearance
+        }
 
-        // Position the box at center
-        theCube.setTranslateX(0);
-        theCube.setTranslateY(0);
-        theCube.setTranslateZ(0);
+        // Add all sheets to the framework
+        cubeFramework.getChildren().addAll(sheets);
 
+        // Setup the animation
         animateCube(this);
-
-        // Add the box to the root
-        this.getChildren().add(theCube);
     }
 
     public void addPiece(int player, Coordinates coordinates) {
@@ -57,11 +78,18 @@ public class Cube extends Group {
                 break;
         }
 
-        gameBoard.put(coordinates, piece);
-        piece.setTranslateX(coordinates.x());
-        piece.setTranslateY(coordinates.y());
-        piece.setTranslateZ(coordinates.z());
-        this.getChildren().add(piece);
+        if (piece != null) {
+            piece.setTranslateX(coordinates.x());
+            piece.setTranslateY(coordinates.y());
+            piece.setTranslateZ(coordinates.z());
+            gameBoard.put(coordinates, piece);
+            this.getChildren().add(piece);
+        }
+
+        // Add the cube framework last if not already added
+        if (!this.getChildren().contains(cubeFramework)) {
+            this.getChildren().add(cubeFramework);
+        }
     }
 
     private void animateCube(Node node) {
@@ -69,6 +97,18 @@ public class Cube extends Group {
         Rotate rotX = new Rotate(0, Rotate.X_AXIS);
         Rotate rotY = new Rotate(0, Rotate.Y_AXIS);
         Rotate rotZ = new Rotate(0, Rotate.Z_AXIS);
+
+        rotX.setPivotX(54.5);
+        rotX.setPivotY(-54.5);
+        rotX.setPivotZ(54.5);
+
+        rotY.setPivotX(54.5);
+        rotY.setPivotY(-54.5);
+        rotY.setPivotZ(54.5);
+
+        rotZ.setPivotX(54.5);
+        rotZ.setPivotY(-54.5);
+        rotZ.setPivotZ(54.5);
 
         node.getTransforms().addAll(rotX, rotY, rotZ);
 

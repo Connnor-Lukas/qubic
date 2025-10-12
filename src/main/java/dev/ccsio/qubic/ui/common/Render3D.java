@@ -25,7 +25,7 @@ public class Render3D extends JFXPanel {
 
         // createTestBox();
         Cube cube = new Cube();
-        cube.addPiece(-1, new Coordinates(50, 50, 50));
+        cube.addPiece(-1, new Coordinates(0, 0, 0));
         enviroment.getChildren().add(cube);
 
         // Setup scene with 3D enabled
@@ -36,6 +36,8 @@ public class Render3D extends JFXPanel {
         PerspectiveCamera camera = new PerspectiveCamera(true);
         camera.setNearClip(0.1);
         camera.setFarClip(10000.0);
+        camera.setTranslateX(54.5);
+        camera.setTranslateY(-54.5);
         camera.setTranslateZ(-500);
         scene.setCamera(camera);
 
