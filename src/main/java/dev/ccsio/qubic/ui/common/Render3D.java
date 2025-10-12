@@ -7,10 +7,8 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
-import javafx.scene.PointLight;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
 
 public class Render3D extends JFXPanel {
     public Render3D() {
@@ -21,16 +19,20 @@ public class Render3D extends JFXPanel {
     }
 
     private void initFX() {
-        Group enviroment = new Group();
+        Group environment = new Group();
 
-        // createTestBox();
+        // Add the cube
         Cube cube = new Cube();
-        cube.addPiece(-1, new Coordinates(0, 0, 0));
-        enviroment.getChildren().add(cube);
+        cube.addPiece(-1, new Coordinates(1, 0, 0));
+        cube.addPiece(-1, new Coordinates(1, 0, 3));
+        environment.getChildren().add(cube);
 
         // Setup scene with 3D enabled
-        Scene scene = new Scene(enviroment, 800, 600, true);
+        Scene scene = new Scene(environment, 800, 600, true);
         scene.setFill(Color.rgb(16, 0, 41, 1));
+        
+        // Add depth buffer settings
+        Platform.setImplicitExit(false);
 
         // Setup camera
         PerspectiveCamera camera = new PerspectiveCamera(true);
@@ -43,16 +45,7 @@ public class Render3D extends JFXPanel {
 
         // Add ambient light
         AmbientLight ambientLight = new AmbientLight(Color.WHITE);
-        enviroment.getChildren().add(ambientLight);
-
-        /*
-        // Add point light for reflections
-        PointLight pointLight = new PointLight(Color.WHITE);
-        pointLight.setTranslateX(100);
-        pointLight.setTranslateY(-100);
-        pointLight.setTranslateZ(-200);
-        enviroment.getChildren().add(pointLight);
-         */
+        environment.getChildren().add(ambientLight);
 
         setScene(scene);
     }

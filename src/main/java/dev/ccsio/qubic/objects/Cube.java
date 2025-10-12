@@ -15,7 +15,7 @@ import javafx.scene.transform.Rotate;
 
 public class Cube extends Group {
     Map<Coordinates, Group> gameBoard = new HashMap<>();
-    private final Group cubeFramework = new Group();
+    private final Group cubeBoard = new Group();
     private static final double SIZE = 143;
     private static final double THICKNESS = 1;
     private static final double SEPERATION = 36;
@@ -41,25 +41,26 @@ public class Cube extends Group {
             sheets[i].setTranslateZ(SEPERATION * (i - 5.5));
         }
 
-        // Create nearly invisible material
+        // Translucent material (still issues but good enough)
         PhongMaterial translucent = new PhongMaterial();
-        // Very light blue tint with very low opacity
-        translucent.setDiffuseColor(new Color(0.2, 0.3, 0.4, 0.03));
-        // Remove most of the specular highlight
-        translucent.setSpecularColor(new Color(1, 1, 1, 0.01));
-        translucent.setSpecularPower(0.1);
+        translucent.setDiffuseColor(new Color(0.1, 0.1, 0.1, 0.25));
+        translucent.setSpecularColor(new Color(0.05, 0.05, 0.05, 0.02));
+        translucent.setSpecularPower(1.5);
 
         // Apply material and rendering properties to all sheets
         for (Box sheet : sheets) {
             sheet.setMaterial(translucent);
             sheet.setCullFace(CullFace.NONE);
-            sheet.setBlendMode(BlendMode.ADD); // Changed to ADD for softer appearance
+            sheet.setBlendMode(BlendMode.MULTIPLY);
+            sheet.setMouseTransparent(true);
+            sheet.setDepthTest(javafx.scene.DepthTest.ENABLE);
         }
 
-        // Add all sheets to the framework
-        cubeFramework.getChildren().addAll(sheets);
+        // Add all sheets to the board
+        cubeBoard.getChildren().addAll(sheets);
+        this.getChildren().add(cubeBoard);
 
-        // Setup the animation
+        // Add the animation
         animateCube(this);
     }
 
@@ -79,16 +80,11 @@ public class Cube extends Group {
         }
 
         if (piece != null) {
-            piece.setTranslateX(coordinates.x());
-            piece.setTranslateY(coordinates.y());
-            piece.setTranslateZ(coordinates.z());
+            piece.setTranslateX(coordinates.x() * 36);
+            piece.setTranslateY(coordinates.y() * -36);
+            piece.setTranslateZ(coordinates.z() * 36);
             gameBoard.put(coordinates, piece);
             this.getChildren().add(piece);
-        }
-
-        // Add the cube framework last if not already added
-        if (!this.getChildren().contains(cubeFramework)) {
-            this.getChildren().add(cubeFramework);
         }
     }
 
@@ -96,7 +92,6 @@ public class Cube extends Group {
         // Create rotation transforms
         Rotate rotX = new Rotate(0, Rotate.X_AXIS);
         Rotate rotY = new Rotate(0, Rotate.Y_AXIS);
-        Rotate rotZ = new Rotate(0, Rotate.Z_AXIS);
 
         rotX.setPivotX(54.5);
         rotX.setPivotY(-54.5);
@@ -106,23 +101,19 @@ public class Cube extends Group {
         rotY.setPivotY(-54.5);
         rotY.setPivotZ(54.5);
 
-        rotZ.setPivotX(54.5);
-        rotZ.setPivotY(-54.5);
-        rotZ.setPivotZ(54.5);
-
-        node.getTransforms().addAll(rotX, rotY, rotZ);
+        node.getTransforms().addAll(rotX, rotY);
 
         // Create animation
         AnimationTimer rotationTimer = new AnimationTimer() {
             private long lastUpdate = 0;
             private double angleX = 0;
+            private double possibleX = 0;
+            private int xMod = 1;
             private double angleY = 0;
-            private double angleZ = 0;
 
             // Rotation speeds (degrees per second)
-            private double speedX = 73.0 / 5.0;
-            private double speedY = 79.0 / 5.0;
-            private double speedZ = 83.0 / 5.0;
+            private double speedX = 19.0 / 5.0;
+            private double speedY = 83 / 5.0;
 
             @Override
             public void handle(long now) {
@@ -135,15 +126,20 @@ public class Cube extends Group {
                 double deltaTime = (now - lastUpdate) / 1_000_000_000.0;
                 lastUpdate = now;
 
-                // Update angles based on speed and time
-                angleX += speedX * deltaTime;
-                angleY += speedY * deltaTime;
-                angleZ += speedZ * deltaTime;
+                // XRot limits and bouncing
+                possibleX = angleX % 360 + xMod * speedX * deltaTime;
+                if (possibleX > 90) {
+                    xMod = -1;
+                } else if (possibleX < -90) {
+                    xMod = 1;
+                }
+
+                angleX = angleX % 360 + xMod * speedX * deltaTime;
+                angleY = (angleY + speedY * deltaTime) % 360;
 
                 // Apply rotations
                 rotX.setAngle(angleX);
                 rotY.setAngle(angleY);
-                rotZ.setAngle(angleZ);
             }
         };
 

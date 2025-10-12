@@ -3,6 +3,7 @@ package dev.ccsio.qubic.objects;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
+import javafx.scene.DepthTest;
 import javafx.scene.Group;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.Glow;
@@ -24,19 +25,21 @@ public class XPiece extends Group {
         rectangleTwo.setTranslateX(0.5);
 
         PhongMaterial neon = new PhongMaterial();
-        neon.setDiffuseColor(Color.web("#ffff66"));    // bright yellow
-        neon.setSpecularColor(Color.web("#ffffcc"));   // soft whitish-yellow highlight
-        neon.setSpecularPower(128);                    // very glossy
+        neon.setDiffuseColor(Color.web("#ffff66"));
+        neon.setSpecularColor(Color.web("#ffffcc"));
+        neon.setSpecularPower(128);
 
         rectangleOne.setMaterial(neon);
         rectangleTwo.setMaterial(neon);
 
-        Glow glow = new Glow(1.0);  // 0–1, higher = more glow intensity
-        Bloom bloom = new Bloom(0.1); // lower = more blooming
+        Glow glow = new Glow(1.0);
+        Bloom bloom = new Bloom(0.1);
         bloom.setInput(glow);
 
         rectangleOne.setEffect(bloom);
         rectangleTwo.setEffect(bloom);
+        rectangleOne.setDepthTest(DepthTest.DISABLE);
+        rectangleTwo.setDepthTest(DepthTest.DISABLE);
 
         getChildren().addAll(rectangleOne, rectangleTwo);
 
