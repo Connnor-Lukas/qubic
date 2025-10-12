@@ -9,6 +9,10 @@ import javax.swing.*;
 
 public class MenuUI extends JPanel {
     public MenuUI() {
+        loadMenu();
+    }
+
+    private void loadMenu() {
         // Use BorderLayout to center content
         setLayout(new BorderLayout());
 
@@ -69,8 +73,8 @@ public class MenuUI extends JPanel {
 
         // Center Panel GridBag Constraints
         GridBagConstraints c = new GridBagConstraints();
-        c.gridx=0;
-        c.gridy=0;
+        c.gridx = 0;
+        c.gridy = 0;
         c.insets = new Insets(0, 0, 15, 0);
 
         // Bottom Side by Side Panel
@@ -81,11 +85,11 @@ public class MenuUI extends JPanel {
 
         // Add components to center panel
         centerPanel.add(titlePanel, c);
-        c.gridy=1;
+        c.gridy = 1;
         centerPanel.add(start1PGame, c);
-        c.gridy=2;
+        c.gridy = 2;
         centerPanel.add(start2PGame, c);
-        c.gridy=3;
+        c.gridy = 3;
         centerPanel.add(bottomPanel, c);
 
         // Add center panel to main panel
