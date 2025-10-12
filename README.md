@@ -6,18 +6,18 @@ Our plans have been split into 2 levels, top level and second level. The level s
 
 ### Top Level
 
-| ID  |                      Plan                      | User to Implement |   Status    |
-|:---:|:----------------------------------------------:|:-----------------:|:-----------:|
-| a01 |  [Core Game Logic](documentation/CoreGame.md)  |       Lukas       | In-Progress |
-| a02 | [Basic UI Framework](documentation/BasicUI.md) |      Connor       | In-Progress |
+| ID  |                      Plan                      | Dev to Implement |   Status    |
+|:---:|:----------------------------------------------:|:----------------:|:-----------:|
+| a01 |  [Core Game Logic](documentation/CoreGame.md)  |      Lukas       | In-Progress |
+| a02 | [Basic UI Framework](documentation/BasicUI.md) |      Connor      | In-Progress |
 
 ### Second Level
 
-| ID  |                         Plan                         | User to Implement | Status |
-|:---:|:----------------------------------------------------:|:-----------------:|:------:|
-| b01 |      [3D Rendering](documentation/3DRender.md)       |        und        |  TODO  |
-| b02 | [Game Interaction](documentation/GameInteraction.md) |        und        |  TODO  |
-| b03 |    [Player System](documentation/PlayerSystem.md)    |        und        |  TODO  |
-| b04 |             [VFX](documentation/VFX.md)              |        und        |  TODO  |
-| b05 |        [UI Polish](documentation/UIPolish.md)        |        und        |  TODO  |
-| b06 |  [Opponent Algorithm](documentation/OpponentAI.md)   |        und        |  TODO  |
+| ID  |                         Plan                         | Dev to Implement |   Status    |
+|:---:|:----------------------------------------------------:|:----------------:|:-----------:|
+| b01 |      [3D Rendering](documentation/3DRender.md)       |      Connor      | In-Progress |
+| b02 | [Game Interaction](documentation/GameInteraction.md) |       und        |    TODO     |
+| b03 |    [Player System](documentation/PlayerSystem.md)    |       und        |    TODO     |
+| b04 |             [VFX](documentation/VFX.md)              |       und        |    TODO     |
+| b05 |        [UI Polish](documentation/UIPolish.md)        |       und        |    TODO     |
+| b06 |  [Opponent Algorithm](documentation/OpponentAI.md)   |       und        |    TODO     |
