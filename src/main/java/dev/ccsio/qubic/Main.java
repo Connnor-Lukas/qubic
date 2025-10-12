@@ -18,7 +18,7 @@ public class Main {
 
         // Launch the application
         SwingUtilities.invokeLater(() -> {
-            QubicWindow frame = new QubicWindow();
+            QubicWindow frame = QubicWindow.getInstance();
             frame.setVisible(true);
             frame.showView(new MenuUI());
         });
