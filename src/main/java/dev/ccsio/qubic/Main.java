@@ -18,8 +18,5 @@ public class Main {
 
         TerminalDebug terminal = new TerminalDebug();
         terminal.printBoard(gameBoard.board);
-
-        terminal.testDiagonalWinDetection();
-        
     }
 }

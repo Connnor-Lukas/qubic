@@ -32,60 +32,43 @@ public class GameBoard {
         for (int i = 0; i < 4; i++) {
             sum += this.board[coordinates.z][coordinates.y][i];
         }
-
         if (Math.abs(sum) == 4) {
             return true;
         }
 
-        sum = 0;
         // check y-axis
+        sum = 0;
         for (int i = 0; i < 4; i++) {
             sum += this.board[coordinates.z][i][coordinates.x];
         }
-
         if (Math.abs(sum) == 4) {
             return true;
         }
 
-        sum = 0;
         // check z-axis
+        sum = 0;
         for (int i = 0; i < 4; i++) {
             sum += this.board[i][coordinates.y][coordinates.x];
         }
+        return Math.abs(sum) == 4;
+    }
 
-        if (Math.abs(sum) == 4) {
-            return true;
+    private Boolean winningDiagonal(Coordinates coordinates) {
+        for (List<Coordinates> diagonals : DiagonalsRecord.getDiagonals(coordinates)) {
+            if (winningCoordinateSet(diagonals)) {
+                return true;
+            }
         }
-
         return false;
     }
 
     private Boolean winningCoordinateSet(List<Coordinates> coordinateList) {
         int sum = 0;
-        Coordinates c;
-        for (int i = 0; i < 4; i++) {
-            c = coordinateList.get(i);
+
+        for (Coordinates c : coordinateList) {
             sum += this.board[c.z][c.y][c.x];
         }
-        if (Math.abs(sum) == 4) {
-            return true;
-        } 
-        return false;
-    }
-
-    private Boolean winningDiagonal(Coordinates coordinates) {
-        // List<List<Coordinates>> relevantDiagonals;
-        // relevantDiagonals = List.of(List.of());
-
-        for (int i = 0; i < DiagonalsRecord.Diagonals.size(); i++) {
-            if (DiagonalsRecord.Diagonals.get(i).contains(coordinates)) {
-                // relevantDiagonals.add(DiagonalsRecord.Diagonals.get(i));
-                if (winningCoordinateSet(DiagonalsRecord.Diagonals.get(i))) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return Math.abs(sum) == 4;
     }
 
     /**
@@ -96,9 +79,8 @@ public class GameBoard {
     public Boolean checkWinWithNewestCoordinate(Coordinates coordinates) {
         if (winningStraight(coordinates)) {
             return true;
-        } else if (winningDiagonal(coordinates)) {
-            return true;
+        } else {
+            return winningDiagonal(coordinates);
         }
-        return false;
     }
 }

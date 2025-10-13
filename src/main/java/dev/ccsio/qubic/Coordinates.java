@@ -23,22 +23,27 @@ public class Coordinates {
     // ensures that Coordinates with the same x, y, z are equal objects.
     @Override
     public boolean equals(Object o) {
-        // same reference   
+        // Check if same coordinate object
         if (this == o) {
             return true; 
         }
 
-        // not same type 
-        if (!(o instanceof Coordinates)) {
+        // Check if object is a coordinate
+        if (!(o instanceof Coordinates other)) {
             return false;
         }
 
-        Coordinates other = (Coordinates) o;  
-        return x == other.x && y == other.y && z == other.z; // value equality  
+        // Check coordinate values are equal
+        return x == other.x && y == other.y && z == other.z; // value equality
     }
   
     @Override  
     public String toString() {  
         return "Coordinates(" + x + "," + y + "," + z + ")";  
+    }
+
+    @Override
+    public int hashCode() {
+        return x * 16 + y * 4 + z;
     }
 }

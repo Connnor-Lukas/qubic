@@ -1,8 +1,5 @@
 package dev.ccsio.qubic;
 
-import java.util.List;
-import java.util.Scanner;
-
 /**
  * A terminal implementation method to access the game used for debugging.
  */
@@ -27,34 +24,4 @@ public class TerminalDebug {
             System.out.println();
         }
     }
-
-    /**
-     * Creates a gameboard and loops through all diagonals, placing them on the board
-     *  and checking whether they get checked. 
-     */
-    public void testDiagonalWinDetection() {
-        Scanner scanner = new Scanner(System.in);
-
-        
-        List<List<Coordinates>> diagonals = DiagonalsRecord.Diagonals;
-
-        for (List<Coordinates> list : diagonals) {
-            GameBoard gameboard = new GameBoard();
-            
-            for (Coordinates coords : list) {
-                gameboard.placeMark(coords, 1);
-            }
-
-            System.out.println(list);
-            System.out.println(gameboard.checkWinWithNewestCoordinate(list.get(3)));
-            System.out.println("\n");
-
-            printBoard(gameboard.board);
-
-            scanner.next();
-            
-        }
-        scanner.close();
-    }
-    
 }
