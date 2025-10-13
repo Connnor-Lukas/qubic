@@ -7,13 +7,33 @@ import java.util.List;
  */
 public class GameBoard {
     int[][][] board;
+    MoveHistory moveHistory = new MoveHistory();
 
     GameBoard() {
         board = new int[4][4][4];  // z, y, x
+        LinkedHistory.addMoveHistory(this, moveHistory);
+    }
+
+    public boolean canPlaceMark(Coordinates coordinates, int mark) {
+        boolean canPlace = true;
+        int x = coordinates.x;
+        int y = coordinates.y;
+        int z = coordinates.z;
+
+        if ((x > 3)
+            || (x < 0)
+            || (y > 3)
+            || (y < 0)
+            || (z > 3)
+            || (z < 0)) {
+            return false;
+        }
+
+        return (mark == -1 || mark == 1) && (board[z][y][x] == 0);
     }
 
     /**
-     * A method to update the GameBoard.
+     * A method to update the GameBoard. Input Validation done by another method.
      * @param coordinates - The coordinates on the board to be updated.
      * @param mark - The mark of the player that should go there.
      */
@@ -21,9 +41,9 @@ public class GameBoard {
         int x = coordinates.x;
         int y = coordinates.y;
         int z = coordinates.z;
-        if ((mark == -1 || mark == 1) && (board[z][y][x] == 0)) {
-            board[z][y][x] = mark;
-        }
+
+        board[z][y][x] = mark;
+        moveHistory.addMove(coordinates, mark);
     }
 
     private Boolean winningStraight(Coordinates coordinates) {
@@ -73,10 +93,10 @@ public class GameBoard {
 
     /**
      * Checks whether the latest move created a winning-line.
-     * @param coordinates newest added coordinates.
      * @return true/false.
      */
-    public Boolean checkWinWithNewestCoordinate(Coordinates coordinates) {
+    public Boolean checkWinWithNewestCoordinate() {
+        Coordinates coordinates = moveHistory.getLastMove().coordinates();
         if (winningStraight(coordinates)) {
             return true;
         } else {

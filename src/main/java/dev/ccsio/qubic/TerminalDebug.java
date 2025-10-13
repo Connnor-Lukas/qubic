@@ -8,8 +8,8 @@ public class TerminalDebug {
      * A method to print the gameboard in the console.
      * @param board - The gameboard which is a 3D int array.
      */
-    public void printBoard(int[][][] board) {
-        for (int z = 0; z < 4; z++) {
+    public static void printBoard(int[][][] board) {
+        for (int z = 3; z >= 0; z--) {
             for (int y = 0; y < 4; y++) {
                 for (int x = 0; x < 4; x++) {
                     int i = board[z][y][x];

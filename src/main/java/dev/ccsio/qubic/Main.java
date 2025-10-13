@@ -1,22 +1,30 @@
 package dev.ccsio.qubic;
 
+import java.util.Scanner;
+
 /**
  * The games main class, used to build everything.
  */
 public class Main {
     public static void main(String[] args) {
         GameBoard gameBoard = new GameBoard();
-        
-        gameBoard.placeMark(new Coordinates(1, 2, 3), -1);
-        gameBoard.placeMark(new Coordinates(0, 3, 2), -1);
-        gameBoard.placeMark(new Coordinates(3, 3, 3), 1);
-        gameBoard.placeMark(new Coordinates(2, 2, 2), 1);
-        gameBoard.placeMark(new Coordinates(1, 1, 1), 1);
-        gameBoard.placeMark(new Coordinates(0, 0, 0), 1);
+        Scanner scanner = new Scanner(System.in);
 
-        gameBoard.checkWinWithNewestCoordinate(new Coordinates(0, 0, 0));
+        int player = -1;
 
-        TerminalDebug terminal = new TerminalDebug();
-        terminal.printBoard(gameBoard.board);
+        while (true) {
+            for (int i = 0; i < 10; i++) {
+                System.out.println();
+            }
+            TerminalDebug.printBoard(gameBoard.board);
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            int z = scanner.nextInt();
+            Coordinates coordinates = new Coordinates(x, y, z);
+            if (gameBoard.canPlaceMark(coordinates, player)) {
+                gameBoard.placeMark(coordinates, player);
+                player = -player;
+            }
+        }
     }
 }
