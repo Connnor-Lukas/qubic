@@ -26,19 +26,19 @@ public class Cube extends Group {
             sheets[i] = new Box(THICKNESS, SIZE, SIZE);
             sheets[i].setTranslateX(SEPERATION * (i + 0.5));
             sheets[i].setTranslateY(-54);
-            sheets[i].setTranslateZ(54);
+            sheets[i].setTranslateZ(-54);
         }
         for (int i = 3; i < 6; i++) {
             sheets[i] = new Box(SIZE, THICKNESS, SIZE);
             sheets[i].setTranslateY(-SEPERATION * (i - 2) + 18);
             sheets[i].setTranslateX(54);
-            sheets[i].setTranslateZ(54);
+            sheets[i].setTranslateZ(-54);
         }
         for (int i = 6; i < 9; i++) {
             sheets[i] = new Box(SIZE, SIZE, THICKNESS);
             sheets[i].setTranslateY(-54);
             sheets[i].setTranslateX(54);
-            sheets[i].setTranslateZ(SEPERATION * (i - 5.5));
+            sheets[i].setTranslateZ(-SEPERATION * (i - 5.5));
         }
 
         // Translucent material (still issues but good enough)
@@ -81,8 +81,8 @@ public class Cube extends Group {
 
         if (piece != null) {
             piece.setTranslateX(coordinates.x() * 36);
-            piece.setTranslateY(coordinates.y() * -36);
-            piece.setTranslateZ(coordinates.z() * 36);
+            piece.setTranslateY(coordinates.z() * -36);
+            piece.setTranslateZ(coordinates.y() * -36);
             gameBoard.put(coordinates, piece);
             this.getChildren().add(piece);
         }
@@ -95,11 +95,11 @@ public class Cube extends Group {
 
         rotX.setPivotX(54.5);
         rotX.setPivotY(-54.5);
-        rotX.setPivotZ(54.5);
+        rotX.setPivotZ(-54.5);
 
         rotY.setPivotX(54.5);
         rotY.setPivotY(-54.5);
-        rotY.setPivotZ(54.5);
+        rotY.setPivotZ(-54.5);
 
         node.getTransforms().addAll(rotX, rotY);
 
