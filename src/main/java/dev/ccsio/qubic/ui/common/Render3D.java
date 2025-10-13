@@ -1,7 +1,7 @@
 package dev.ccsio.qubic.ui.common;
 
-import dev.ccsio.qubic.game.Coordinates;
 import dev.ccsio.qubic.objects.Cube;
+import dev.ccsio.qubic.types.Coordinates;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.AmbientLight;
@@ -62,7 +62,7 @@ public class Render3D extends JFXPanel {
     public void makeMove(Coordinates coordinates, boolean isPlayerOne) {
         Platform.runLater(() -> {
             System.out.println(
-                    "Move made at: " + coordinates.x() + ", " + coordinates.y() + ", " + coordinates.z()
+                    "Move made at: " + coordinates.getX() + ", " + coordinates.getY() + ", " + coordinates.getZ()
             );
             // TODO: Update 3D visualization
         });

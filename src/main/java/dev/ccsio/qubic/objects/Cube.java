@@ -1,6 +1,6 @@
 package dev.ccsio.qubic.objects;
 
-import dev.ccsio.qubic.game.Coordinates;
+import dev.ccsio.qubic.types.Coordinates;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.animation.AnimationTimer;
@@ -80,9 +80,9 @@ public class Cube extends Group {
         }
 
         if (piece != null) {
-            piece.setTranslateX(coordinates.x() * 36);
-            piece.setTranslateY(coordinates.z() * -36);
-            piece.setTranslateZ(coordinates.y() * -36);
+            piece.setTranslateX(coordinates.getX() * 36);
+            piece.setTranslateY(coordinates.getZ() * -36);
+            piece.setTranslateZ(coordinates.getY() * -36);
             gameBoard.put(coordinates, piece);
             this.getChildren().add(piece);
         }
