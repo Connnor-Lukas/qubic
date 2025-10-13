@@ -1,5 +1,7 @@
 package dev.ccsio.qubic;
 
+import java.util.Scanner;
+
 /**
  * A terminal implementation method to access the game used for debugging.
  */
@@ -21,6 +23,38 @@ public class TerminalDebug {
                 }
                 System.out.println(); 
             }
+            System.out.println();
+        }
+    }
+
+    public static void playGame(GameBoard gameBoard) {
+        Scanner scanner = new Scanner(System.in);
+
+        int player = -1;
+
+        while (true) {
+            printSpaces();
+            System.out.println("Current Player: " + player);
+            System.out.println();
+            TerminalDebug.printBoard(gameBoard.board);
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            int z = scanner.nextInt();
+            Coordinates coordinates = new Coordinates(x, y, z);
+            if (gameBoard.canPlaceMark(coordinates, player)) {
+                gameBoard.placeMark(coordinates, player);
+                if (gameBoard.checkWinWithNewestCoordinate()) {
+                    printSpaces();
+                    System.out.println("Player " + player + " won the game!");
+                    return;
+                }
+                player = -player;
+            }
+        }
+    }
+
+    private static void printSpaces() {
+        for (int i = 0; i < 20; i++) {
             System.out.println();
         }
     }
