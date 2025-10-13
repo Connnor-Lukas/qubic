@@ -8,7 +8,7 @@ Our plans have been split into 2 levels, top level and second level. The level s
 
 | ID  |                      Plan                      | Dev to Implement |   Status    |
 |:---:|:----------------------------------------------:|:----------------:|:-----------:|
-| a01 |  [Core Game Logic](documentation/CoreGame.md)  |      Lukas       | In-Progress |
+| a01 |  [Core Game Logic](documentation/CoreGame.md)  |      Lukas       |  Completed  |
 | a02 | [Basic UI Framework](documentation/BasicUI.md) |      Connor      | In-Progress |
 
 ### Second Level
@@ -17,7 +17,8 @@ Our plans have been split into 2 levels, top level and second level. The level s
 |:---:|:----------------------------------------------------:|:----------------:|:-----------:|
 | b01 |      [3D Rendering](documentation/3DRender.md)       |      Connor      | In-Progress |
 | b02 | [Game Interaction](documentation/GameInteraction.md) |       und        |    TODO     |
-| b03 |    [Player System](documentation/PlayerSystem.md)    |       und        |    TODO     |
+| b03 |    [Player System](documentation/PlayerSystem.md)    |      Lukas       | In-Progress |
 | b04 |             [VFX](documentation/VFX.md)              |       und        |    TODO     |
 | b05 |        [UI Polish](documentation/UIPolish.md)        |       und        |    TODO     |
 | b06 |  [Opponent Algorithm](documentation/OpponentAI.md)   |       und        |    TODO     |
+| b07 |   [Game Master Class](documentation/GameMaster.md)   |      Lukas       | In-Progress |
