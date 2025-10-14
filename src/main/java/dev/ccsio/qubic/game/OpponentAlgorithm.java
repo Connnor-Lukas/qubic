@@ -20,7 +20,7 @@ public class OpponentAlgorithm {
             case 0:
                 return makeRandomMove();
             case 1:
-                return makeStraightsMove();
+                return makeStraightMove();
             case 2:
                 return makeTacticalMove();
             default:
@@ -33,12 +33,14 @@ public class OpponentAlgorithm {
         return new Coordinates(0, 0, 0);
     }
 
-    private Coordinates makeStraightsMove() {
+    private Coordinates makeStraightMove() {
         return new Coordinates(0, 0, 0);
+        // blocks, and tries to make a straight, first move is random
     }
 
     private Coordinates makeTacticalMove() {
         return new Coordinates(0, 0, 0);
+        // blocks, tries to predict player's next move, calculates first move
     }
     
 }
