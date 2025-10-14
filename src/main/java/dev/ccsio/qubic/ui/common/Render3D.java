@@ -23,10 +23,10 @@ public class Render3D extends JFXPanel {
 
         // Add the cube
         Cube cube = new Cube();
-        cube.addPiece(-1, new Coordinates(0, 0, 3));
-        cube.addPiece(-1, new Coordinates(1, 1, 2));
-        cube.addPiece(-1, new Coordinates(2, 2, 1));
-        cube.addPiece(-1, new Coordinates(3, 3, 0));
+        cube.addPiece(1, new Coordinates(0, 0, 3));
+        cube.addPiece(1, new Coordinates(1, 1, 2));
+        cube.addPiece(1, new Coordinates(2, 2, 1));
+        cube.addPiece(1, new Coordinates(3, 3, 0));
         environment.getChildren().add(cube);
 
         // Setup scene with 3D enabled
