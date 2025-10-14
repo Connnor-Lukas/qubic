@@ -22,3 +22,4 @@ Our plans have been split into 2 levels, top level and second level. The level s
 | b05 |        [UI Polish](documentation/UIPolish.md)        |       und        |    TODO     |
 | b06 |  [Opponent Algorithm](documentation/OpponentAI.md)   |       und        |    TODO     |
 | b07 |   [Game Master Class](documentation/GameMaster.md)   |      Lukas       | In-Progress |
+| b08 | [Maven Automatic Tests](documentation/MavenTests.md) |      Connor      | In-Progress |
