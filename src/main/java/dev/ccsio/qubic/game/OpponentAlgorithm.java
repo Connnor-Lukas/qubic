@@ -3,27 +3,30 @@ package dev.ccsio.qubic.game;
 import dev.ccsio.qubic.types.Coordinates;;
 
 public class OpponentAlgorithm {
+    static int max_difficulty = 0;
     int difficulty;
 
     public OpponentAlgorithm(int difficulty) {
-        this.difficulty = difficulty;
+        if (difficulty <= max_difficulty) {
+            this.difficulty = difficulty;
+        } else {
+            throw new IllegalArgumentException(
+                "OpponentAlgorithm difficulty has to be " + max_difficulty + " or less.");
+        }   
     }
 
     public Coordinates getMove(GameBoard gameBoard) {
         switch (difficulty) {
             case 0:
-                makeRandomMove();
-                break;
+                return makeRandomMove();
             case 1:
-                makeStraightsMove();
-                break;
+                return makeStraightsMove();
             case 2:
-                makeTacticalMove();
-                break;
+                return makeTacticalMove();
             default:
                 break;
         }
-        
+        return null;
     }
 
     private Coordinates makeRandomMove() {
