@@ -65,4 +65,8 @@ public class GameMaster {
             this.mark *= -1;
         }
     }
+
+    public int getCurrentPlayer() {
+        return mark;
+    }
 }
