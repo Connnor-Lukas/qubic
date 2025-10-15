@@ -2,6 +2,8 @@ package dev.ccsio.qubic.ui.menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import dev.ccsio.qubic.ui.common.Colours;
+import dev.ccsio.qubic.ui.common.QubicWindow;
+import dev.ccsio.qubic.ui.singleplayer.SinglePlayerUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import javafx.embed.swing.JFXPanel;
@@ -47,7 +49,8 @@ public class MenuUI extends JPanel {
         JButton start1PGame = getJButton("1-Player Game", Colours.CUSTOM_BLUE);
         start1PGame.setPreferredSize(new Dimension(320, 50));
         start1PGame.addActionListener((ActionEvent e) -> {
-            System.out.println("Start button clicked!");
+            QubicWindow frame = QubicWindow.getInstance();
+            frame.showView(new SinglePlayerUI());
         });
 
         // 2-Player Start Button
