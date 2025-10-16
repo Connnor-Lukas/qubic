@@ -1,7 +1,8 @@
 package dev.ccsio.qubic.game;
 
 import dev.ccsio.qubic.types.Coordinates;
-import dev.ccsio.qubic.ui.common.InputPanel;
+import dev.ccsio.qubic.ui.InputPanel;
+import dev.ccsio.qubic.ui.WinScreen;
 
 
 public class GameMaster {
@@ -15,6 +16,7 @@ public class GameMaster {
     Coordinates oaMove;
     InputPanel inputPanel;
     public int winner;
+    private String winnerText;
     
     private GameMaster() {}
 
@@ -44,7 +46,6 @@ public class GameMaster {
             this.gameMode = "tp";
             this.mark = -1;
             this.winner = 0;
-
             initialised = true;
         }
     }
@@ -52,6 +53,10 @@ public class GameMaster {
     public Boolean handleInput(Coordinates input) {
         if (this.gameBoard.canPlaceMark(input, mark)) {
             this.gameBoard.placeMark(input, mark);
+            winnerText = checkWinner();
+            if (winnerText != null) {
+                WinScreen.getInstance().showWinScreen(winnerText);
+            }
             this.mark *= -1;
             return true;
         }

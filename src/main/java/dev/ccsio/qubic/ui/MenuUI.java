@@ -1,10 +1,8 @@
-package dev.ccsio.qubic.ui.menu;
+package dev.ccsio.qubic.ui;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import dev.ccsio.qubic.game.GameMaster;
-import dev.ccsio.qubic.ui.common.Colours;
-import dev.ccsio.qubic.ui.common.QubicWindow;
-import dev.ccsio.qubic.ui.singleplayer.SinglePlayerUI;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import javafx.embed.swing.JFXPanel;
@@ -53,7 +51,7 @@ public class MenuUI extends JPanel {
         start1PGame.setPreferredSize(new Dimension(320, 50));
         start1PGame.addActionListener((ActionEvent e) -> {
             GameMaster.getInstance().init(0);
-            frame.showView(new SinglePlayerUI());
+            frame.showView(new GameUI());
         });
 
         // 2-Player Start Button
@@ -61,7 +59,7 @@ public class MenuUI extends JPanel {
         start2PGame.setPreferredSize(new Dimension(320, 50));
         start2PGame.addActionListener((ActionEvent e) -> {
             GameMaster.getInstance().init();
-            frame.showView(new SinglePlayerUI());
+            frame.showView(new GameUI());
         });
 
         // Tutorial Button

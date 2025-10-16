@@ -1,4 +1,4 @@
-package dev.ccsio.qubic.ui.common;
+package dev.ccsio.qubic.ui;
 
 import dev.ccsio.qubic.game.GameMaster;
 import dev.ccsio.qubic.types.Coordinates;
@@ -34,7 +34,6 @@ public class InputPanel extends JPanel {
         currentPlayer--;
         allTheButtons.setEnabled(true);
         playerTurn.setText("Player 1's Turn");
-        System.out.println("updateOAMove -> " + playerTurn.getText());
     }
 
     private void createUIComponents() {
@@ -83,11 +82,8 @@ public class InputPanel extends JPanel {
         JButton button = new JButton();
         button.addActionListener(e -> {
             if (currentPlayer == 1) {
-                System.out.println("Player 1's Turn");
                 if (gameMaster.getGameMode() == "sp") {
-                    System.out.println("SP");
                     if (gameMaster.handleInput(new Coordinates(x, y, z))) {
-                        System.out.println("Handled Input");
                         playerTurn.setText("OA's Turn");
                         button.setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
                         currentPlayer++;

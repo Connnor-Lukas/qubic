@@ -1,4 +1,4 @@
-package dev.ccsio.qubic.ui.common;
+package dev.ccsio.qubic.ui;
 
 import javax.swing.*;
 

@@ -1,6 +1,5 @@
-package dev.ccsio.qubic.ui.singleplayer;
+package dev.ccsio.qubic.ui;
 
-import dev.ccsio.qubic.ui.common.InputPanel;
 import java.awt.*;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -8,8 +7,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javax.swing.*;
 
-public class SinglePlayerUI extends JPanel {
-    public SinglePlayerUI() {
+public class GameUI extends JPanel {
+    public GameUI() {
         loadUI();
     }
 

@@ -1,8 +1,8 @@
 package dev.ccsio.qubic;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import dev.ccsio.qubic.ui.common.QubicWindow;
-import dev.ccsio.qubic.ui.menu.MenuUI;
+import dev.ccsio.qubic.ui.QubicWindow;
+import dev.ccsio.qubic.ui.MenuUI;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
