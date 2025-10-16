@@ -20,8 +20,11 @@ Our plans have been split into 2 levels, top level and second level. The level s
 | b03 |    [Player System](documentation/PlayerSystem.md)    |      Lukas       | In-Progress |
 | b04 |             [VFX](documentation/VFX.md)              |       und        |    TODO     |
 | b05 |        [UI Polish](documentation/UIPolish.md)        |       und        |    TODO     |
-| b06 |  [Opponent Algorithm](documentation/OpponentAI.md)   |       und        |    TODO     |
+| b06 | [Basic Opponent Algorithm](documentation/BasicOA.md) |      Lukas       | In-Progress |
 | b07 |   [Game Master Class](documentation/GameMaster.md)   |      Lukas       | In-Progress |
+| b08 | [Maven Automatic Tests](documentation/MavenTests.md) |      Connor      | In-Progress |
+| b09 |      [Advanced OA](documentation/AdvancedOA.md)      |       und        |    TODO     |
+
 
 ## Used Resources
 
