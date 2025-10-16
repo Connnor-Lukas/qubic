@@ -1,6 +1,7 @@
 package dev.ccsio.qubic.ui.menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import dev.ccsio.qubic.game.GameMaster;
 import dev.ccsio.qubic.ui.common.Colours;
 import dev.ccsio.qubic.ui.common.QubicWindow;
 import dev.ccsio.qubic.ui.singleplayer.SinglePlayerUI;
@@ -10,6 +11,8 @@ import javafx.embed.swing.JFXPanel;
 import javax.swing.*;
 
 public class MenuUI extends JPanel {
+    QubicWindow frame = QubicWindow.getInstance();
+
     public MenuUI() {
         loadMenu();
     }
@@ -35,40 +38,39 @@ public class MenuUI extends JPanel {
         // Title labels
         JLabel titlePart1 = new JLabel("QUBIC");
         titlePart1.setFont(new Font("Arial", Font.BOLD, 64));
-        titlePart1.setForeground(Color.decode(Colours.CUSTOM_BLUE));
+        titlePart1.setForeground(Color.decode(Colours.CUSTOM_MENU_BLUE));
 
         JLabel titlePart2 = new JLabel("3D");
         titlePart2.setFont(new Font("Arial", Font.BOLD, 64));
-        titlePart2.setForeground(Color.decode(Colours.CUSTOM_RED));
+        titlePart2.setForeground(Color.decode(Colours.CUSTOM_MENU_RED));
 
         titlePanel.add(titlePart1);
         titlePanel.add(titlePart2);
         titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
         // 1-Player Start Button
-        JButton start1PGame = getJButton("1-Player Game", Colours.CUSTOM_BLUE);
+        JButton start1PGame = getJButton("1-Player Game", Colours.CUSTOM_MENU_BLUE);
         start1PGame.setPreferredSize(new Dimension(320, 50));
         start1PGame.addActionListener((ActionEvent e) -> {
-            QubicWindow frame = QubicWindow.getInstance();
+            GameMaster.getInstance().init(0);
             frame.showView(new SinglePlayerUI());
         });
 
         // 2-Player Start Button
-        JButton start2PGame = getJButton("2-Player Game", Colours.CUSTOM_BLUE);
+        JButton start2PGame = getJButton("2-Player Game", Colours.CUSTOM_MENU_BLUE);
         start2PGame.setPreferredSize(new Dimension(320, 50));
         start2PGame.addActionListener((ActionEvent e) -> {
-            System.out.println("Start button clicked!");
+            GameMaster.getInstance().init();
+            frame.showView(new SinglePlayerUI());
         });
 
         // Tutorial Button
-        JButton startTutorial = getJButton("Tutorial", Colours.CUSTOM_BLACK);
+        JButton startTutorial = getJButton("Tutorial", Colours.CUSTOM_MENU_BLACK);
         startTutorial.setPreferredSize(new Dimension(155, 40));
-        startTutorial.addActionListener((ActionEvent e) -> {
-            System.out.println("Start button clicked!");
-        });
+        startTutorial.addActionListener((ActionEvent e) -> {});
 
         // Quit Game Button
-        JButton exitButton = getJButton("Quit", Colours.CUSTOM_RED);
+        JButton exitButton = getJButton("Quit", Colours.CUSTOM_MENU_RED);
         exitButton.setPreferredSize(new Dimension(155, 40));
         exitButton.addActionListener((ActionEvent e) -> {
             System.exit(0);
@@ -103,7 +105,7 @@ public class MenuUI extends JPanel {
         JButton button = new JButton(text);
         button.putClientProperty(FlatClientProperties.STYLE,
             "background: " + colour + ";"
-            + "foreground: " + Colours.CUSTOM_WHITE + ";"
+            + "foreground: " + Colours.CUSTOM_MENU_WHITE + ";"
             + "borderWidth: 0;"
             + "arc: 15;"
             + "focusWidth: 0;"

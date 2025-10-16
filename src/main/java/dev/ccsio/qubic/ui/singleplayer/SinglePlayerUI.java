@@ -25,7 +25,7 @@ public class SinglePlayerUI extends JPanel {
         c.weighty = 1.0;
 
         // LEFT SIDEBAR
-        inputSideBar = new InputPanel(true);
+        inputSideBar = InputPanel.getInstance();
         c.gridx = 0;
         add(inputSideBar, c);
 
@@ -39,6 +39,7 @@ public class SinglePlayerUI extends JPanel {
         historySideBar = new JPanel();
         historySideBar.setBackground(Color.RED);
         c.gridx = 2;
+        c.weightx = 0;
         add(historySideBar, c);
 
         // Load JavaFX scene inside JFXPanel
