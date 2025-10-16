@@ -10,8 +10,8 @@ public class GameMaster {
     String gameMode;
     GameBoard gameBoard;
     int mark;
-    Boolean playersTurn;
     OpponentAlgorithm opponentAlgorithm;
+    public int winner;
     
     private GameMaster() {}
 
@@ -24,6 +24,7 @@ public class GameMaster {
 
     public void init(String gameMode, int difficulty) {
         if (!initialised) {
+            gameMode = gameMode.toLowerCase();
             if (gameMode.toLowerCase() == "sp"  // sp: singe-player, tp: two-player
                     || gameMode.toLowerCase() == "tp") {
                 this.gameMode = gameMode;
@@ -37,33 +38,35 @@ public class GameMaster {
 
             this.gameBoard = new GameBoard();
             this.mark = -1;
-            this.playersTurn = true;
+            this.winner = 0;
 
             initialised = true;
         }
     }
 
-    public void handleInput(Coordinates input, Boolean isOA) {
-        if (this.playersTurn) {
-            this.gameBoard.placeMark(input, this.mark);
+    public void handleInput(Coordinates input) {
+        this.gameBoard.placeMark(input, mark);
+        if (gameBoard.checkWinWithNewestCoordinate()) {
+            this.winner = this.mark;
+            // Call Win UI
+            return;
+        }
+
+        this.mark *= -1;
+
+        if (this.gameMode == "sp" && this.mark == 1) {
+            this.gameBoard.placeMark(this.opponentAlgorithm.getMove(gameBoard), 1);
             if (gameBoard.checkWinWithNewestCoordinate()) {
-                System.out.println("Player " + this.mark + "won the game");
+                this.winner = this.mark;
+                // Call Win UI
                 return;
             }
-
-            this.mark *= -1;
-
-            if (this.gameMode == "sp") {
-                this.playersTurn = false;
-                this.handleInput(this.opponentAlgorithm.getMove(gameBoard), false);
-            }
-        } 
-
-        if (isOA) {
-            gameBoard.placeMark(input, this.mark);
-            this.playersTurn = true;
             this.mark *= -1;
         }
+    }
+
+    public GameBoard getGameBoard() {
+        return gameBoard;
     }
 
     public int getCurrentPlayer() {

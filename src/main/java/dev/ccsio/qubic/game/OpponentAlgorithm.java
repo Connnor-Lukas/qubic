@@ -1,11 +1,13 @@
 package dev.ccsio.qubic.game;
 
-import dev.ccsio.qubic.types.Coordinates;;
+import dev.ccsio.qubic.types.Coordinates;
+import java.util.Random;
 
 public class OpponentAlgorithm {
     static int max_difficulty = 0;
     int difficulty;
-
+    GameBoard gameBoard;
+    
     public OpponentAlgorithm(int difficulty) {
         if (difficulty <= max_difficulty) {
             this.difficulty = difficulty;
@@ -16,6 +18,8 @@ public class OpponentAlgorithm {
     }
 
     public Coordinates getMove(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
+        
         switch (difficulty) {
             case 0:
                 return makeRandomMove();
@@ -30,7 +34,23 @@ public class OpponentAlgorithm {
     }
 
     private Coordinates makeRandomMove() {
-        return new Coordinates(0, 0, 0);
+        Random randomCoordinateGenerator = new Random();
+        int x;
+        int y;
+        int z;
+        Coordinates coordinates;
+
+        while (true) {
+            x = randomCoordinateGenerator.nextInt(4);
+            y = randomCoordinateGenerator.nextInt(4);
+            z = randomCoordinateGenerator.nextInt(4);
+            coordinates = new Coordinates(x, y, z);
+
+            if (gameBoard.canPlaceMark(coordinates, 1)) {
+                return coordinates;
+            }
+        }
+        
     }
 
     private Coordinates makeStraightMove() {
