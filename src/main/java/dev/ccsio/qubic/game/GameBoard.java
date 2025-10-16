@@ -49,7 +49,7 @@ public class GameBoard {
         moveHistory.addMove(coordinates, mark);
     }
 
-    public int[][][]  getBoard() {
+    public int[][][] getBoard() {
         return board;
     }
 
