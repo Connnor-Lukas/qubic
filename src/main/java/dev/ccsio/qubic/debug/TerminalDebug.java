@@ -3,7 +3,8 @@ package dev.ccsio.qubic.debug;
 import dev.ccsio.qubic.types.Coordinates;
 import dev.ccsio.qubic.game.GameBoard;
 import dev.ccsio.qubic.game.GameMaster;
-
+import dev.ccsio.qubic.game.WinningLinesRecord;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -58,6 +59,25 @@ public class TerminalDebug {
 
         printBoard(gameMaster.getGameBoard());
         System.out.println("Player " + player +  " won the game!");
+    }
+
+    public static void placeAllWinningLines() {
+        WinningLinesRecord winningLinesList = new WinningLinesRecord();
+        // System.out.println(winningLinesList.getWinningLines().size());
+        winningLinesList.deleteLines(new Coordinates(0, 0, 0));
+        winningLinesList.deleteLines(new Coordinates(3, 3, 3));
+        // System.out.println(winningLinesList.getWinningLines().size());
+
+        for (List<Coordinates> line : winningLinesList.getWinningLines()) {
+            GameBoard gb = new GameBoard();
+            for (Coordinates coordinates : line) {
+                gb.placeMark(coordinates, 1);
+            }
+            
+            printBoard(gb);
+            scanner.nextInt();
+            printSpaces();
+        }
     }
 
     private static void printSpaces() {

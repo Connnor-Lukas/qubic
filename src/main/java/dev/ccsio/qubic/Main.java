@@ -8,6 +8,7 @@ import dev.ccsio.qubic.game.GameBoard;
  */
 public class Main {
     public static void main(String[] args) {
-        TerminalDebug.playGame(new GameBoard());
+        // TerminalDebug.playGame(new GameBoard());
+        TerminalDebug.placeAllWinningLines();
     }
 }
