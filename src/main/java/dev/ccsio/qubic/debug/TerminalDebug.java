@@ -2,6 +2,7 @@ package dev.ccsio.qubic.debug;
 
 import dev.ccsio.qubic.types.Coordinates;
 import dev.ccsio.qubic.game.GameBoard;
+import dev.ccsio.qubic.game.GameMaster;
 
 import java.util.Scanner;
 
@@ -9,11 +10,13 @@ import java.util.Scanner;
  * A terminal implementation method to access the game used for debugging.
  */
 public class TerminalDebug {
+    static Scanner scanner = new Scanner(System.in);
     /**
      * A method to print the gameboard in the console.
      * @param board - The gameboard which is a 3D int array.
      */
-    public static void printBoard(int[][][] board) {
+    public static void printBoard(GameBoard gb) {
+        int[][][] board = gb.getBoard();
         for (int z = 3; z >= 0; z--) {
             for (int y = 0; y < 4; y++) {
                 for (int x = 0; x < 4; x++) {
@@ -31,29 +34,30 @@ public class TerminalDebug {
     }
 
     public static void playGame(GameBoard gameBoard) {
-        Scanner scanner = new Scanner(System.in);
+        int player = 0;
 
-        int player = -1;
-
-        while (true) {
-            printSpaces();
+        GameMaster gameMaster = GameMaster.getInstance();
+        gameMaster.init("sp", 0);
+        while (gameMaster.winner == 0) {
+            player = gameMaster.getCurrentPlayer();
+            
             System.out.println("Current Player: " + player);
             System.out.println();
-            TerminalDebug.printBoard(gameBoard.getBoard());
+            printBoard(gameMaster.getGameBoard());
+
             int x = scanner.nextInt();
             int y = scanner.nextInt();
             int z = scanner.nextInt();
             Coordinates coordinates = new Coordinates(x, y, z);
-            if (gameBoard.canPlaceMark(coordinates, player)) {
-                gameBoard.placeMark(coordinates, player);
-                if (gameBoard.checkWinWithNewestCoordinate()) {
-                    printSpaces();
-                    System.out.println("Player " + player + " won the game!");
-                    return;
-                }
-                player = -player;
+            printSpaces();
+
+            if (!gameMaster.handleInput(coordinates)) {
+                System.out.println("Invalid Input!");
             }
         }
+
+        printBoard(gameMaster.getGameBoard());
+        System.out.println("Player " + player +  " won the game!");
     }
 
     private static void printSpaces() {
