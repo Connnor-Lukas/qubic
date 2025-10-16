@@ -51,10 +51,7 @@ public class TerminalDebug {
             Coordinates coordinates = new Coordinates(x, y, z);
             printSpaces();
 
-            if (gameMaster.getGameBoard().canPlaceMark(coordinates, player)) {
-                gameMaster.handleInput(coordinates);
-                
-            } else {
+            if (!gameMaster.handleInput(coordinates)) {
                 System.out.println("Invalid Input!");
             }
         }

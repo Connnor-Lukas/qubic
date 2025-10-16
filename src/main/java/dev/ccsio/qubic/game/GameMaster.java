@@ -44,12 +44,17 @@ public class GameMaster {
         }
     }
 
-    public void handleInput(Coordinates input) {
-        this.gameBoard.placeMark(input, mark);
+    public Boolean handleInput(Coordinates input) {
+        if (this.gameBoard.canPlaceMark(input, mark)) {
+            this.gameBoard.placeMark(input, mark);
+        } else {
+            return false;
+        }
+        
         if (gameBoard.checkWinWithNewestCoordinate()) {
             this.winner = this.mark;
             // Call Win UI
-            return;
+            return true;
         }
 
         this.mark *= -1;
@@ -59,10 +64,12 @@ public class GameMaster {
             if (gameBoard.checkWinWithNewestCoordinate()) {
                 this.winner = this.mark;
                 // Call Win UI
-                return;
+                return true;
             }
             this.mark *= -1;
         }
+        
+        return true;
     }
 
     public GameBoard getGameBoard() {
