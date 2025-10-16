@@ -1,6 +1,8 @@
 package dev.ccsio.qubic.game;
 
 import dev.ccsio.qubic.types.Coordinates;
+import dev.ccsio.qubic.ui.InputPanel;
+import dev.ccsio.qubic.ui.WinScreen;
 
 
 public class GameMaster {
@@ -11,7 +13,10 @@ public class GameMaster {
     GameBoard gameBoard;
     int mark;
     OpponentAlgorithm opponentAlgorithm;
+    Coordinates oaMove;
+    InputPanel inputPanel;
     public int winner;
+    private String winnerText;
     
     private GameMaster() {}
 
@@ -22,21 +27,12 @@ public class GameMaster {
         return INSTANCE;
     }
 
-    public void init(String gameMode, int difficulty) {
+    public void init(int difficulty) {
         if (!initialised) {
-            gameMode = gameMode.toLowerCase();
-            if (gameMode.toLowerCase() == "sp"  // sp: singe-player, tp: two-player
-                    || gameMode.toLowerCase() == "tp") {
-                this.gameMode = gameMode;
-            } else {
-                throw new IllegalArgumentException("gameMode has to either be 'sp' or 'tp'");
-            }
-
-            if (gameMode == "sp") {
-                this.opponentAlgorithm = new OpponentAlgorithm(difficulty);
-            }
-
+            this.opponentAlgorithm = new OpponentAlgorithm(difficulty);
             this.gameBoard = new GameBoard();
+            this.inputPanel = InputPanel.getInstance();
+            this.gameMode = "sp";
             this.mark = -1;
             this.winner = 0;
 
@@ -44,32 +40,59 @@ public class GameMaster {
         }
     }
 
+    public void init() {
+        if (!initialised) {
+            this.gameBoard = new GameBoard();
+            this.gameMode = "tp";
+            this.mark = -1;
+            this.winner = 0;
+            initialised = true;
+        }
+    }
+
     public Boolean handleInput(Coordinates input) {
         if (this.gameBoard.canPlaceMark(input, mark)) {
             this.gameBoard.placeMark(input, mark);
-        } else {
-            return false;
-        }
-        
-        if (gameBoard.checkWinWithNewestCoordinate()) {
-            this.winner = this.mark;
-            // Call Win UI
+            winnerText = checkWinner();
+            if (winnerText != null) {
+                WinScreen.getInstance().showWinScreen(winnerText);
+            }
+            this.mark *= -1;
             return true;
         }
+        return false;
+    }
 
-        this.mark *= -1;
+    public String checkWinner() {
+        if (gameBoard.checkWinWithNewestCoordinate()) {
+            this.winner = this.mark;
+            switch (gameMode + winner) {
+                case "sp-1":
+                    return "You Won";
+                case "sp1":
+                    return "The AI Won";
+                case "tp-1":
+                    return "Player 1 Won";
+                case "tp1":
+                    return "Player 2 Won";
+                default:
+                    return null;
+            }
+        }
+        return null;
+    }
 
+    public void makeOAMove() {
         if (this.gameMode == "sp" && this.mark == 1) {
-            this.gameBoard.placeMark(this.opponentAlgorithm.getMove(gameBoard), 1);
+            oaMove = this.opponentAlgorithm.getMove(gameBoard);
+            gameBoard.placeMark(oaMove, 1);
+            inputPanel.updateOAMove(oaMove);
             if (gameBoard.checkWinWithNewestCoordinate()) {
                 this.winner = this.mark;
                 // Call Win UI
-                return true;
             }
             this.mark *= -1;
         }
-        
-        return true;
     }
 
     public GameBoard getGameBoard() {
@@ -78,5 +101,9 @@ public class GameMaster {
 
     public int getCurrentPlayer() {
         return mark;
+    }
+
+    public String getGameMode() {
+        return gameMode;
     }
 }
