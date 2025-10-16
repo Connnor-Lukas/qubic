@@ -38,7 +38,7 @@ public class TerminalDebug {
         int player = 0;
 
         GameMaster gameMaster = GameMaster.getInstance();
-        gameMaster.init("sp", 0);
+        gameMaster.init(0);
         while (gameMaster.winner == 0) {
             player = gameMaster.getCurrentPlayer();
             

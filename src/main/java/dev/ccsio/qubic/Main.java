@@ -1,14 +1,26 @@
 package dev.ccsio.qubic;
 
-import dev.ccsio.qubic.debug.TerminalDebug;
-import dev.ccsio.qubic.game.GameBoard;
+import com.formdev.flatlaf.FlatLightLaf;
+import dev.ccsio.qubic.ui.QubicWindow;
+import dev.ccsio.qubic.ui.MenuUI;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
-/**
- * The games main class, used to build everything.
- */
 public class Main {
     public static void main(String[] args) {
-        // TerminalDebug.playGame(new GameBoard());
-        TerminalDebug.placeAllWinningLines();
+        // Setup FlatLaf Look and Feel
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (Exception e) {
+            // If FlatLaf is not available, fall back to default
+            e.printStackTrace();
+        }
+
+        // Launch the application
+        SwingUtilities.invokeLater(() -> {
+            QubicWindow frame = QubicWindow.getInstance();
+            frame.setVisible(true);
+            frame.showView(new MenuUI());
+        });
     }
 }
