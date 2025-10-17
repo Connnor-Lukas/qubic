@@ -3,6 +3,7 @@ package dev.ccsio.qubic.objects;
 import dev.ccsio.qubic.types.Coordinates;
 import java.util.HashMap;
 import java.util.Map;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -19,6 +20,11 @@ public class Cube extends Group {
     private static final double SIZE = 143;
     private static final double THICKNESS = 1;
     private static final double SEPERATION = 36;
+
+    private AnimationTimer automaticRotation;
+    private AnimationTimer controlledRotation;
+    private Rotate rotX;
+    private Rotate rotY;
 
     public Cube() {
         Box[] sheets = new Box[9];
@@ -95,10 +101,12 @@ public class Cube extends Group {
         gameBoard.clear();
     }
 
-    private void animateCube(Node node) {
+    private void animateCube() {
+        Node node = this;
+
         // Create rotation transforms
-        Rotate rotX = new Rotate(0, Rotate.X_AXIS);
-        Rotate rotY = new Rotate(0, Rotate.Y_AXIS);
+        rotX = new Rotate(0, Rotate.X_AXIS);
+        rotY = new Rotate(0, Rotate.Y_AXIS);
 
         rotX.setPivotX(54.5);
         rotX.setPivotY(-54.5);
@@ -111,7 +119,7 @@ public class Cube extends Group {
         node.getTransforms().addAll(rotX, rotY);
 
         // Create animation
-        AnimationTimer rotationTimer = new AnimationTimer() {
+        automaticRotation = new AnimationTimer() {
             private long lastUpdate = 0;
             private double angleX = 0;
             private double possibleX = 0;
@@ -162,6 +170,24 @@ public class Cube extends Group {
             }
         };
 
-        rotationTimer.start();
+        automaticRotation.start();
+    }
+
+    private void controlledRotation() {
+        automaticRotation.stop();
+        Node node = this;
+
+        controlledRotation =  new AnimationTimer() {
+            long lastUpdate = 0;
+
+            @Override
+            public void handle(long now) {
+                if (lastUpdate == 0) {
+                    lastUpdate = now;
+                    return;
+                }
+
+            }
+        };
     }
 }
