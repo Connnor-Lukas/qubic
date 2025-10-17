@@ -53,6 +53,10 @@ public class GameBoard {
         return board;
     }
 
+    public int getValueAt(Coordinates coordinates) {
+        return this.board[coordinates.getZ()][coordinates.getY()][coordinates.getX()];
+    }
+
     private Boolean winningStraight(Coordinates coordinates) {
         int x = coordinates.getX();
         int y = coordinates.getY();
