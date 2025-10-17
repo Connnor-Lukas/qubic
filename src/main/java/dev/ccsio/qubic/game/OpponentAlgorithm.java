@@ -1,6 +1,9 @@
 package dev.ccsio.qubic.game;
 
 import dev.ccsio.qubic.types.Coordinates;
+import dev.ccsio.qubic.types.MoveHistory;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
 public class OpponentAlgorithm {
@@ -9,6 +12,7 @@ public class OpponentAlgorithm {
     GameBoard gameBoard;
     WinningLinesRecord selfWinOptions;
     WinningLinesRecord opponentWinOptions;
+    HashSet<Coordinates> availableCoordinates;
     
     public OpponentAlgorithm(int difficulty) {
         if (difficulty <= max_difficulty) {
@@ -20,11 +24,22 @@ public class OpponentAlgorithm {
 
         selfWinOptions = new WinningLinesRecord();
         opponentWinOptions = new WinningLinesRecord();
+        availableCoordinates = new HashSet<>();
+
+        // populate available Coordinates
+        for (int x = 0; x < 4; x++) {
+            for (int y = 0; y < 4; y++) {
+                for (int z = 0; z < 4; z++) {
+                    availableCoordinates.add(new Coordinates(x, y, z));
+                }
+            }
+        }
     }
 
     public Coordinates getMove(GameBoard gameBoard) {
         this.gameBoard = gameBoard;
-        
+        updateAfterOpponentsMove();
+
         switch (difficulty) {
             case 0:
                 return makeRandomMove();
@@ -39,20 +54,61 @@ public class OpponentAlgorithm {
     }
 
     private Coordinates checkSelfWinInOne() {
+        for (List<Coordinates> list : selfWinOptions.getWinningLines()) {
+            int sum = 0;
+            int emptyIdx = -1;
+            for (int i = 0; i < 4; i++) {
+                if (gameBoard.getValueAt(list.get(i)) == 1) {
+                    sum += 1;
+                } else {
+                    emptyIdx = i;
+                }
+            }
+
+            if (sum == 3) {
+                updateWithNewCoordinates(list.get(emptyIdx));
+                return list.get(emptyIdx);
+            }
+        }
         return null;
     }
 
     private Coordinates checkOpponentWinInOne() {
+        for (List<Coordinates> list : opponentWinOptions.getWinningLines()) {
+            int sum = 0;
+            int emptyIdx = -1;
+            for (int i = 0; i < 4; i++) {
+                if (gameBoard.getValueAt(list.get(i)) == -1) {
+                    sum += 1;
+                } else {
+                    emptyIdx = i;
+                }
+            }
 
+            if (sum == 3) {
+                updateWithNewCoordinates(list.get(emptyIdx));
+                return list.get(emptyIdx);
+            }
+        }
         return null;
     }
 
+    private void updateWithNewCoordinates(Coordinates coordinates) {
+        opponentWinOptions.deleteLines(coordinates);
+        availableCoordinates.remove(coordinates);
+    }
+
+    private void updateAfterOpponentsMove() {
+        Coordinates coordinates = LinkedHistory.getMoveHistory(
+            gameBoard).getLastMove().coordinates();
+
+        selfWinOptions.deleteLines(coordinates);
+        availableCoordinates.remove(coordinates);
+    }
+
     private Coordinates makeRandomMove() {
-        Random randomCoordinateGenerator = new Random();
-        // int x;
-        // int y;
-        // int z;
-        // Coordinates coordinates;
+        System.out.println(availableCoordinates.size());
+        Random randomGenerator = new Random();
 
         Coordinates selfWin = checkSelfWinInOne();
         Coordinates opponentWin = checkOpponentWinInOne();
@@ -62,23 +118,18 @@ public class OpponentAlgorithm {
         } else if (opponentWin != null) {
             return opponentWin;
         } else {
-            return new Coordinates(
-                randomCoordinateGenerator.nextInt(4),
-                randomCoordinateGenerator.nextInt(4), 
-                randomCoordinateGenerator.nextInt(4)
-                );
+            // get random Coordinates from Available Coordinates
+            int stop = randomGenerator.nextInt(availableCoordinates.size());
+            int i = 0;
+            for (Coordinates coordinates : availableCoordinates) {
+                if (i == stop) {
+                    updateWithNewCoordinates(coordinates);
+                    return coordinates;
+                }
+                i++;
+            }
         }
-
-        // while (true) {
-        //     x = randomCoordinateGenerator.nextInt(4);
-        //     y = randomCoordinateGenerator.nextInt(4);
-        //     z = randomCoordinateGenerator.nextInt(4);
-        //     coordinates = new Coordinates(x, y, z);
-
-        //     if (gameBoard.canPlaceMark(coordinates, 1)) {
-        //         return coordinates;
-        //     }
-        // }
+        return null;
     }
 
     private Coordinates makeStraightMove() {
