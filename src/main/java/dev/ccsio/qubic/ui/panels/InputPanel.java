@@ -1,7 +1,9 @@
-package dev.ccsio.qubic.ui;
+package dev.ccsio.qubic.ui.panels;
 
 import dev.ccsio.qubic.game.GameMaster;
 import dev.ccsio.qubic.types.Coordinates;
+import dev.ccsio.qubic.ui.Colours;
+
 import java.awt.*;
 import javax.swing.*;
 

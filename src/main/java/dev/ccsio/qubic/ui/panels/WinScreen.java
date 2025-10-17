@@ -1,4 +1,6 @@
-package dev.ccsio.qubic.ui;
+package dev.ccsio.qubic.ui.panels;
+
+import dev.ccsio.qubic.ui.QubicWindow;
 
 import javax.swing.*;
 import java.awt.*;

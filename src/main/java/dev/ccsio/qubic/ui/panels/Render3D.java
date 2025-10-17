@@ -1,4 +1,4 @@
-package dev.ccsio.qubic.ui.common;
+package dev.ccsio.qubic.ui.panels;
 
 import dev.ccsio.qubic.objects.Cube;
 import dev.ccsio.qubic.types.Coordinates;
@@ -10,11 +10,24 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 
-public class Render3D extends JFXPanel {
-    public Render3D() {
-        setLayout(null);
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-        // Initialize JavaFX scene on JavaFX thread
+public class Render3D extends JFXPanel {
+    private static Render3D INSTANCE;
+
+    Cube cube;
+    PerspectiveCamera camera;
+
+    public static Render3D getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new Render3D();
+        }
+        return INSTANCE;
+    }
+
+    private Render3D() {
         Platform.runLater(this::initFX);
     }
 
@@ -22,11 +35,7 @@ public class Render3D extends JFXPanel {
         Group environment = new Group();
 
         // Add the cube
-        Cube cube = new Cube();
-        cube.addPiece(1, new Coordinates(0, 0, 3));
-        cube.addPiece(1, new Coordinates(1, 1, 2));
-        cube.addPiece(1, new Coordinates(2, 2, 1));
-        cube.addPiece(1, new Coordinates(3, 3, 0));
+        cube = new Cube();
         environment.getChildren().add(cube);
 
         // Setup scene with 3D enabled
@@ -37,7 +46,7 @@ public class Render3D extends JFXPanel {
         Platform.setImplicitExit(false);
 
         // Setup camera
-        PerspectiveCamera camera = new PerspectiveCamera(true);
+        camera = new PerspectiveCamera(true);
         camera.setNearClip(0.1);
         camera.setFarClip(10000.0);
         camera.setTranslateX(54.5);
@@ -52,11 +61,40 @@ public class Render3D extends JFXPanel {
         setScene(scene);
     }
 
+    public void setupMenu() {
+        Platform.runLater(this::setupMenuPieces);
+    }
+
+    private void setupMenuPieces() {
+        Random random = new Random();
+        List<Coordinates> usedCoordinates = new ArrayList<>();
+        int totalMoves = random.nextInt(10, 15);
+        int movesX = totalMoves / 2;
+        int movesY = totalMoves - movesX;
+
+        for (int i = 0; i < movesX; i++) {
+            Coordinates c = Coordinates.random();
+            if (!usedCoordinates.contains(c)) {
+                cube.addPiece(-1, c);
+                usedCoordinates.add(c);
+            } else {
+                i--;
+            }
+        }
+
+        for (int i = 0; i < movesY; i++) {
+            Coordinates c = Coordinates.random();
+            if (!usedCoordinates.contains(c)) {
+                cube.addPiece(1, c);
+                usedCoordinates.add(c);
+            } else {
+                i--;
+            }
+        }
+    }
+
     public void resetBoard() {
-        Platform.runLater(() -> {
-            System.out.println("3D Board reset!");
-            // TODO: Reset game board state
-        });
+        cube.reset();
     }
 
     public void makeMove(Coordinates coordinates, boolean isPlayerOne) {

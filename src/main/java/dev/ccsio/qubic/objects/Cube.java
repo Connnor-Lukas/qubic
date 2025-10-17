@@ -88,6 +88,13 @@ public class Cube extends Group {
         }
     }
 
+    public void reset() {
+        for (Group piece : gameBoard.values()) {
+            this.getChildren().remove(piece);
+        }
+        gameBoard.clear();
+    }
+
     private void animateCube(Node node) {
         // Create rotation transforms
         Rotate rotX = new Rotate(0, Rotate.X_AXIS);

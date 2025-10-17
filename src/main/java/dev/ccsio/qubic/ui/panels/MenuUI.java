@@ -1,11 +1,13 @@
-package dev.ccsio.qubic.ui;
+package dev.ccsio.qubic.ui.panels;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import dev.ccsio.qubic.game.GameMaster;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import javafx.embed.swing.JFXPanel;
+
+import dev.ccsio.qubic.ui.Colours;
+import dev.ccsio.qubic.ui.QubicWindow;
 import javax.swing.*;
 
 public class MenuUI extends JPanel {
@@ -20,7 +22,8 @@ public class MenuUI extends JPanel {
         setLayout(new BorderLayout());
 
         // Create the background panel
-        JFXPanel backgroundPanel = new JFXPanel(); // Placeholder
+        Render3D backgroundPanel = Render3D.getInstance();
+        backgroundPanel.setupMenu();
         backgroundPanel.setLayout(new GridBagLayout());
         add(backgroundPanel, BorderLayout.CENTER);
 
@@ -51,6 +54,7 @@ public class MenuUI extends JPanel {
         start1PGame.setPreferredSize(new Dimension(320, 50));
         start1PGame.addActionListener((ActionEvent e) -> {
             GameMaster.getInstance().init(0);
+            backgroundPanel.remove(0);
             frame.showView(new GameUI());
         });
 
@@ -59,6 +63,7 @@ public class MenuUI extends JPanel {
         start2PGame.setPreferredSize(new Dimension(320, 50));
         start2PGame.addActionListener((ActionEvent e) -> {
             GameMaster.getInstance().init();
+            backgroundPanel.remove(0);
             frame.showView(new GameUI());
         });
 
@@ -95,7 +100,6 @@ public class MenuUI extends JPanel {
         c.gridy = 3;
         centerPanel.add(bottomPanel, c);
 
-        // Add center panel to main panel
         backgroundPanel.add(centerPanel);
     }
 
@@ -115,5 +119,14 @@ public class MenuUI extends JPanel {
         );
 
         return button;
+    }
+
+    private void load3DOnly() {
+        // Use BorderLayout to center content
+        setLayout(new BorderLayout());
+
+        // Load the JFX
+        Render3D backgroundPanel = Render3D.getInstance();
+        add(backgroundPanel, BorderLayout.CENTER);
     }
 }
