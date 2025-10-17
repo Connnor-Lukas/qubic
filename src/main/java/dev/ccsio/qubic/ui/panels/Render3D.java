@@ -19,6 +19,9 @@ public class Render3D extends JFXPanel {
 
     Cube cube;
     PerspectiveCamera camera;
+    Group environment;
+    Scene scene;
+    AmbientLight ambientLight;
 
     public static Render3D getInstance() {
         if (INSTANCE == null) {
@@ -32,17 +35,16 @@ public class Render3D extends JFXPanel {
     }
 
     private void initFX() {
-        Group environment = new Group();
+        environment = new Group();
 
         // Add the cube
         cube = new Cube();
         environment.getChildren().add(cube);
 
         // Setup scene with 3D enabled
-        Scene scene = new Scene(environment, 800, 600, true);
+        scene = new Scene(environment, 800, 600, true);
         scene.setFill(Color.rgb(16, 0, 41, 1));
         
-        // Add depth buffer settings
         Platform.setImplicitExit(false);
 
         // Setup camera
@@ -55,10 +57,17 @@ public class Render3D extends JFXPanel {
         scene.setCamera(camera);
 
         // Add ambient light
-        AmbientLight ambientLight = new AmbientLight(Color.WHITE);
+        ambientLight = new AmbientLight(Color.WHITE);
         environment.getChildren().add(ambientLight);
 
         setScene(scene);
+    }
+
+    public void fixLighting() {
+        Platform.runLater(() -> {
+            environment.getChildren().remove(ambientLight);
+            environment.getChildren().add(ambientLight);
+        });
     }
 
     public void setupMenu() {
@@ -97,12 +106,9 @@ public class Render3D extends JFXPanel {
         cube.reset();
     }
 
-    public void makeMove(Coordinates coordinates, boolean isPlayerOne) {
+    public void makeMove(int player, Coordinates coordinates) {
         Platform.runLater(() -> {
-            System.out.println(
-                    "Move made at: " + coordinates.getX() + ", " + coordinates.getY() + ", " + coordinates.getZ()
-            );
-            // TODO: Update 3D visualization
+            cube.addPiece(player, coordinates);
         });
     }
 }

@@ -56,6 +56,7 @@ public class MenuUI extends JPanel {
             GameMaster.getInstance().init(0);
             backgroundPanel.remove(0);
             frame.showView(new GameUI());
+            backgroundPanel.fixLighting();
         });
 
         // 2-Player Start Button
@@ -65,6 +66,7 @@ public class MenuUI extends JPanel {
             GameMaster.getInstance().init();
             backgroundPanel.remove(0);
             frame.showView(new GameUI());
+            backgroundPanel.fixLighting();
         });
 
         // Tutorial Button

@@ -10,6 +10,7 @@ import javax.swing.*;
 public class InputPanel extends JPanel {
     private static InputPanel INSTANCE;
 
+    Render3D render = Render3D.getInstance();
     int currentPlayer = 1;
     JLabel playerTurn;
     GameMaster gameMaster;
@@ -33,6 +34,7 @@ public class InputPanel extends JPanel {
 
     public void updateOAMove(Coordinates c) {
         buttons[c.getZ()][c.getY()][c.getX()].setBackground(Color.decode(Colours.CUSTOM_3D_RED));
+        render.makeMove(1, c);
         currentPlayer--;
         allTheButtons.setEnabled(true);
         playerTurn.setText("Player 1's Turn");
@@ -61,8 +63,8 @@ public class InputPanel extends JPanel {
         buttonGrid.setLayout(new GridLayout(0, 4, 0, 0));
         JButton button;
 
-        for (int z = 0; z < 4; z++) {
-            if (z > 0) {
+        for (int z = 3; z >= 0; z--) {
+            if (z < 3) {
                 for (int i = 0; i < 4; i++) {
                     buttonGrid.add(new JPanel());
                 }
@@ -82,10 +84,12 @@ public class InputPanel extends JPanel {
 
     private JButton inputButton(int x, int y, int z) {
         JButton button = new JButton();
+        Coordinates c = new Coordinates(x, y, z);
         button.addActionListener(e -> {
             if (currentPlayer == 1) {
                 if (gameMaster.getGameMode() == "sp") {
-                    if (gameMaster.handleInput(new Coordinates(x, y, z))) {
+                    if (gameMaster.handleInput(c)) {
+                        render.makeMove(-1, c);
                         playerTurn.setText("OA's Turn");
                         button.setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
                         currentPlayer++;
@@ -98,7 +102,8 @@ public class InputPanel extends JPanel {
                         timer.start();
                     }
                 } else {
-                    if (gameMaster.handleInput(new Coordinates(x, y, z))) {
+                    if (gameMaster.handleInput(c)) {
+                        render.makeMove(-1, c);
                         button.setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
                         currentPlayer++;
                         playerTurn.setText("Player 2's Turn");
@@ -106,7 +111,8 @@ public class InputPanel extends JPanel {
                 }
             } else {
                 if (gameMaster.getGameMode() == "tp") {
-                    if (gameMaster.handleInput(new Coordinates(x, y, z))) {
+                    if (gameMaster.handleInput(c)) {
+                        render.makeMove(1, c);
                         button.setBackground(Color.decode(Colours.CUSTOM_3D_RED));
                         currentPlayer--;
                         playerTurn.setText("Player 1's Turn");
