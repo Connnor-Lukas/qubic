@@ -122,6 +122,12 @@ public class Cube extends Group {
             private double speedX = 19.0 / 5.0;
             private double speedY = 83 / 5.0;
 
+            // Distance
+            private double distance = 0;
+            private double cameraSpeed = 53.0 / 5.0;
+            private double maxDistance = 200;
+            private double minDistance = -100;
+
             @Override
             public void handle(long now) {
                 if (lastUpdate == 0) {
@@ -143,10 +149,16 @@ public class Cube extends Group {
 
                 angleX = angleX % 360 + xMod * speedX * deltaTime;
                 angleY = (angleY + speedY * deltaTime) % 360;
+                distance = distance + cameraSpeed * deltaTime;
+                if (distance > maxDistance ||  distance < minDistance) {
+                    cameraSpeed *= -1;
+                }
 
                 // Apply rotations
                 rotX.setAngle(angleX);
                 rotY.setAngle(angleY);
+
+                node.setTranslateZ(distance);
             }
         };
 
