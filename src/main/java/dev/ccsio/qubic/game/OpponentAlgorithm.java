@@ -1,15 +1,22 @@
 package dev.ccsio.qubic.game;
 
 import dev.ccsio.qubic.types.Coordinates;
-import dev.ccsio.qubic.types.MoveHistory;
+import dev.ccsio.qubic.types.GameStateNode;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
 public class OpponentAlgorithm {
-    static int max_difficulty = 0;
+    static int max_difficulty = 2;
+    static WinningLinesRecord winningLines = new WinningLinesRecord();
+
+    Coordinates bestMove;
+    GameStateNode gameStates;
     int difficulty;
     GameBoard gameBoard;
+    List<List<Coordinates>> activeSelfWinningLines;
+    List<List<Coordinates>> activeOpponentWinningLines;
+
     WinningLinesRecord selfWinOptions;
     WinningLinesRecord opponentWinOptions;
     HashSet<Coordinates> availableCoordinates;
@@ -98,6 +105,9 @@ public class OpponentAlgorithm {
         availableCoordinates.remove(coordinates);
     }
 
+    /**
+     * Removes opponent's latest move from available coordinates.
+     */
     private void updateAfterOpponentsMove() {
         Coordinates coordinates = LinkedHistory.getMoveHistory(
             gameBoard).getLastMove().coordinates();
@@ -107,7 +117,7 @@ public class OpponentAlgorithm {
     }
 
     private Coordinates makeRandomMove() {
-        System.out.println(availableCoordinates.size());
+        // System.out.println(availableCoordinates.size());
         Random randomGenerator = new Random();
 
         Coordinates selfWin = checkSelfWinInOne();
@@ -138,8 +148,111 @@ public class OpponentAlgorithm {
     }
 
     private Coordinates makeTacticalMove() {
-        return new Coordinates(0, 0, 0);
-        // blocks, tries to predict player's next move, calculates first move
+        Coordinates latestCoordinates = LinkedHistory.getMoveHistory(
+                gameBoard).getLastMove().coordinates();
+
+        int val = minimax(
+            new GameStateNode(gameBoard, latestCoordinates), 
+            3, Integer.MIN_VALUE, Integer.MAX_VALUE, true
+            );
+        System.out.println("Minimax return val: " + val);
+
+        System.out.println("bestMove: " + bestMove);
+        return bestMove;
+    }
+
+    private int minimax(
+        GameStateNode gameState, int depth, int alpha, int beta, Boolean maximizingPlayer) {
+        if (depth >= 2) {
+            System.out.println("Node Eval: " + evaluateGameState(gameState.gameBoard) + " at depth: " + depth);
+        }
+
+        if (depth == 0 || gameState.isWinningState()) {
+            int eval = evaluateGameState(gameState.gameBoard);
+            gameState.evalValue = eval;
+
+            if (eval == 100000) {
+                return eval + depth;
+            } else if (eval == -100000) {
+                return eval - depth;
+            }
+
+            return eval;
+        }
+        
+        if (maximizingPlayer) {
+            Coordinates bestMove = null;  //
+            int maxEval = Integer.MIN_VALUE;
+            for (Coordinates moveOption : gameState.gameBoard.availableCoordinates())  {
+                GameBoard hypotheticalGameBoard = gameState.gameBoard.deepCopy();
+                hypotheticalGameBoard.placeMark(moveOption, 1);  // maximizingPlayer
+
+                int eval = minimax(
+                    new GameStateNode(hypotheticalGameBoard, moveOption), depth - 1, alpha, beta, false);
+
+                if (eval > maxEval) {
+                    maxEval = eval;
+                    bestMove = moveOption;
+                }
+
+                alpha = Math.max(alpha, eval);
+                if (beta <= alpha) {
+                    break; 
+                }
+                
+            }
+
+            if (depth == 3) { // if root
+                this.bestMove = bestMove;
+            }
+            return maxEval;
+
+        } else {
+            int minEval = Integer.MAX_VALUE;
+            for (Coordinates moveOption : gameState.gameBoard.availableCoordinates())  {
+                GameBoard hypotheticalGameBoard = gameState.gameBoard.deepCopy();
+                hypotheticalGameBoard.placeMark(moveOption, -1);  // not maximizingPlayer
+
+                int eval = minimax(
+                    new GameStateNode(hypotheticalGameBoard, moveOption), depth - 1, alpha, beta, true);
+                minEval = Math.min(minEval, eval);
+
+                beta = Math.min(beta, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            return minEval;
+        }
+
+    }
+
+    public int evaluateGameState(GameBoard gameBoard) {
+        int playerScore = 0;
+        int algorithmScore = 0;
+        for (List<Coordinates> list : winningLines.getWinningLines()) {
+            int sumPlayer = 0;
+            int sumAlgorithm = 0;
+            for (Coordinates coordinates : list) {
+                int value = gameBoard.getValueAt(coordinates);
+                if (value == -1) {
+                    sumPlayer++;
+                } else if (value == 1) {
+                    sumAlgorithm++;
+                }
+            }
+
+            if (sumAlgorithm == 4) {
+                return 100000;
+            } else if (sumPlayer == 4) {
+                return -100000;
+            } else if (sumPlayer != 0 && sumAlgorithm == 0) {
+                playerScore += Math.pow(sumPlayer, 4);
+            } else if (sumAlgorithm != 0 && sumPlayer == 0) {
+                algorithmScore += Math.pow(sumAlgorithm, 4);
+            }
+        }
+        return algorithmScore - playerScore;
     }
     
 }
