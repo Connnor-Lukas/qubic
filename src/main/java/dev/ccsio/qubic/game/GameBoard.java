@@ -2,7 +2,7 @@ package dev.ccsio.qubic.game;
 
 import dev.ccsio.qubic.types.Coordinates;
 import dev.ccsio.qubic.types.MoveHistory;
-
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -18,7 +18,6 @@ public class GameBoard {
     }
 
     public boolean canPlaceMark(Coordinates coordinates, int mark) {
-        boolean canPlace = true;
         int x = coordinates.getX();
         int y = coordinates.getY();
         int z = coordinates.getZ();
@@ -117,5 +116,52 @@ public class GameBoard {
         } else {
             return winningDiagonal(coordinates);
         }
+    }
+
+    /**
+     * Returns true/false depending whether the inputted coordinates make a winning line.
+     * @param coordinates type Coordinates.
+     * @return true/false.
+     */
+    public Boolean checkWinWithInput(Coordinates coordinates) {
+        if (winningStraight(coordinates)) {
+            return true;
+        } else {
+            return winningDiagonal(coordinates);
+        }
+    }
+    
+    /**
+     * Returns a HashSet of all available coordinates.
+     * @return HashSet.
+     */
+    public HashSet<Coordinates> availableCoordinates() {
+        HashSet<Coordinates> availableCoordinates = new HashSet<>();
+        for (int z = 0; z < 4; z++) {
+            for (int y = 0; y < 4; y++) {
+                for (int x = 0; x < 4; x++) {
+                    if (board[z][y][x] == 0) {
+                        availableCoordinates.add(new Coordinates(x, y, z));
+                    }
+                }
+            }
+        }
+        return availableCoordinates;
+    }
+
+    /**
+     * Makes a deep copy of the this GameBoard instance.
+     * @return GameBoard Object.
+     */
+    public GameBoard deepCopy() {
+        GameBoard newBoard = new GameBoard(); 
+        for (int z = 0; z < 4; z++) {  
+            for (int y = 0; y < 4; y++) {  
+                for (int x = 0; x < 4; x++) {  
+                    newBoard.board[z][y][x] = this.board[z][y][x];  
+                }  
+            }  
+        }  
+        return newBoard;
     }
 }
