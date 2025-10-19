@@ -1,9 +1,12 @@
 package dev.ccsio.qubic.types;
 
+import java.util.Random;
+
 /**
  * A custom class for coordinates.
  */
 public class Coordinates {
+    static Random random = new Random();
     int x;
     int y;
     int z;
@@ -18,6 +21,14 @@ public class Coordinates {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public static Coordinates random() {
+        return  new Coordinates(
+            random.nextInt(0, 4),
+            random.nextInt(0, 4),
+            random.nextInt(0, 4)
+        );
     }
 
     public int getX() {

@@ -1,6 +1,7 @@
-package dev.ccsio.qubic.ui;
+package dev.ccsio.qubic.ui.panels;
 
 import java.awt.*;
+
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
@@ -14,7 +15,7 @@ public class GameUI extends JPanel {
 
     JPanel inputSideBar;
     JPanel historySideBar;
-    JFXPanel visualisation3D;
+    Render3D visualisation3D;
     GridBagConstraints c;
 
     void loadUI() {
@@ -29,7 +30,7 @@ public class GameUI extends JPanel {
         add(inputSideBar, c);
 
         // CENTER — JavaFX panel
-        visualisation3D = new JFXPanel();
+        visualisation3D = Render3D.getInstance();
         c.gridx = 1;
         c.weightx = 1;
         add(visualisation3D, c);
@@ -43,9 +44,7 @@ public class GameUI extends JPanel {
 
         // Load JavaFX scene inside JFXPanel
         Platform.runLater(() -> {
-            Group root = new Group();
-            Scene scene = new Scene(root, javafx.scene.paint.Color.WHITE);
-            visualisation3D.setScene(scene);
+            visualisation3D.resetBoard();
         });
     }
 
