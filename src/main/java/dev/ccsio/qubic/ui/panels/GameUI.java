@@ -36,7 +36,7 @@ public class GameUI extends JPanel {
         add(visualisation3D, c);
 
         // RIGHT SIDEBAR
-        historySideBar = new JPanel();
+        historySideBar = new HistoryPanel();
         historySideBar.setBackground(Color.RED);
         c.gridx = 2;
         c.weightx = 0;
