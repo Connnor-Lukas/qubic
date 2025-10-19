@@ -3,7 +3,6 @@ package dev.ccsio.qubic.objects;
 import dev.ccsio.qubic.types.Coordinates;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ServiceConfigurationError;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
@@ -32,6 +31,8 @@ public class Cube extends Group {
     private boolean userRotating = false;
     private double anchorX, anchorY;
     private double anchorAngleX, anchorAngleY;
+    private static final int maxViewDistance = 500;
+    private static final int minViewDistance = -100;
 
     public Cube() {
         Box[] sheets = new Box[9];
@@ -79,7 +80,8 @@ public class Cube extends Group {
         cubeBoard.getChildren().addAll(sheets);
         this.getChildren().addAll(cubeBoard, interactionBox);
 
-        animateCube();
+        automaticRotation();
+        controlledRotation();
     }
 
     public void addPiece(int player, Coordinates coordinates) {
@@ -113,7 +115,7 @@ public class Cube extends Group {
         gameBoard.clear();
     }
 
-    private void animateCube() {
+    private void automaticRotation() {
         Node node = this;
 
         // Create rotation transforms
@@ -148,7 +150,6 @@ public class Cube extends Group {
 
             @Override
             public void handle(long now) {
-                if (userRotating) return;
                 if (lastUpdate == 0) {
                     lastUpdate = now;
                     return;
@@ -182,24 +183,43 @@ public class Cube extends Group {
     }
 
     private void controlledRotation() {
-        automaticRotation.stop();
-        Node node = this;
+        // Create animation
+        controlledRotation = new AnimationTimer() {
+            private long lastUpdate = 0;
+            private double angleY = 0;
 
-        controlledRotation =  new AnimationTimer() {
-            long lastUpdate = 0;
+            // Rotation speeds (degrees per second)
+            private double speedY = 83 / 5.0;
 
             @Override
             public void handle(long now) {
+                if (userRotating) {
+                    lastUpdate = now;
+                    angleY = rotY.getAngle() % 360;
+                    return;
+                }
+
                 if (lastUpdate == 0) {
                     lastUpdate = now;
                     return;
                 }
 
+                // Calculate time delta in seconds
+                double deltaTime = (now - lastUpdate) / 1_000_000_000.0;
+                lastUpdate = now;
+
+                angleY = (angleY + speedY * deltaTime) % 360;
+
+                // Apply rotations
+                rotY.setAngle(angleY);
             }
         };
     }
 
     public void initMouseControl() {
+        automaticRotation.stop();
+        controlledRotation.start();
+
         this.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
             userRotating = true;
             anchorX = e.getSceneX();
@@ -212,16 +232,22 @@ public class Cube extends Group {
             double deltaX = e.getSceneX() - anchorX;
             double deltaY = e.getSceneY() - anchorY;
 
-            double angleX = (anchorAngleX - deltaY * 0.5) % 360;
+            double angleX = (anchorAngleX + deltaY * 0.5) % 360;
             double angleY = (anchorAngleY - deltaX * 0.5) % 360;
 
             rotY.setAngle(angleY);
-            rotX.setAngle(angleX);
+            if (angleX < 90 && angleX > -90 || angleX > 270) {
+                rotX.setAngle(angleX);
+            }
         });
 
         this.addEventHandler(ScrollEvent.SCROLL, e -> {
             double delta = e.getDeltaY(); // +ve up, -ve down
-            this.setTranslateZ(this.getTranslateZ() + delta * 0.5);
+            if (delta > 0) {
+                this.setTranslateZ(Math.min(this.getTranslateZ() + delta * 0.5, maxViewDistance));
+            } else {
+                this.setTranslateZ(Math.max(this.getTranslateZ() + delta * 0.5, minViewDistance));
+            }
         });
 
         this.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {

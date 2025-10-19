@@ -57,6 +57,7 @@ public class MenuUI extends JPanel {
             backgroundPanel.remove(0);
             frame.showView(new GameUI());
             backgroundPanel.fixLighting();
+            backgroundPanel.enableMouseControls();
         });
 
         // 2-Player Start Button
@@ -67,6 +68,7 @@ public class MenuUI extends JPanel {
             backgroundPanel.remove(0);
             frame.showView(new GameUI());
             backgroundPanel.fixLighting();
+            backgroundPanel.enableMouseControls();
         });
 
         // Tutorial Button
