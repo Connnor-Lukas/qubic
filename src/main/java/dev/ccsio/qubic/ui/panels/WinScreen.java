@@ -13,10 +13,20 @@ public class WinScreen extends JPanel {
 
     private WinScreen() {
         qubicWindow = QubicWindow.getInstance();
+        Render3D background = Render3D.getInstance();
+
         this.setLayout(new GridBagLayout());
+        background.setLayout(new GridBagLayout());
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.fill = GridBagConstraints.BOTH;
+        background.fixLighting();
+        this.add(background, c);
         winnerLabel = new JLabel();
         winnerLabel.setFont(new Font("Showcard Gothic", Font.BOLD, 50));
-        this.add(winnerLabel);
+        background.add(winnerLabel);
     }
 
     public static WinScreen getInstance() {
