@@ -34,6 +34,8 @@ public class Cube extends Group {
     private static final int maxViewDistance = 500;
     private static final int minViewDistance = -100;
 
+    Group previewPiece = new Group();
+
     public Cube() {
         Box[] sheets = new Box[9];
         for (int i = 0; i < 3; i++) {
@@ -78,24 +80,24 @@ public class Cube extends Group {
 
         // Add all sheets to the board
         cubeBoard.getChildren().addAll(sheets);
-        this.getChildren().addAll(cubeBoard, interactionBox);
+        this.getChildren().addAll(cubeBoard, interactionBox, previewPiece);
 
         automaticRotation();
         controlledRotation();
     }
 
     public void addPiece(int player, Coordinates coordinates) {
-        Group piece = new Group();
+        Group piece;
 
         switch (player) {
             case -1:
                 piece = new XPiece();
                 break;
-            case 0:
-                piece = null;
-                break;
             case 1:
                 piece = new OPiece();
+                break;
+            default:
+                piece = null;
                 break;
         }
 
@@ -105,7 +107,35 @@ public class Cube extends Group {
             piece.setTranslateZ(coordinates.getY() * -36);
             gameBoard.put(coordinates, piece);
             this.getChildren().add(piece);
+            previewPiece.getChildren().setAll();
         }
+    }
+
+    public void movePreviewPiece(int player, Coordinates coordinates) {
+        if (gameBoard.get(coordinates) != null) {
+            return;
+        }
+
+        Group piece;
+        switch (player) {
+            case -1:
+                piece = new XPiece();
+                break;
+            case 1:
+                piece = new OPiece();
+                break;
+            default:
+                piece = new Group();
+                break;
+        }
+
+        previewPiece.getChildren().setAll(piece.getChildren());
+        previewPiece.getTransforms().setAll(piece.getTransforms());
+
+        previewPiece.setTranslateX(coordinates.getX() * 36);
+        previewPiece.setTranslateY(coordinates.getZ() * -36);
+        previewPiece.setTranslateZ(coordinates.getY() * -36);
+
     }
 
     public void reset() {
@@ -216,7 +246,7 @@ public class Cube extends Group {
         };
     }
 
-    public void initMouseControl() {
+    public void gameSetup() {
         automaticRotation.stop();
         controlledRotation.start();
 

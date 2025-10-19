@@ -114,7 +114,13 @@ public class Render3D extends JFXPanel {
 
     public void enableMouseControls() {
         Platform.runLater(() -> {
-            cube.initMouseControl();
+            cube.gameSetup();
+        });
+    }
+
+    public void previewMove(int player, Coordinates coordinates) {
+        Platform.runLater(() -> {
+            cube.movePreviewPiece(player, coordinates);
         });
     }
 }

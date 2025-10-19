@@ -11,7 +11,7 @@ public class InputPanel extends JPanel {
     private static InputPanel INSTANCE;
 
     Render3D render = Render3D.getInstance();
-    int currentPlayer = 1;
+    int currentPlayer = -1;
     JLabel playerTurn;
     GameMaster gameMaster;
     JPanel allTheButtons;
@@ -35,7 +35,7 @@ public class InputPanel extends JPanel {
     public void updateOAMove(Coordinates c) {
         buttons[c.getZ()][c.getY()][c.getX()].setBackground(Color.decode(Colours.CUSTOM_3D_RED));
         render.makeMove(1, c);
-        currentPlayer--;
+        currentPlayer *= -1;
         allTheButtons.setEnabled(true);
         playerTurn.setText("Player 1's Turn");
     }
@@ -86,13 +86,13 @@ public class InputPanel extends JPanel {
         JButton button = new JButton();
         Coordinates c = new Coordinates(x, y, z);
         button.addActionListener(e -> {
-            if (currentPlayer == 1) {
+            if (currentPlayer == -1) {
                 if (gameMaster.getGameMode() == "sp") {
                     if (gameMaster.handleInput(c)) {
                         render.makeMove(-1, c);
                         playerTurn.setText("OA's Turn");
                         button.setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
-                        currentPlayer++;
+                        currentPlayer *= -1;
                         allTheButtons.setEnabled(false);
                         // Delay AI Move
                         Timer timer = new Timer(2000, ev -> {
@@ -105,7 +105,7 @@ public class InputPanel extends JPanel {
                     if (gameMaster.handleInput(c)) {
                         render.makeMove(-1, c);
                         button.setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
-                        currentPlayer++;
+                        currentPlayer *= -1;
                         playerTurn.setText("Player 2's Turn");
                     }
                 }
@@ -114,9 +114,17 @@ public class InputPanel extends JPanel {
                     if (gameMaster.handleInput(c)) {
                         render.makeMove(1, c);
                         button.setBackground(Color.decode(Colours.CUSTOM_3D_RED));
-                        currentPlayer--;
+                        currentPlayer *= -1;
                         playerTurn.setText("Player 1's Turn");
                     }
+                }
+            }
+        });
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                if (!(gameMaster.getGameMode() == "sp" && currentPlayer == 1)) {
+                    render.previewMove(currentPlayer, c);
                 }
             }
         });
