@@ -33,7 +33,7 @@ public class InputPanel extends JPanel {
     }
 
     public void updateOAMove(Coordinates c) {
-        buttons[c.getZ()][c.getY()][c.getX()].setBackground(Color.decode(Colours.CUSTOM_3D_RED));
+        buttons[c.getZ()][c.getY()][c.getX()].setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
         render.makeMove(1, c);
         currentPlayer *= -1;
         allTheButtons.setEnabled(true);
@@ -91,7 +91,7 @@ public class InputPanel extends JPanel {
                     if (gameMaster.handleInput(c)) {
                         render.makeMove(-1, c);
                         playerTurn.setText("OA's Turn");
-                        button.setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
+                        button.setBackground(Color.decode(Colours.CUSTOM_3D_YELLOW));
                         currentPlayer *= -1;
                         allTheButtons.setEnabled(false);
                         // Delay AI Move
@@ -104,7 +104,7 @@ public class InputPanel extends JPanel {
                 } else {
                     if (gameMaster.handleInput(c)) {
                         render.makeMove(-1, c);
-                        button.setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
+                        button.setBackground(Color.decode(Colours.CUSTOM_3D_YELLOW));
                         currentPlayer *= -1;
                         playerTurn.setText("Player 2's Turn");
                     }
@@ -113,7 +113,7 @@ public class InputPanel extends JPanel {
                 if (gameMaster.getGameMode() == "tp") {
                     if (gameMaster.handleInput(c)) {
                         render.makeMove(1, c);
-                        button.setBackground(Color.decode(Colours.CUSTOM_3D_RED));
+                        button.setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
                         currentPlayer *= -1;
                         playerTurn.setText("Player 1's Turn");
                     }
