@@ -1,8 +1,8 @@
 package dev.ccsio.qubic.game;
 
 import dev.ccsio.qubic.types.Coordinates;
-import dev.ccsio.qubic.ui.InputPanel;
-import dev.ccsio.qubic.ui.WinScreen;
+import dev.ccsio.qubic.ui.panels.InputPanel;
+import dev.ccsio.qubic.ui.panels.WinScreen;
 
 
 public class GameMaster {
