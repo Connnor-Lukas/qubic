@@ -155,17 +155,17 @@ public class OpponentAlgorithm {
             new GameStateNode(gameBoard, latestCoordinates), 
             3, Integer.MIN_VALUE, Integer.MAX_VALUE, true
             );
-        System.out.println("Minimax return val: " + val);
+        // System.out.println("Minimax return val: " + val);
 
-        System.out.println("bestMove: " + bestMove);
+        // System.out.println("bestMove: " + bestMove);
         return bestMove;
     }
 
     private int minimax(
         GameStateNode gameState, int depth, int alpha, int beta, Boolean maximizingPlayer) {
-        if (depth >= 2) {
-            System.out.println("Node Eval: " + evaluateGameState(gameState.gameBoard) + " at depth: " + depth);
-        }
+        // if (depth >= 2) {
+        //     System.out.println("Node Eval: " + evaluateGameState(gameState.gameBoard) + " at depth: " + depth);
+        // }
 
         if (depth == 0 || gameState.isWinningState()) {
             int eval = evaluateGameState(gameState.gameBoard);

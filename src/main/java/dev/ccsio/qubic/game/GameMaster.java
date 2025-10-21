@@ -87,9 +87,11 @@ public class GameMaster {
             oaMove = this.opponentAlgorithm.getMove(gameBoard);
             gameBoard.placeMark(oaMove, 1);
             inputPanel.updateOAMove(oaMove);
+            // System.out.println("makeOAMove");
             winnerText = checkWinner();
             if (winnerText != null) {
                 WinScreen.getInstance().showWinScreen(winnerText);
+                // throw new RuntimeException("OA has won!");
             }
             this.mark *= -1;
         }
