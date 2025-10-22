@@ -248,7 +248,7 @@ public class OpponentAlgorithm {
             if (depth == 3) { // if root
                 this.bestMove = bestMove;
             }
-            return maxEval + depth;
+            return maxEval;
 
         } else {
             int minEval = Integer.MAX_VALUE;
@@ -265,7 +265,7 @@ public class OpponentAlgorithm {
                     break;
                 }
             }
-            return minEval + depth;
+            return minEval;
         }
 
     }
