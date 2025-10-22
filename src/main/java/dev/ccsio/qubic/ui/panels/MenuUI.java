@@ -12,6 +12,7 @@ import javax.swing.*;
 
 public class MenuUI extends JPanel {
     QubicWindow frame = QubicWindow.getInstance();
+    DifficultySelector selector = DifficultySelector.getInstance();
 
     public MenuUI() {
         loadMenu();
@@ -53,11 +54,14 @@ public class MenuUI extends JPanel {
         JButton start1PGame = getJButton("1-Player Game", Colours.CUSTOM_MENU_BLUE);
         start1PGame.setPreferredSize(new Dimension(320, 50));
         start1PGame.addActionListener((ActionEvent e) -> {
-            GameMaster.getInstance().init(2);
             backgroundPanel.remove(0);
-            frame.showView(new GameUI());
-            backgroundPanel.fixLighting();
-            backgroundPanel.enableMouseControls();
+            selector.getDifficulty(difficulty -> {
+                GameMaster.getInstance().init(difficulty);
+                frame.showView(new GameUI());
+                backgroundPanel.fixLighting();
+                backgroundPanel.enableMouseControls();
+                backgroundPanel.remove(0);
+            });
         });
 
         // 2-Player Start Button
@@ -107,7 +111,7 @@ public class MenuUI extends JPanel {
         backgroundPanel.add(centerPanel);
     }
 
-    private static JButton getJButton(String text, String colour) {
+    public static JButton getJButton(String text, String colour) {
         JButton button = new JButton(text);
         button.putClientProperty(FlatClientProperties.STYLE,
             "background: " + colour + ";"

@@ -10,6 +10,7 @@ import javax.swing.*;
 public class InputPanel extends JPanel {
     private static InputPanel INSTANCE;
 
+    HistoryPanel historySideBar = HistoryPanel.getInstance();
     Render3D render = Render3D.getInstance();
     int currentPlayer = -1;
     JLabel playerTurn;
@@ -33,11 +34,12 @@ public class InputPanel extends JPanel {
     }
 
     public void updateOAMove(Coordinates c) {
-        buttons[c.getZ()][c.getY()][c.getX()].setBackground(Color.decode(Colours.CUSTOM_3D_RED));
+        buttons[c.getZ()][c.getY()][c.getX()].setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
         render.makeMove(1, c);
         currentPlayer *= -1;
         allTheButtons.setEnabled(true);
         playerTurn.setText("Player 1's Turn");
+        historySideBar.refresh();
     }
 
     private void createUIComponents() {
@@ -91,7 +93,8 @@ public class InputPanel extends JPanel {
                     if (gameMaster.handleInput(c)) {
                         render.makeMove(-1, c);
                         playerTurn.setText("OA's Turn");
-                        button.setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
+                        historySideBar.refresh();
+                        button.setBackground(Color.decode(Colours.CUSTOM_3D_YELLOW));
                         currentPlayer *= -1;
                         allTheButtons.setEnabled(false);
                         new Thread(() -> {
@@ -104,7 +107,8 @@ public class InputPanel extends JPanel {
                 } else {
                     if (gameMaster.handleInput(c)) {
                         render.makeMove(-1, c);
-                        button.setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
+                        historySideBar.refresh();
+                        button.setBackground(Color.decode(Colours.CUSTOM_3D_YELLOW));
                         currentPlayer *= -1;
                         playerTurn.setText("Player 2's Turn");
                     }
@@ -113,7 +117,8 @@ public class InputPanel extends JPanel {
                 if (gameMaster.getGameMode() == "tp") {
                     if (gameMaster.handleInput(c)) {
                         render.makeMove(1, c);
-                        button.setBackground(Color.decode(Colours.CUSTOM_3D_RED));
+                        historySideBar.refresh();
+                        button.setBackground(Color.decode(Colours.CUSTOM_3D_BLUE));
                         currentPlayer *= -1;
                         playerTurn.setText("Player 1's Turn");
                     }
