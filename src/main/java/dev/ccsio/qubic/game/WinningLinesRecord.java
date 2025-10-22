@@ -235,6 +235,20 @@ public class WinningLinesRecord {
         return WinningLinesList;
     }
 
+    public int countWinningLinesWithCoordinate(Coordinates coordinate) {
+        int sum = 0;
+        for (List<Coordinates> list : WinningLinesList) {
+            if (list.contains(coordinate)) {
+                sum++;
+            }
+        }
+        return sum;
+    }
+
+    public int countWinningLines() {
+        return WinningLinesList.size();
+    }
+
     /**
      * Returns all winning lines containing inputted coordinates.
      * @param coordinate Coordinates class.

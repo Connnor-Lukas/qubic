@@ -29,7 +29,7 @@ public class GameMaster {
 
     public void init(int difficulty) {
         if (!initialised) {
-            this.opponentAlgorithm = new OpponentAlgorithm(difficulty);
+            this.opponentAlgorithm = new OpponentAlgorithm(difficulty, 1);
             this.gameBoard = new GameBoard();
             this.inputPanel = InputPanel.getInstance();
             this.gameMode = "sp";

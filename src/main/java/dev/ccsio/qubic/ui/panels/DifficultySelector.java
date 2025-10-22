@@ -30,12 +30,16 @@ public class DifficultySelector extends JPanel {
     public void getDifficulty(Consumer<Integer> callback) {
         qubicWindow.showView(this);
         JButton _00 = MenuUI.getJButton("Random Placement", Colours.CUSTOM_MENU_BLUE);
-        JButton _01 = MenuUI.getJButton("Defensive AI", Colours.CUSTOM_MENU_RED);
-        JButton _02 = MenuUI.getJButton("Strategic AI", Colours.CUSTOM_MENU_BLACK);
+        JButton _01 = MenuUI.getJButton("Defensive OA", Colours.CUSTOM_MENU_RED);
+        JButton _02 = MenuUI.getJButton("Strategic OA", Colours.CUSTOM_MENU_BLACK);
+        JButton _03 = MenuUI.getJButton("Cruel OA", Colours.CUSTOM_MENU_WHITE);
+
+        _03.setForeground(Color.black);
 
         _00.setPreferredSize(new Dimension(320, 50));
         _01.setPreferredSize(new Dimension(320, 50));
         _02.setPreferredSize(new Dimension(320, 50));
+        _03.setPreferredSize(new Dimension(320, 50));
 
         // Center Panel GridBag Constraints
         GridBagConstraints c = new GridBagConstraints();
@@ -48,6 +52,8 @@ public class DifficultySelector extends JPanel {
         centerPanel.add(_01, c);
         c.gridy = 2;
         centerPanel.add(_02, c);
+        c.gridy = 3;
+        centerPanel.add(_03, c);
 
         background.add(centerPanel);
 
@@ -64,6 +70,11 @@ public class DifficultySelector extends JPanel {
         _02.addActionListener(e -> {
             qubicWindow.showView(qubicWindow.getPastPanel(1));
             callback.accept(2);
+        });
+
+        _03.addActionListener(e -> {
+            qubicWindow.showView(qubicWindow.getPastPanel(1));
+            callback.accept(3);
         });
 
         this.add(background, BorderLayout.CENTER);

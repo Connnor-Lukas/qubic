@@ -123,7 +123,7 @@ public class TerminalDebug {
     }
 
     public static void testBoardEval() {
-        OpponentAlgorithm OA = new OpponentAlgorithm(0);
+        OpponentAlgorithm OA = new OpponentAlgorithm(0, 1);
         GameBoard gb = new GameBoard();
         int player = -1;
         int mark;

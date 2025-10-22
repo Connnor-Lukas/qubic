@@ -2,12 +2,24 @@ package dev.ccsio.qubic.game;
 
 import dev.ccsio.qubic.types.Coordinates;
 import dev.ccsio.qubic.types.GameStateNode;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
+
+import java.util.*;
 
 public class OpponentAlgorithm {
-    static int max_difficulty = 2;
+    // VariableMark Implementation
+    private final int oaMark;
+    enum MarkIs {
+        SELF, OPPONENT, NOBODY
+    }
+
+    MarkIs whoIsThis(int mark) {
+        if (mark == oaMark) return MarkIs.SELF;
+        if (mark == -oaMark) return MarkIs.OPPONENT;
+        return MarkIs.NOBODY;
+    }
+
+
+    static int max_difficulty = 3;
     static WinningLinesRecord winningLines = new WinningLinesRecord();
 
     Coordinates bestMove;
@@ -17,17 +29,22 @@ public class OpponentAlgorithm {
     List<List<Coordinates>> activeSelfWinningLines;
     List<List<Coordinates>> activeOpponentWinningLines;
 
+    // Cruel OA
+    Map<List<Coordinates>, Integer> weightedWinningLines;
+
     WinningLinesRecord selfWinOptions;
     WinningLinesRecord opponentWinOptions;
     HashSet<Coordinates> availableCoordinates;
     
-    public OpponentAlgorithm(int difficulty) {
+    public OpponentAlgorithm(int difficulty, int oaMark) {
         if (difficulty <= max_difficulty) {
             this.difficulty = difficulty;
         } else {
             throw new IllegalArgumentException(
                 "OpponentAlgorithm difficulty has to be " + max_difficulty + " or less.");
         }
+
+        this.oaMark = oaMark;
 
         selfWinOptions = new WinningLinesRecord();
         opponentWinOptions = new WinningLinesRecord();
@@ -54,6 +71,8 @@ public class OpponentAlgorithm {
                 return makeDefensiveMove();
             case 2:
                 return makeTacticalMove();
+            case 3:
+                return makeCruelMove();
             default:
                 break;
         }
@@ -65,8 +84,8 @@ public class OpponentAlgorithm {
             int sum = 0;
             int emptyIdx = -1;
             for (int i = 0; i < 4; i++) {
-                if (gameBoard.getValueAt(list.get(i)) == 1) {
-                    sum += 1;
+                if (gameBoard.getValueAt(list.get(i)) == oaMark) {
+                    sum++;
                 } else {
                     emptyIdx = i;
                 }
@@ -85,8 +104,8 @@ public class OpponentAlgorithm {
             int sum = 0;
             int emptyIdx = -1;
             for (int i = 0; i < 4; i++) {
-                if (gameBoard.getValueAt(list.get(i)) == -1) {
-                    sum += 1;
+                if (gameBoard.getValueAt(list.get(i)) == -oaMark) {
+                    sum++;
                 } else {
                     emptyIdx = i;
                 }
@@ -161,11 +180,11 @@ public class OpponentAlgorithm {
             sum = 0;
             for (Coordinates coordinates : line) {
                 int val = gameBoard.getValueAt(coordinates);
-                switch (val) {
-                    case -1:
+                switch (whoIsThis(val)) {
+                    case OPPONENT:
                         sum++;
                         break;
-                    case 0:
+                    case NOBODY:
                         lastEmptyCoordinates = coordinates;
                         break;
                     default:
@@ -181,13 +200,74 @@ public class OpponentAlgorithm {
         }
 
         
-        if (lastEmptyCoordinates.getX() != -1) {
+        if (lastEmptyCoordinates.getX() != -oaMark) {
             updateWithNewCoordinates(lastEmptyCoordinates);
             return lastEmptyCoordinates;
         } else {
             return makeRandomMove();
         }
         
+    }
+
+    private Coordinates makeCruelMove() {
+        Coordinates selfWin = checkSelfWinInOne();
+        Coordinates opponentWin = checkOpponentWinInOne();
+        if (selfWin != null) {
+            return selfWin;
+        } else if (opponentWin != null) {
+            return opponentWin;
+        }
+
+        refreshWinningMap();
+
+        Map<Coordinates, Integer> coordinateWeight = new HashMap<>();
+        for (List<Coordinates> line : weightedWinningLines.keySet()) {
+            for (Coordinates coordinates : line) {
+                if (gameBoard.getValueAt(coordinates) != 0) continue;
+                if (coordinateWeight.containsKey(coordinates)) {
+                    coordinateWeight.put(coordinates, coordinateWeight.get(coordinates) + weightedWinningLines.get(line));
+                } else {
+                    coordinateWeight.put(coordinates, weightedWinningLines.get(line));
+                }
+            }
+        }
+
+        int maxWeight = 0;
+        List<Coordinates> highestWeightList = new ArrayList<>();
+        for (Coordinates coordinate : coordinateWeight.keySet()) {
+            int temp = coordinateWeight.get(coordinate);
+            if (temp > maxWeight) {
+                maxWeight = temp;
+                highestWeightList = new ArrayList<>();
+                highestWeightList.add(coordinate);
+            } else if (temp == maxWeight) {
+                highestWeightList.add(coordinate);
+            }
+        }
+
+        Coordinates bestCoordinate = null;
+        int maxFutureMovesBlock = 0;
+        for (Coordinates coordinates : highestWeightList) {
+            int temp = opponentWinOptions.countWinningLinesWithCoordinate(coordinates);
+            if  (temp > maxFutureMovesBlock) {
+                maxFutureMovesBlock = temp;
+                bestCoordinate = coordinates;
+            }
+        }
+
+        updateWithNewCoordinates(bestCoordinate);
+        return bestCoordinate;
+    }
+
+    private void refreshWinningMap() {
+        weightedWinningLines = new HashMap<>();
+        for (List<Coordinates> line : opponentWinOptions.getWinningLines()) {
+            int sum = 0;
+            for (Coordinates coordinates : line) {
+                sum += gameBoard.getValueAt(coordinates) * -oaMark;
+            }
+            weightedWinningLines.put(line, sum);
+        }
     }
 
     private Coordinates makeTacticalMove() {
@@ -228,7 +308,7 @@ public class OpponentAlgorithm {
             int maxEval = Integer.MIN_VALUE;
             for (Coordinates moveOption : gameState.gameBoard.availableCoordinates())  {
                 GameBoard hypotheticalGameBoard = gameState.gameBoard.deepCopy();
-                hypotheticalGameBoard.placeMark(moveOption, 1);  // maximizingPlayer
+                hypotheticalGameBoard.placeMark(moveOption, oaMark);  // maximizingPlayer
 
                 int eval = minimax(
                     new GameStateNode(hypotheticalGameBoard, moveOption), depth - 1, alpha, beta, false);
@@ -254,7 +334,7 @@ public class OpponentAlgorithm {
             int minEval = Integer.MAX_VALUE;
             for (Coordinates moveOption : gameState.gameBoard.availableCoordinates())  {
                 GameBoard hypotheticalGameBoard = gameState.gameBoard.deepCopy();
-                hypotheticalGameBoard.placeMark(moveOption, -1);  // not maximizingPlayer
+                hypotheticalGameBoard.placeMark(moveOption, -oaMark);  // not maximizingPlayer
 
                 int eval = minimax(
                     new GameStateNode(hypotheticalGameBoard, moveOption), depth - 1, alpha, beta, true);
@@ -278,9 +358,9 @@ public class OpponentAlgorithm {
             int sumAlgorithm = 0;
             for (Coordinates coordinates : list) {
                 int value = gameBoard.getValueAt(coordinates);
-                if (value == -1) {
+                if (value == -oaMark) {
                     sumPlayer++;
-                } else if (value == 1) {
+                } else if (value == oaMark) {
                     sumAlgorithm++;
                 }
             }
