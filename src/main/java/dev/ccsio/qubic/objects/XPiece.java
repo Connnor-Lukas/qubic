@@ -38,8 +38,6 @@ public class XPiece extends Group {
 
         rectangleOne.setEffect(bloom);
         rectangleTwo.setEffect(bloom);
-        rectangleOne.setDepthTest(DepthTest.DISABLE);
-        rectangleTwo.setDepthTest(DepthTest.DISABLE);
 
         getChildren().addAll(rectangleOne, rectangleTwo);
 

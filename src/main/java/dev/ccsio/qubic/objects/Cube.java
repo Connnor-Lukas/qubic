@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.DepthTest;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.BlendMode;
@@ -69,7 +70,7 @@ public class Cube extends Group {
             sheet.setCullFace(CullFace.NONE);
             sheet.setBlendMode(BlendMode.MULTIPLY);
             sheet.setMouseTransparent(true);
-            sheet.setDepthTest(javafx.scene.DepthTest.ENABLE);
+            sheet.setDepthTest(DepthTest.DISABLE);
         }
 
         // Invisible draggable box

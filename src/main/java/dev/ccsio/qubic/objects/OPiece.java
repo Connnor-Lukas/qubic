@@ -36,8 +36,7 @@ public class OPiece extends Group {
         innerCircle.setMaterial(neon);
 
         // Cull opposite faces to simulate a hollow ring
-        outerCircle.setCullFace(CullFace.BACK);
-        innerCircle.setCullFace(CullFace.FRONT);
+        outerCircle.setCullFace(CullFace.FRONT);
 
         // Visual effects
         Glow glow = new Glow(1.0);
@@ -45,9 +44,6 @@ public class OPiece extends Group {
         bloom.setInput(glow);
         outerCircle.setEffect(bloom);
         innerCircle.setEffect(bloom);
-
-        innerCircle.setDepthTest(DepthTest.DISABLE);
-        outerCircle.setDepthTest(DepthTest.DISABLE);
 
         getChildren().addAll(outerCircle, innerCircle);
 

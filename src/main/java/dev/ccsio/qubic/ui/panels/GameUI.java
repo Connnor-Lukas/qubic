@@ -1,11 +1,7 @@
 package dev.ccsio.qubic.ui.panels;
 
 import java.awt.*;
-
 import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javax.swing.*;
 
 public class GameUI extends JPanel {
@@ -16,7 +12,6 @@ public class GameUI extends JPanel {
     JPanel inputSideBar;
     JPanel historySideBar;
     Render3D visualisation3D;
-    GridBagConstraints c;
 
     void loadUI() {
         setLayout(new GridBagLayout());
@@ -36,8 +31,8 @@ public class GameUI extends JPanel {
         add(visualisation3D, c);
 
         // RIGHT SIDEBAR
-        historySideBar = new JPanel();
-        historySideBar.setBackground(Color.RED);
+        historySideBar = HistoryPanel.getInstance();
+        historySideBar.setBackground((Color.decode("#100029")));
         c.gridx = 2;
         c.weightx = 0;
         add(historySideBar, c);
@@ -46,20 +41,5 @@ public class GameUI extends JPanel {
         Platform.runLater(() -> {
             visualisation3D.resetBoard();
         });
-    }
-
-    private void collapseHistory() {
-        remove(historySideBar);
-        revalidate();
-        repaint();
-    }
-
-    private void showHistory() {
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.weighty = 1.0;
-        add(historySideBar, c);
-        revalidate();
-        repaint();
     }
 }

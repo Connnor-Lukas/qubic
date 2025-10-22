@@ -8,6 +8,6 @@ public class Colours {
     public static final String CUSTOM_MENU_WHITE = "#FFFFFF";
 
     // 3D
-    public static final String CUSTOM_3D_RED = "#FF6666";
+    public static final String CUSTOM_3D_YELLOW = "#FFFF66";
     public static final String CUSTOM_3D_BLUE = "#6666FF";
 }
