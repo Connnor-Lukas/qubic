@@ -83,15 +83,16 @@ public class GameMaster {
         return null;
     }
 
-    // --- Runs on a background thread ---
+    // runs on a background thread
     public Coordinates computeOAMove() {
+        if (winner != 0) return null;
         if (this.gameMode.equals("sp") && this.mark == 1) {
             return opponentAlgorithm.getMove(gameBoard);
         }
         return null;
     }
 
-    // --- Runs on the EDT (UI thread) ---
+    // runs on the EDT (UI thread)
     public void applyOAMove(Coordinates move) {
         if (move == null) return;
 
