@@ -12,7 +12,6 @@ public class GameUI extends JPanel {
     JPanel inputSideBar;
     JPanel historySideBar;
     Render3D visualisation3D;
-    GridBagConstraints c;
 
     void loadUI() {
         setLayout(new GridBagLayout());
@@ -42,20 +41,5 @@ public class GameUI extends JPanel {
         Platform.runLater(() -> {
             visualisation3D.resetBoard();
         });
-    }
-
-    private void collapseHistory() {
-        remove(historySideBar);
-        revalidate();
-        repaint();
-    }
-
-    private void showHistory() {
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.weighty = 1.0;
-        add(historySideBar, c);
-        revalidate();
-        repaint();
     }
 }
