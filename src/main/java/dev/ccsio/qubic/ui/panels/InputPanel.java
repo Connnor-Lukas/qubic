@@ -97,12 +97,12 @@ public class InputPanel extends JPanel {
                         button.setBackground(Color.decode(Colours.CUSTOM_3D_YELLOW));
                         currentPlayer *= -1;
                         allTheButtons.setEnabled(false);
-                        // Delay AI Move
-                        Timer timer = new Timer(2000, ev -> {
-                            gameMaster.makeOAMove();
-                        });
-                        timer.setRepeats(false);
-                        timer.start();
+                        new Thread(() -> {
+                            Coordinates aiMove = gameMaster.computeOAMove();
+
+                            // Back to UI thread for updates
+                            SwingUtilities.invokeLater(() -> gameMaster.applyOAMove(aiMove));
+                        }).start();
                     }
                 } else {
                     if (gameMaster.handleInput(c)) {

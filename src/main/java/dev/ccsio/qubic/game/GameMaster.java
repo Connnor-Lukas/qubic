@@ -29,7 +29,7 @@ public class GameMaster {
 
     public void init(int difficulty) {
         if (!initialised) {
-            this.opponentAlgorithm = new OpponentAlgorithm(difficulty);
+            this.opponentAlgorithm = new OpponentAlgorithm(difficulty, 1);
             this.gameBoard = new GameBoard();
             this.inputPanel = InputPanel.getInstance();
             this.gameMode = "sp";
@@ -53,6 +53,7 @@ public class GameMaster {
     public Boolean handleInput(Coordinates input) {
         if (this.gameBoard.canPlaceMark(input, mark)) {
             this.gameBoard.placeMark(input, mark);
+            // System.out.println(input + " -> " + mark);
             winnerText = checkWinner();
             if (winnerText != null) {
                 WinScreen.getInstance().showWinScreen(winnerText);
@@ -82,17 +83,28 @@ public class GameMaster {
         return null;
     }
 
-    public void makeOAMove() {
-        if (this.gameMode == "sp" && this.mark == 1) {
-            oaMove = this.opponentAlgorithm.getMove(gameBoard);
-            gameBoard.placeMark(oaMove, 1);
-            inputPanel.updateOAMove(oaMove);
-            if (gameBoard.checkWinWithNewestCoordinate()) {
-                this.winner = this.mark;
-                // Call Win UI
-            }
-            this.mark *= -1;
+    // runs on a background thread
+    public Coordinates computeOAMove() {
+        if (winner != 0) return null;
+        if (this.gameMode.equals("sp") && this.mark == 1) {
+            return opponentAlgorithm.getMove(gameBoard);
         }
+        return null;
+    }
+
+    // runs on the EDT (UI thread)
+    public void applyOAMove(Coordinates move) {
+        if (move == null) return;
+
+        gameBoard.placeMark(move, 1);
+        inputPanel.updateOAMove(move);
+
+        winnerText = checkWinner();
+        if (winnerText != null) {
+            WinScreen.getInstance().showWinScreen(winnerText);
+        }
+
+        this.mark *= -1;
     }
 
     public GameBoard getGameBoard() {
