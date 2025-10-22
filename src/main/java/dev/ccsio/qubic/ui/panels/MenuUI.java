@@ -53,7 +53,7 @@ public class MenuUI extends JPanel {
         JButton start1PGame = getJButton("1-Player Game", Colours.CUSTOM_MENU_BLUE);
         start1PGame.setPreferredSize(new Dimension(320, 50));
         start1PGame.addActionListener((ActionEvent e) -> {
-            GameMaster.getInstance().init(0);
+            GameMaster.getInstance().init(2);
             backgroundPanel.remove(0);
             frame.showView(new GameUI());
             backgroundPanel.fixLighting();

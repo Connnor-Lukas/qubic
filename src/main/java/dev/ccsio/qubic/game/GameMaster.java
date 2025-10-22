@@ -83,19 +83,27 @@ public class GameMaster {
         return null;
     }
 
-    public void makeOAMove() {
-        if (this.gameMode == "sp" && this.mark == 1) {
-            oaMove = this.opponentAlgorithm.getMove(gameBoard);
-            gameBoard.placeMark(oaMove, 1);
-            inputPanel.updateOAMove(oaMove);
-            // System.out.println("makeOAMove");
-            winnerText = checkWinner();
-            if (winnerText != null) {
-                WinScreen.getInstance().showWinScreen(winnerText);
-                // throw new RuntimeException("OA has won!");
-            }
-            this.mark *= -1;
+    // --- Runs on a background thread ---
+    public Coordinates computeOAMove() {
+        if (this.gameMode.equals("sp") && this.mark == 1) {
+            return opponentAlgorithm.getMove(gameBoard);
         }
+        return null;
+    }
+
+    // --- Runs on the EDT (UI thread) ---
+    public void applyOAMove(Coordinates move) {
+        if (move == null) return;
+
+        gameBoard.placeMark(move, 1);
+        inputPanel.updateOAMove(move);
+
+        winnerText = checkWinner();
+        if (winnerText != null) {
+            WinScreen.getInstance().showWinScreen(winnerText);
+        }
+
+        this.mark *= -1;
     }
 
     public GameBoard getGameBoard() {

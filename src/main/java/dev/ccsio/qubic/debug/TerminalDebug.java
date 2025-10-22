@@ -107,7 +107,7 @@ public class TerminalDebug {
                         System.out.println("Player -1 Won.");
                         break;
                     }
-                    gameMaster.makeOAMove();
+                    gameMaster.applyOAMove(gameMaster.computeOAMove());
                     if (gameMaster.getGameBoard().checkWinWithInput(coordinates)) {
                         System.out.println("Player 1 Won.");
                         break;
