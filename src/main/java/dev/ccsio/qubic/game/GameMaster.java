@@ -53,6 +53,7 @@ public class GameMaster {
     public Boolean handleInput(Coordinates input) {
         if (this.gameBoard.canPlaceMark(input, mark)) {
             this.gameBoard.placeMark(input, mark);
+            // System.out.println(input + " -> " + mark);
             winnerText = checkWinner();
             if (winnerText != null) {
                 WinScreen.getInstance().showWinScreen(winnerText);

@@ -235,4 +235,19 @@ public class WinningLinesRecord {
         return WinningLinesList;
     }
 
+    /**
+     * Returns all winning lines containing inputted coordinates.
+     * @param coordinate Coordinates class.
+     * @return List Lists of Coordinates object.
+     */
+    public List<List<Coordinates>> getWinningLinesWithCoordinate(Coordinates coordinate) {
+        List<List<Coordinates>> output = new ArrayList<>();
+        for (List<Coordinates> list : WinningLinesList) {
+            if (list.contains(coordinate)) {
+                output.add(list);
+            }
+        }
+        return output;
+    }
+
 }

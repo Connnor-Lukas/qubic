@@ -51,7 +51,7 @@ public class OpponentAlgorithm {
             case 0:
                 return makeRandomMove();
             case 1:
-                return makeStraightMove();
+                return makeDefensiveMove();
             case 2:
                 return makeTacticalMove();
             default:
@@ -142,9 +142,52 @@ public class OpponentAlgorithm {
         return null;
     }
 
-    private Coordinates makeStraightMove() {
-        return new Coordinates(0, 0, 0);
-        // blocks, and tries to make a straight, first move is random
+    private Coordinates makeDefensiveMove() {
+        Coordinates selfWin = checkSelfWinInOne();
+        Coordinates opponentWin = checkOpponentWinInOne();
+        Coordinates latestCoordinates = LinkedHistory.getMoveHistory(
+            gameBoard).getLastMove().coordinates();
+
+        if (selfWin != null) {
+            return selfWin;
+        } else if (opponentWin != null) {
+            return opponentWin;
+        }
+
+
+        int sum = 0;
+        Coordinates lastEmptyCoordinates = new Coordinates(-1, -1, -1);
+        for (List<Coordinates> line : opponentWinOptions.getWinningLinesWithCoordinate(latestCoordinates)) {
+            sum = 0;
+            for (Coordinates coordinates : line) {
+                int val = gameBoard.getValueAt(coordinates);
+                switch (val) {
+                    case -1:
+                        sum++;
+                        break;
+                    case 0:
+                        lastEmptyCoordinates = coordinates;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (sum == 2) {
+                // System.out.println(lastEmptyCoordinates);
+                updateWithNewCoordinates(lastEmptyCoordinates);
+                return lastEmptyCoordinates;
+            }
+        }
+
+        
+        if (lastEmptyCoordinates.getX() != -1) {
+            updateWithNewCoordinates(lastEmptyCoordinates);
+            return lastEmptyCoordinates;
+        } else {
+            return makeRandomMove();
+        }
+        
     }
 
     private Coordinates makeTacticalMove() {
@@ -205,7 +248,7 @@ public class OpponentAlgorithm {
             if (depth == 3) { // if root
                 this.bestMove = bestMove;
             }
-            return maxEval;
+            return maxEval + depth;
 
         } else {
             int minEval = Integer.MAX_VALUE;
@@ -222,7 +265,7 @@ public class OpponentAlgorithm {
                     break;
                 }
             }
-            return minEval;
+            return minEval + depth;
         }
 
     }
