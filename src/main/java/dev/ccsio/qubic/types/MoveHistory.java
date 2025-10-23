@@ -18,5 +18,9 @@ public class MoveHistory {
         return moveHistory.get(moveHistory.size() - 1);
     }
 
+    public List<PlayerMove> list() {
+        return moveHistory;
+    }
+
     public record PlayerMove(Coordinates coordinates, int player) {}
 }
