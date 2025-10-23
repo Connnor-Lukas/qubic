@@ -7,8 +7,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 public class Main {
+    public static boolean useAlternateRender = false;
     public static void main(String[] args) {
-        System.setProperty("prism.order", "es2");
+        // Windows Render Fix (Mac & Linux work)
+        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+            useAlternateRender = true;
+        }
+
         // Setup FlatLaf Look and Feel
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
