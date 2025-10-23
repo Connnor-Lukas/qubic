@@ -150,6 +150,24 @@ public class GameBoard {
     }
 
     /**
+     * Outputs the a List of 4 Coordinates which won the game. 
+     * @return List of Coordinates.
+     */
+    public List<Coordinates> getWinningLine() {
+        WinningLinesRecord winningLines = new WinningLinesRecord();
+        for (List<Coordinates> line : winningLines.getWinningLines()) {
+            int sum = 0;
+            for (Coordinates coordinates : line) {
+                sum += getValueAt(coordinates);
+            }
+            if (Math.abs(sum) == 4) {
+                return line;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Makes a deep copy of the this GameBoard instance.
      * @return GameBoard Object.
      */
