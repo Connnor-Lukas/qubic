@@ -8,17 +8,19 @@ import javax.swing.UIManager;
 
 public class Main {
     public static boolean useAlternateRender = false;
+    public static boolean runByUser = false;
     public static void main(String[] args) {
         // Windows Render Fix (Mac & Linux work)
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
             useAlternateRender = true;
         }
 
-        // Setup FlatLaf Look and Feel
+        // Tests fix
+        runByUser = true;
+
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
         } catch (Exception e) {
-            // If FlatLaf is not available, fall back to default
             e.printStackTrace();
         }
 

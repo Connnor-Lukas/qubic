@@ -29,6 +29,9 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
+      - name: Run tests
+        run: mvn test --file pom.xml
+
       - name: Rename JAR file
         run: mv target/qubic-*.jar target/qubic-nightly-${{ steps.sha.outputs.sha }}.jar
 

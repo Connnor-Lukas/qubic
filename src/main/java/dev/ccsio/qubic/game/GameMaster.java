@@ -1,5 +1,6 @@
 package dev.ccsio.qubic.game;
 
+import dev.ccsio.qubic.Main;
 import dev.ccsio.qubic.types.Coordinates;
 import dev.ccsio.qubic.ui.panels.InputPanel;
 import dev.ccsio.qubic.ui.panels.WinScreen;
@@ -29,7 +30,9 @@ public class GameMaster {
         if (!initialised) {
             this.gameBoard = new GameBoard();
             this.opponentAlgorithm = new OpponentAlgorithm(difficulty, 1);
-            this.inputPanel = InputPanel.getInstance();
+            if (Main.runByUser) {
+                this.inputPanel = InputPanel.getInstance();
+            }
             this.gameMode = "sp";
             this.mark = -1;
             this.winner = 0;
@@ -58,8 +61,10 @@ public class GameMaster {
         if (this.gameBoard.canPlaceMark(input, mark)) {
             this.gameBoard.placeMark(input, mark);
             winnerText = checkWinner();
-            if (winnerText != null) {
-                WinScreen.getInstance().showWinScreen(winnerText);
+            if (Main.runByUser) {
+                if (winnerText != null) {
+                    WinScreen.getInstance().showWinScreen(winnerText);
+                }
             }
             this.mark *= -1;
             return true;
@@ -100,7 +105,10 @@ public class GameMaster {
         if (move == null) return;
 
         gameBoard.placeMark(move, 1);
-        inputPanel.updateOAMove(move);
+
+        if (Main.runByUser) {
+            inputPanel.updateOAMove(move);
+        }
 
         winnerText = checkWinner();
         if (winnerText != null) {
