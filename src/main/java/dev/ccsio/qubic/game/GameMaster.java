@@ -29,8 +29,8 @@ public class GameMaster {
 
     public void init(int difficulty) {
         if (!initialised) {
-            this.opponentAlgorithm = new OpponentAlgorithm(difficulty, 1);
             this.gameBoard = new GameBoard();
+            this.opponentAlgorithm = new OpponentAlgorithm(difficulty, 1);
             this.inputPanel = InputPanel.getInstance();
             this.gameMode = "sp";
             this.mark = -1;
@@ -59,6 +59,7 @@ public class GameMaster {
     public Boolean handleInput(Coordinates input) {
         if (this.gameBoard.canPlaceMark(input, mark)) {
             this.gameBoard.placeMark(input, mark);
+            System.out.println("PLAYER MARK PLACED -> " + input);
             // System.out.println(input + " -> " + mark);
             winnerText = checkWinner();
             if (winnerText != null) {
@@ -93,6 +94,7 @@ public class GameMaster {
     public Coordinates computeOAMove() {
         if (winner != 0) return null;
         if (this.gameMode.equals("sp") && this.mark == 1) {
+            System.out.println("OA MOVE COMPUTED");
             return opponentAlgorithm.getMove(gameBoard);
         }
         return null;
@@ -104,6 +106,8 @@ public class GameMaster {
 
         gameBoard.placeMark(move, 1);
         inputPanel.updateOAMove(move);
+
+        System.out.println("OA MOVE APPLIED -> " + move);
 
         winnerText = checkWinner();
         if (winnerText != null) {
