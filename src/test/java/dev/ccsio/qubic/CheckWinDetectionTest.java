@@ -15,6 +15,7 @@ public class CheckWinDetectionTest {
     GameMaster gameMaster = GameMaster.getInstance();
 
     public CheckWinDetectionTest() {
+        gameMaster.reset();
         gameMaster.init();
     }
 
