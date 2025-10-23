@@ -17,6 +17,8 @@ public class GameMaster {
     InputPanel inputPanel;
     public int winner;
     private String winnerText;
+    LogGame logGame = new LogGame();
+    int difficulty = -1;
     
     private GameMaster() {}
 
@@ -30,6 +32,7 @@ public class GameMaster {
     public void init(int difficulty) {
         if (!initialised) {
             this.opponentAlgorithm = new OpponentAlgorithm(difficulty, 1);
+            this.difficulty = difficulty;
             this.gameBoard = new GameBoard();
             this.inputPanel = InputPanel.getInstance();
             this.gameMode = "sp";
@@ -38,6 +41,7 @@ public class GameMaster {
             this.winnerText = null;
 
             initialised = true;
+            logGame.start();
         }
     }
 
@@ -49,6 +53,7 @@ public class GameMaster {
             this.winner = 0;
             this.winnerText = null;
             initialised = true;
+            logGame.start();
         }
     }
 
@@ -62,6 +67,7 @@ public class GameMaster {
             // System.out.println(input + " -> " + mark);
             winnerText = checkWinner();
             if (winnerText != null) {
+                logGame.handleWin(winner, gameMode, this.difficulty, this.gameBoard);
                 WinScreen.getInstance().showWinScreen(winnerText);
             }
             this.mark *= -1;
