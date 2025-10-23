@@ -113,6 +113,7 @@ public class GameMaster {
 
         winnerText = checkWinner();
         if (winnerText != null) {
+            logGame.handleWin(winner, gameMode, this.difficulty, this.gameBoard);
             WinScreen.getInstance().showWinScreen(winnerText);
         }
 
