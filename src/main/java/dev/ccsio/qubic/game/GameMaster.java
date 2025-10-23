@@ -91,6 +91,9 @@ public class GameMaster {
                 default:
                     return null;
             }
+        } else if (gameBoard.isFull()) {
+            this.winner = 0;
+            return "Draw";
         }
         return null;
     }

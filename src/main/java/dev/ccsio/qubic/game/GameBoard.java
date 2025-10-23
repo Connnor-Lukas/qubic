@@ -182,4 +182,8 @@ public class GameBoard {
         }  
         return newBoard;
     }
+
+    public Boolean isFull() {
+        return availableCoordinates().size() == 0;
+    }
 }
