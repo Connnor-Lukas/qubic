@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 
 import dev.ccsio.qubic.ui.Colours;
 import dev.ccsio.qubic.ui.QubicWindow;
+import dev.ccsio.qubic.ui.panels.gamehistory.HistorySelect;
+
 import javax.swing.*;
 
 public class MenuUI extends JPanel {
@@ -76,9 +78,12 @@ public class MenuUI extends JPanel {
         });
 
         // Tutorial Button
-        JButton startTutorial = getJButton("Tutorial", Colours.CUSTOM_MENU_BLACK);
+        JButton startTutorial = getJButton("Replays", Colours.CUSTOM_MENU_BLACK);
         startTutorial.setPreferredSize(new Dimension(155, 40));
-        startTutorial.addActionListener((ActionEvent e) -> {});
+        startTutorial.addActionListener((ActionEvent e) -> {
+            backgroundPanel.remove(0);
+            frame.showView(new HistorySelect());
+        });
 
         // Quit Game Button
         JButton exitButton = getJButton("Quit", Colours.CUSTOM_MENU_RED);
