@@ -11,7 +11,7 @@ public class GameMaster {
 
     String gameMode;
     GameBoard gameBoard;
-    int mark;
+    public int mark;
     OpponentAlgorithm opponentAlgorithm;
     Coordinates oaMove;
     InputPanel inputPanel;
@@ -35,6 +35,7 @@ public class GameMaster {
             this.gameMode = "sp";
             this.mark = -1;
             this.winner = 0;
+            this.winnerText = null;
 
             initialised = true;
         }
@@ -46,8 +47,13 @@ public class GameMaster {
             this.gameMode = "tp";
             this.mark = -1;
             this.winner = 0;
+            this.winnerText = null;
             initialised = true;
         }
+    }
+
+    public void reset() {
+        initialised = false;
     }
 
     public Boolean handleInput(Coordinates input) {

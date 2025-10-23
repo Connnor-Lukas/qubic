@@ -1,7 +1,6 @@
 package dev.ccsio.qubic.debug;
 
 import dev.ccsio.qubic.types.Coordinates;
-import javafx.scene.layout.CornerRadii;
 import dev.ccsio.qubic.game.GameBoard;
 import dev.ccsio.qubic.game.GameMaster;
 import dev.ccsio.qubic.game.OpponentAlgorithm;

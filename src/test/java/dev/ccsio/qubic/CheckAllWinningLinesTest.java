@@ -8,10 +8,10 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CheckAllWinningLines {
+public class CheckAllWinningLinesTest {
 
     @Test
-    public void checkAllWinningLines() {
+    public void testCheckAllWinningLines() {
         // Generate all possible winning lines
         Set<List<Coordinates>> generatedLines = generateAllWinningLines();
 
