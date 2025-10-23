@@ -4,7 +4,6 @@ import dev.ccsio.qubic.types.Coordinates;
 import dev.ccsio.qubic.ui.panels.InputPanel;
 import dev.ccsio.qubic.ui.panels.WinScreen;
 
-
 public class GameMaster {
     private static GameMaster INSTANCE;
     private boolean initialised = false;
@@ -13,7 +12,6 @@ public class GameMaster {
     GameBoard gameBoard;
     public int mark;
     OpponentAlgorithm opponentAlgorithm;
-    Coordinates oaMove;
     InputPanel inputPanel;
     public int winner;
     private String winnerText;
@@ -59,8 +57,6 @@ public class GameMaster {
     public Boolean handleInput(Coordinates input) {
         if (this.gameBoard.canPlaceMark(input, mark)) {
             this.gameBoard.placeMark(input, mark);
-            System.out.println("PLAYER MARK PLACED -> " + input);
-            // System.out.println(input + " -> " + mark);
             winnerText = checkWinner();
             if (winnerText != null) {
                 WinScreen.getInstance().showWinScreen(winnerText);
@@ -94,7 +90,6 @@ public class GameMaster {
     public Coordinates computeOAMove() {
         if (winner != 0) return null;
         if (this.gameMode.equals("sp") && this.mark == 1) {
-            System.out.println("OA MOVE COMPUTED");
             return opponentAlgorithm.getMove(gameBoard);
         }
         return null;
@@ -106,8 +101,6 @@ public class GameMaster {
 
         gameBoard.placeMark(move, 1);
         inputPanel.updateOAMove(move);
-
-        System.out.println("OA MOVE APPLIED -> " + move);
 
         winnerText = checkWinner();
         if (winnerText != null) {

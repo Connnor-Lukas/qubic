@@ -12,8 +12,11 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.version>3.3.0</maven.version>
         <javafx.version>21</javafx.version>
         <flatlaf.version>3.6.1</flatlaf.version>
+        <jupiter.version>5.9.3</jupiter.version>
+        <surefire.version>3.1.2</surefire.version>
     </properties>
 
     <dependencies>
@@ -32,7 +35,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.9.3</version>
+            <version>${jupiter.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -56,7 +59,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>${maven.version}</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -64,6 +67,15 @@
                             <mainClass>dev.ccsio.qubic.Main</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.version}</version>
+                <configuration>
+                    <argLine>--enable-native-access=ALL-UNNAMED</argLine>
                 </configuration>
             </plugin>
         </plugins>
