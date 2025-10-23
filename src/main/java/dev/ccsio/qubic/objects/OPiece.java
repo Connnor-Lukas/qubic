@@ -1,5 +1,6 @@
 package dev.ccsio.qubic.objects;
 
+import dev.ccsio.qubic.Main;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
@@ -34,6 +35,11 @@ public class OPiece extends Group {
         // Apply material to both
         outerCircle.setMaterial(transparent);
         innerCircle.setMaterial(neon);
+
+        if (Main.useAlternateRender) {
+            innerCircle.setDepthTest(DepthTest.DISABLE);
+            outerCircle.setDepthTest(DepthTest.DISABLE);
+        }
 
         // Cull opposite faces to simulate a hollow ring
         outerCircle.setCullFace(CullFace.FRONT);

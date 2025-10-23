@@ -1,5 +1,6 @@
 package dev.ccsio.qubic.objects;
 
+import dev.ccsio.qubic.Main;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
@@ -31,6 +32,11 @@ public class XPiece extends Group {
 
         rectangleOne.setMaterial(neon);
         rectangleTwo.setMaterial(neon);
+
+        if (Main.useAlternateRender) {
+            rectangleOne.setDepthTest(DepthTest.DISABLE);
+            rectangleTwo.setDepthTest(DepthTest.DISABLE);
+        }
 
         Glow glow = new Glow(1.0);
         Bloom bloom = new Bloom(0.1);

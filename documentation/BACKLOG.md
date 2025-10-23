@@ -67,6 +67,6 @@
 - Find and use an appropriate library to display the 3D view of the Qubic.
 - Implement the library & code into the existing Swing infrastructure.
 
-## Basic Game AI for Qubic
-- Research AI & Game Heuristics 
+## Basic Game Algorithms for Qubic
+- Research Game Algorithms & Game Heuristics 
 - Practical implementation of learned concepts

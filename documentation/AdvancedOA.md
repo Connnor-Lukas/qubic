@@ -4,13 +4,11 @@ to lower computational time in endgames.
 AO's immediate wins will also always be scored.
 Your immediate wins will also always be blocked.
 
-## Algorithm
-These algorithms are a baseline and not all are expected in the final design.
+## Algorithms
 
-| Difficulty |     Method Name     |                        Description                        |
-|:----------:|:-------------------:|:---------------------------------------------------------:|
-|     0      |  makeRandomMove()   |            Moves are made completely randomly.            |
-|     1      | makeStraightMove()  |          Only goes for straights, no diagonals.           |
-|     2      | makeOffensiveMove() |     Attempts to score in any way direction possible.      |
-|     3      | makeDefensiveMove() | Focuses fully on blocking you, does not attempt to score. |
-|     4      | makeStrategicMove() |          Score based algorithm, pretty complex.           |
+| Difficulty |     Method Name     |                              Description                           |
+|:----------:|:-------------------:|:------------------------------------------------------------------:|
+|     0      |  makeRandomMove()   |                  Moves are made completely randomly.               |
+|     1      | makeDefensiveMove() |            Focuses on blocking you, only taking wins-in-1.         |
+|     2      | makeStrategicMove() | Depth 3 minimax - computes all possible moves and chooses the best |
+|     3      |   makeCruelMove()   |             Tries to block all possible winning lines.             | 

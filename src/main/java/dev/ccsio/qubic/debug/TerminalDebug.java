@@ -1,7 +1,6 @@
 package dev.ccsio.qubic.debug;
 
 import dev.ccsio.qubic.types.Coordinates;
-import javafx.scene.layout.CornerRadii;
 import dev.ccsio.qubic.game.GameBoard;
 import dev.ccsio.qubic.game.GameMaster;
 import dev.ccsio.qubic.game.OpponentAlgorithm;
@@ -144,7 +143,8 @@ public class TerminalDebug {
             Coordinates coordinates = new Coordinates(x, y, z);
             printSpaces();
             gb.placeMark(coordinates, mark);
-            System.out.println("Board Eval: " + OA.evaluateGameState(gb));
+            // This debug statement is broken fix before use
+            // System.out.println("Board Eval: " + OA.evaluateGameState(gb));
             printBoard(gb, true);
             player *= -1;
         }

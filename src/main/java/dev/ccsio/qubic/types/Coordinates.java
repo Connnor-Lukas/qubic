@@ -24,7 +24,7 @@ public class Coordinates {
     }
 
     public static Coordinates random() {
-        return  new Coordinates(
+        return new Coordinates(
             random.nextInt(0, 4),
             random.nextInt(0, 4),
             random.nextInt(0, 4)
