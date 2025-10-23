@@ -28,10 +28,6 @@ public class CheckAllWinningLinesTest {
             normalizedRecordLines.add(canonical);
         }
 
-        // Print results
-        System.out.println("Generated lines count: " + generatedLines.size());
-        System.out.println("WinningLinesRecord count: " + normalizedRecordLines.size());
-
         // Check if they match
         assertEquals(generatedLines.size(), normalizedRecordLines.size(),
                 "Number of winning lines should match");
@@ -62,8 +58,6 @@ public class CheckAllWinningLinesTest {
                 "WinningLinesRecord is missing " + missingInRecord.size() + " lines");
         assertTrue(extraInRecord.isEmpty(),
                 "WinningLinesRecord has " + extraInRecord.size() + " extra lines");
-
-        System.out.println("\n✓ All winning lines match!");
     }
 
     private Set<List<Coordinates>> generateAllWinningLines() {

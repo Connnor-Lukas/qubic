@@ -143,7 +143,8 @@ public class TerminalDebug {
             Coordinates coordinates = new Coordinates(x, y, z);
             printSpaces();
             gb.placeMark(coordinates, mark);
-            System.out.println("Board Eval: " + OA.evaluateGameState(gb));
+            // This debug statement is broken fix before use
+            // System.out.println("Board Eval: " + OA.evaluateGameState(gb));
             printBoard(gb, true);
             player *= -1;
         }

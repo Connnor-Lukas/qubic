@@ -4,7 +4,6 @@ import dev.ccsio.qubic.types.Coordinates;
 import dev.ccsio.qubic.ui.panels.InputPanel;
 import dev.ccsio.qubic.ui.panels.WinScreen;
 
-
 public class GameMaster {
     private static GameMaster INSTANCE;
     private boolean initialised = false;
@@ -13,13 +12,12 @@ public class GameMaster {
     GameBoard gameBoard;
     public int mark;
     OpponentAlgorithm opponentAlgorithm;
-    Coordinates oaMove;
     InputPanel inputPanel;
     public int winner;
     private String winnerText;
     LogGame logGame = new LogGame();
     int difficulty = -1;
-    
+
     private GameMaster() {}
 
     public static GameMaster getInstance() {

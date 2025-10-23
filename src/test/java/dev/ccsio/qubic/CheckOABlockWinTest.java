@@ -12,7 +12,6 @@ import java.util.List;
 
 public class CheckOABlockWinTest {
     GameMaster gameMaster = GameMaster.getInstance();
-    TerminalDebug td = new TerminalDebug();
 
     public CheckOABlockWinTest() {}
 
@@ -30,11 +29,11 @@ public class CheckOABlockWinTest {
         gameMaster.handleInput(new Coordinates(0,2,0));
 
 
-        td.printBoard(gameMaster.getGameBoard(), true);
+        TerminalDebug.printBoard(gameMaster.getGameBoard(), true);
 
         gameMaster.applyOAMove(gameMaster.computeOAMove());
 
-        td.printBoard(gameMaster.getGameBoard(), true);
+        TerminalDebug.printBoard(gameMaster.getGameBoard(), true);
         assert gameMaster.getGameBoard().getValueAt(new Coordinates(0,3,0)) == 1 : " " + gameMaster.getGameBoard();
     }
 
