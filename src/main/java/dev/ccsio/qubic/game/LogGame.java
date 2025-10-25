@@ -111,7 +111,7 @@ public class LogGame {
         }
     }
 
-    private Path getAppDataDir() {
+    public static Path getAppDataDir() {
         String os = System.getProperty("os.name").toLowerCase();
         String appName = "Qubic"; // change to your app’s name
         String baseDir;

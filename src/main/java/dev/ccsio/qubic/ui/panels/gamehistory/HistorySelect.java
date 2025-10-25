@@ -1,5 +1,6 @@
 package dev.ccsio.qubic.ui.panels.gamehistory;
 
+import dev.ccsio.qubic.game.LogGame;
 import dev.ccsio.qubic.types.MoveHistory;
 import dev.ccsio.qubic.ui.Colours;
 import dev.ccsio.qubic.ui.QubicWindow;
@@ -17,7 +18,7 @@ import dev.ccsio.qubic.ui.panels.Render3D;
 import org.json.JSONObject;
 
 public class HistorySelect extends JPanel {
-    static final String HISTORY_DIR = "src/main/java/dev/ccsio/qubic/gameHistory";
+    static final Path HISTORY_DIR = LogGame.getAppDataDir();
     List<JSONObject> pastGames = new ArrayList<>();
     HistoryViewer historyViewer = HistoryViewer.getInstance();
     Render3D background = Render3D.getInstance();
@@ -169,7 +170,7 @@ public class HistorySelect extends JPanel {
     }
 
     public static List<JSONObject> getPastGames() throws IOException {
-        try (var stream = Files.list(Path.of(HISTORY_DIR))) {
+        try (var stream = Files.list(HISTORY_DIR)) {
             List<JSONObject> pastGames = new ArrayList<>();
             for (Path path : stream
                     .filter(Files::isRegularFile)
