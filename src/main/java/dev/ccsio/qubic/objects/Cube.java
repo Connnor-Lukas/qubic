@@ -6,6 +6,7 @@ import java.util.Map;
 
 import dev.ccsio.qubic.types.MoveHistory;
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.scene.DepthTest;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -25,10 +26,19 @@ public class Cube extends Group {
     private static final double THICKNESS = 1;
     private static final double SEPERATION = 36;
 
+    private EventHandler<MouseEvent> pressHandler;
+    private EventHandler<MouseEvent> dragHandler;
+    private EventHandler<ScrollEvent> scrollHandler;
+    private EventHandler<MouseEvent> releaseHandler;
+
     private AnimationTimer automaticRotation;
     private AnimationTimer controlledRotation;
     private Rotate rotX;
     private Rotate rotY;
+    private long lastUpdate = 0;
+    private double angleX = 0;
+    private double angleY = 0;
+    private double distance = 0;
 
     private boolean userRotating = false;
     private double anchorX, anchorY;
@@ -176,16 +186,11 @@ public class Cube extends Group {
 
         // Create animation
         automaticRotation = new AnimationTimer() {
-            private long lastUpdate = 0;
-            private double angleX = 0;
-            private double angleY = 0;
-
             // Rotation speeds (degrees per second)
             private double speedX = 19.0 / 5.0;
             private double speedY = 83 / 5.0;
 
             // Distance
-            private double distance = 0;
             private double cameraSpeed = 53.0 / 5.0;
             private double maxDistance = 200;
             private double minDistance = -100;
@@ -209,8 +214,10 @@ public class Cube extends Group {
                 angleY = (angleY + speedY * deltaTime) % 360;
 
                 distance = distance + cameraSpeed * deltaTime;
-                if (distance > maxDistance ||  distance < minDistance) {
-                    cameraSpeed *= -1;
+                if (distance > maxDistance) {
+                    cameraSpeed = -Math.abs(cameraSpeed);
+                } else if (distance < minDistance) {
+                    cameraSpeed = Math.abs(cameraSpeed);
                 }
 
                 // Apply rotations
@@ -227,9 +234,6 @@ public class Cube extends Group {
     private void controlledRotation() {
         // Create animation
         controlledRotation = new AnimationTimer() {
-            private long lastUpdate = 0;
-            private double angleY = 0;
-
             // Rotation speeds (degrees per second)
             private double speedY = 83 / 5.0;
 
@@ -262,15 +266,15 @@ public class Cube extends Group {
         automaticRotation.stop();
         controlledRotation.start();
 
-        this.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+        pressHandler = e -> {
             userRotating = true;
             anchorX = e.getSceneX();
             anchorY = e.getSceneY();
             anchorAngleX = rotX.getAngle();
             anchorAngleY = rotY.getAngle();
-        });
+        };
 
-        this.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
+        dragHandler = e -> {
             double deltaX = e.getSceneX() - anchorX;
             double deltaY = e.getSceneY() - anchorY;
 
@@ -281,19 +285,40 @@ public class Cube extends Group {
             if (angleX < 90 && angleX > -90 || angleX > 270) {
                 rotX.setAngle(angleX);
             }
-        });
+        };
 
-        this.addEventHandler(ScrollEvent.SCROLL, e -> {
+        scrollHandler = e -> {
             double delta = e.getDeltaY(); // +ve up, -ve down
             if (delta > 0) {
-                this.setTranslateZ(Math.min(this.getTranslateZ() + delta * 0.5, maxViewDistance));
+                distance = Math.min(distance + delta * 0.5, maxViewDistance);
+                this.setTranslateZ(distance);
             } else {
-                this.setTranslateZ(Math.max(this.getTranslateZ() + delta * 0.5, minViewDistance));
+                distance = Math.max(distance + delta * 0.5, minViewDistance);
+                this.setTranslateZ(distance);
             }
-        });
+        };
 
-        this.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
+        releaseHandler = e -> {
             userRotating = false;
-        });
+        };
+
+        this.addEventHandler(MouseEvent.MOUSE_PRESSED, pressHandler);
+        this.addEventHandler(MouseEvent.MOUSE_DRAGGED, dragHandler);
+        this.addEventHandler(ScrollEvent.SCROLL, scrollHandler);
+        this.addEventHandler(MouseEvent.MOUSE_RELEASED, releaseHandler);
+    }
+
+    public void menuSetup() {
+        controlledRotation.stop();
+        automaticRotation.start();
+
+        this.removeEventHandler(MouseEvent.MOUSE_PRESSED, pressHandler);
+        this.removeEventHandler(MouseEvent.MOUSE_DRAGGED, dragHandler);
+        this.removeEventHandler(ScrollEvent.SCROLL, scrollHandler);
+        this.removeEventHandler(MouseEvent.MOUSE_RELEASED, releaseHandler);
+    }
+
+    public boolean isEmpty() {
+        return gameBoard.isEmpty();
     }
 }

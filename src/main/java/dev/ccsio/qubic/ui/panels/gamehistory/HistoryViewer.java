@@ -80,6 +80,7 @@ public class HistoryViewer extends JPanel {
     private void returnToMenu() {
         background.removeAll();
         background.disableHistoryControl();
+        background.disableMouseControls();
         JPanel pastPanel = qubicWindow.getPastPanel(1);
         if (pastPanel instanceof HistorySelect temp) {
             qubicWindow.showView(pastPanel);

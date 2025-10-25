@@ -91,22 +91,45 @@ public class LogGame {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
             String id = LocalDateTime.now().format(formatter);
 
-            // Build path in a cross-platform way
-            Path filePath = Path.of("src", "main", "java", "dev", "ccsio", "qubic", "gameHistory", id + ".json");
+            Path appDataDir = getAppDataDir();
+            Path filePath = appDataDir.resolve(id + ".json");
 
             // Ensure directories exist
-            Files.createDirectories(filePath.getParent());
+            Files.createDirectories(appDataDir);
 
             endTime = System.currentTimeMillis();
             JSONObject jsonData = createJsonObject(id, winner, mode, difficulty, gameBoard);
 
-            // Write JSON file (UTF-8 by default)
-            Files.writeString(filePath, jsonData.toString(2)); // '2' adds pretty indentation
+            // Write the JSON file
+            Files.writeString(filePath, jsonData.toString(2));
+
             System.out.println("Game log saved at: " + filePath.toAbsolutePath());
 
         } catch (IOException e) {
             System.out.println("Json File could not be created.");
             e.printStackTrace();
+        }
+    }
+
+    private Path getAppDataDir() {
+        String os = System.getProperty("os.name").toLowerCase();
+        String appName = "Qubic"; // change to your app’s name
+        String baseDir;
+
+        if (os.contains("win")) {
+            baseDir = System.getenv("APPDATA");
+            if (baseDir == null) baseDir = System.getProperty("user.home") + "\\AppData\\Roaming";
+            return Path.of(baseDir, appName);
+        } else if (os.contains("mac")) {
+            baseDir = System.getProperty("user.home") + "/Library/Application Support";
+            return Path.of(baseDir, appName);
+        } else {
+            // Linux / UNIX
+            baseDir = System.getenv("XDG_DATA_HOME");
+            if (baseDir == null || baseDir.isEmpty()) {
+                baseDir = System.getProperty("user.home") + "/.local/share";
+            }
+            return Path.of(baseDir, appName);
         }
     }
 }

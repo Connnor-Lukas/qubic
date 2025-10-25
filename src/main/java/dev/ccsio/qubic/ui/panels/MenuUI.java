@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import dev.ccsio.qubic.ui.Colours;
 import dev.ccsio.qubic.ui.QubicWindow;
 import dev.ccsio.qubic.ui.panels.gamehistory.HistorySelect;
+import javafx.application.Platform;
 
 import javax.swing.*;
 
@@ -24,13 +25,18 @@ public class MenuUI extends JPanel {
 
     private void loadMenu() {
         gameMaster.reset();
-        backgroundPanel.resetBoard();
 
         // Use BorderLayout to center content
         setLayout(new BorderLayout());
 
         // Create the background panel
-        backgroundPanel.setupMenu();
+        Platform.runLater(() -> {
+            if (backgroundPanel.isEmpty()) {
+                backgroundPanel.resetBoard();
+                backgroundPanel.setupMenu();
+            }
+        });
+
         backgroundPanel.setLayout(new GridBagLayout());
         add(backgroundPanel, BorderLayout.CENTER);
 

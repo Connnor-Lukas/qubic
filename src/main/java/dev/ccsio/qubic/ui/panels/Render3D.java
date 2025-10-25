@@ -136,6 +136,16 @@ public class Render3D extends JFXPanel {
         });
     }
 
+    public void disableMouseControls() {
+        Platform.runLater(() -> {
+            cube.menuSetup();
+        });
+    }
+
+    public boolean isEmpty() {
+        return cube.isEmpty();
+    }
+
     public void previewMove(int player, Coordinates coordinates) {
         Platform.runLater(() -> {
             cube.movePreviewPiece(player, coordinates);
