@@ -1,8 +1,10 @@
 package dev.ccsio.qubic.ui.panels.gamehistory;
 
+import dev.ccsio.qubic.types.MoveHistory;
 import dev.ccsio.qubic.ui.Colours;
 import dev.ccsio.qubic.ui.QubicWindow;
 import dev.ccsio.qubic.ui.panels.MenuUI;
+
 import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,14 +19,14 @@ import org.json.JSONObject;
 public class HistorySelect extends JPanel {
     static final String HISTORY_DIR = "src/main/java/dev/ccsio/qubic/gameHistory";
     List<JSONObject> pastGames = new ArrayList<>();
-    QubicWindow qubicWindow = QubicWindow.getInstance();
+    HistoryViewer historyViewer = HistoryViewer.getInstance();
     Render3D background = Render3D.getInstance();
 
     public HistorySelect() {
         loadUI();
     }
 
-    private void loadUI() {
+    public void loadUI() {
         setLayout(new BorderLayout());
         try {
             pastGames = getPastGames();
@@ -33,7 +35,10 @@ public class HistorySelect extends JPanel {
             pastGames.sort((a, b) -> Long.compare(b.getLong("endTime"), a.getLong("endTime")));
 
             JPanel tablePanel = new JPanel();
+            tablePanel.setOpaque(false);
             tablePanel.setLayout(new GridLayout(0, 5, 0, 0));
+
+            Font headerFont = new Font(Font.MONOSPACED, Font.BOLD, 20);
 
             JLabel _00 = new JLabel("Game ID");
             JLabel _01 = new JLabel("Mode");
@@ -41,17 +46,12 @@ public class HistorySelect extends JPanel {
             JLabel _03 = new JLabel("Duration");
             JLabel _04 = new JLabel("Replay");
 
-            _00.setHorizontalAlignment(SwingConstants.CENTER);
-            _01.setHorizontalAlignment(SwingConstants.CENTER);
-            _02.setHorizontalAlignment(SwingConstants.CENTER);
-            _03.setHorizontalAlignment(SwingConstants.CENTER);
-            _04.setHorizontalAlignment(SwingConstants.CENTER);
-
-            tablePanel.add(_00);
-            tablePanel.add(_01);
-            tablePanel.add(_02);
-            tablePanel.add(_03);
-            tablePanel.add(_04);
+            for (JLabel label : Arrays.asList(_00, _01, _02, _03, _04)) {
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                label.setForeground(Color.decode(Colours.CUSTOM_MENU_WHITE));
+                label.setFont(headerFont);
+                tablePanel.add(label);
+            }
 
             for (JSONObject game : pastGames) {
                 JLabel idLabel = new JLabel(game.getString("gameId"));
@@ -62,43 +62,99 @@ public class HistorySelect extends JPanel {
                     case 1 -> new JLabel("Defensive OA");
                     case 2 -> new JLabel("Strategic OA");
                     case 3 -> new JLabel("Cruel OA");
-                    default -> new JLabel("");
+                    default -> new JLabel("n/a");
                 };
 
                 JButton replayButton = MenuUI.getJButton("▶", Colours.CUSTOM_MENU_BLUE);
                 replayButton.setPreferredSize(new Dimension(40, 20));
-
-                JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-                buttonWrapper.add(replayButton);
-
-                idLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                modeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                durationLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                diffLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 replayButton.setHorizontalAlignment(SwingConstants.CENTER);
 
-                tablePanel.add(idLabel);
-                tablePanel.add(modeLabel);
-                tablePanel.add(diffLabel);
-                tablePanel.add(durationLabel);
+                JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+                buttonWrapper.setOpaque(false);
+                buttonWrapper.add(replayButton);
+
+                for (JLabel jLabel : Arrays.asList(idLabel, modeLabel, diffLabel, durationLabel)) {
+                    jLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                    jLabel.setForeground(Color.decode(Colours.CUSTOM_MENU_WHITE));
+                    tablePanel.add(jLabel);
+                }
+
+                String winnerText;
+                if (game.getString("mode").equals("singleplayer")) {
+                    switch (game.optInt("winner", 21)) {
+                        case -1 -> winnerText = "You Won";
+                        case 0 -> winnerText = "You Drew with the OA";
+                        case 1 -> winnerText = "The OA Won";
+                        default -> winnerText = "";
+                    }
+                } else {
+                    switch (game.optInt("winner", 21)) {
+                        case -1 -> winnerText = "Player 1 Won";
+                        case 0 -> winnerText = "You Both Drew";
+                        case 1 -> winnerText = "Player 2 Won";
+                        default -> winnerText = "";
+                    }
+                }
+
                 tablePanel.add(buttonWrapper);
+
+                List<MoveHistory.PlayerMove> moves = HistoryViewer.decodedJSON(game.getJSONArray("moveHistory"));
+                replayButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseEntered(java.awt.event.MouseEvent e) {
+                        background.replaceBoard(moves);
+                    }
+                });
+                replayButton.addActionListener(e -> {
+                    background.removeAll();
+                    historyViewer.showHistory(moves, winnerText);
+                });
             }
 
             JPanel wrapper = new JPanel();
+            wrapper.setOpaque(false);
             wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.Y_AXIS));
 
-            tablePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, (pastGames.size() + 1) * 25)); // restrict height
+            tablePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, (pastGames.size() + 1) * 25));
             wrapper.add(tablePanel);
 
             JScrollPane scrollPane = new JScrollPane(wrapper);
+
+            scrollPane.setOpaque(false);
+            scrollPane.getViewport().setOpaque(false);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder());
+            scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
+
+            JPanel buttonPanel = new JPanel();
+            JButton menuButton = MenuUI.getJButton("Menu", Colours.CUSTOM_MENU_RED);
+            menuButton.addActionListener(event -> {
+                background.removeAll();
+                QubicWindow.getInstance().showView(new MenuUI());
+            });
+            buttonPanel.add(menuButton);
+            buttonPanel.setOpaque(false);
+
+            this.setOpaque(false);
             scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-            background.add(scrollPane);
+
+            GridBagConstraints c = new GridBagConstraints();
+            c.fill = GridBagConstraints.BOTH;
+            c.gridx = 0;
+            c.gridy = 0;
+            c.weightx = 1.0;
+            c.weighty = 0.95;
+
+            background.setLayout(new GridBagLayout());
+            background.add(scrollPane, c);
+            c.gridy = 1;
+            c.weighty = 0.05;
+            background.add(buttonPanel, c);
             background.fixLighting();
             add(background, BorderLayout.CENTER);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public static JLabel getDurationLabel(Long duration) {

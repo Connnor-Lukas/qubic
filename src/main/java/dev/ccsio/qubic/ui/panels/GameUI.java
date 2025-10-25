@@ -1,6 +1,8 @@
 package dev.ccsio.qubic.ui.panels;
 
 import java.awt.*;
+
+import dev.ccsio.qubic.ui.panels.gamehistory.HistoryPanel;
 import javafx.application.Platform;
 import javax.swing.*;
 
@@ -9,8 +11,8 @@ public class GameUI extends JPanel {
         loadUI();
     }
 
-    JPanel inputSideBar;
-    JPanel historySideBar;
+    InputPanel inputSideBar;
+    HistoryPanel historySideBar;
     Render3D visualisation3D;
 
     void loadUI() {
@@ -21,6 +23,7 @@ public class GameUI extends JPanel {
 
         // LEFT SIDEBAR
         inputSideBar = InputPanel.getInstance();
+        inputSideBar.reset();
         c.gridx = 0;
         add(inputSideBar, c);
 
@@ -32,6 +35,7 @@ public class GameUI extends JPanel {
 
         // RIGHT SIDEBAR
         historySideBar = HistoryPanel.getInstance();
+        historySideBar.reset();
         historySideBar.setBackground((Color.decode("#100029")));
         c.gridx = 2;
         c.weightx = 0;

@@ -1,8 +1,11 @@
 package dev.ccsio.qubic.game;
 
 import dev.ccsio.qubic.types.Coordinates;
+import dev.ccsio.qubic.types.MoveHistory;
 import dev.ccsio.qubic.ui.panels.InputPanel;
-import dev.ccsio.qubic.ui.panels.WinScreen;
+import dev.ccsio.qubic.ui.panels.gamehistory.HistoryViewer;
+
+import java.util.List;
 
 public class GameMaster {
     private static GameMaster INSTANCE;
@@ -66,7 +69,7 @@ public class GameMaster {
             winnerText = checkWinner();
             if (winnerText != null) {
                 logGame.handleWin(winner, gameMode, this.difficulty, this.gameBoard);
-                WinScreen.getInstance().showWinScreen(winnerText);
+                HistoryViewer.getInstance().showHistory(winnerText);
             }
             this.mark *= -1;
             return true;
@@ -115,7 +118,7 @@ public class GameMaster {
         winnerText = checkWinner();
         if (winnerText != null) {
             logGame.handleWin(winner, gameMode, this.difficulty, this.gameBoard);
-            WinScreen.getInstance().showWinScreen(winnerText);
+            HistoryViewer.getInstance().showHistory(winnerText);
         }
 
         this.mark *= -1;
@@ -131,5 +134,9 @@ public class GameMaster {
 
     public String getGameMode() {
         return gameMode;
+    }
+
+    public List<MoveHistory.PlayerMove> getMoveHistory() {
+        return LinkedHistory.getMoveHistory(gameBoard).list();
     }
 }

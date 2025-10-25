@@ -2,6 +2,8 @@ package dev.ccsio.qubic.ui.panels;
 
 import dev.ccsio.qubic.objects.Cube;
 import dev.ccsio.qubic.types.Coordinates;
+import dev.ccsio.qubic.types.MoveHistory;
+import dev.ccsio.qubic.ui.panels.gamehistory.HistoryViewer;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.AmbientLight;
@@ -103,13 +105,29 @@ public class Render3D extends JFXPanel {
     }
 
     public void resetBoard() {
-        cube.reset();
+        Platform.runLater(() -> {
+            cube.reset();
+        });
     }
 
     public void makeMove(int player, Coordinates coordinates) {
         Platform.runLater(() -> {
             cube.addPiece(player, coordinates);
         });
+    }
+
+    public void makeMove(MoveHistory.PlayerMove playerMove) {
+        makeMove(playerMove.player(), playerMove.coordinates());
+    }
+
+    public void unMakeMove(Coordinates coordinates) {
+        Platform.runLater(() -> {
+            cube.removePiece(coordinates);
+        });
+    }
+
+    public void unMakeMove(MoveHistory.PlayerMove playerMove) {
+        unMakeMove(playerMove.coordinates());
     }
 
     public void enableMouseControls() {
@@ -122,5 +140,29 @@ public class Render3D extends JFXPanel {
         Platform.runLater(() -> {
             cube.movePreviewPiece(player, coordinates);
         });
+    }
+
+    public void replaceBoard(List<MoveHistory.PlayerMove> moves) {
+        resetBoard();
+        Platform.runLater(() -> {
+            for (MoveHistory.PlayerMove move : moves) {
+                cube.addPiece(move);
+            }
+        });
+    }
+
+    public void enableHistoryControl() {
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case LEFT -> HistoryViewer.getInstance().previousMove();
+                case RIGHT -> HistoryViewer.getInstance().nextMove();
+                case A -> HistoryViewer.getInstance().previousMove();
+                case D -> HistoryViewer.getInstance().nextMove();
+            }
+        });
+    }
+
+    public void disableHistoryControl() {
+        scene.setOnKeyPressed(null);
     }
 }

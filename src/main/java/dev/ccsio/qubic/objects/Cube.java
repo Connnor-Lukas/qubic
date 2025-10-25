@@ -4,6 +4,7 @@ import dev.ccsio.qubic.types.Coordinates;
 import java.util.HashMap;
 import java.util.Map;
 
+import dev.ccsio.qubic.types.MoveHistory;
 import javafx.animation.AnimationTimer;
 import javafx.scene.DepthTest;
 import javafx.scene.Group;
@@ -110,6 +111,16 @@ public class Cube extends Group {
             this.getChildren().add(piece);
             previewPiece.getChildren().setAll();
         }
+    }
+
+    public void addPiece(MoveHistory.PlayerMove move) {
+        addPiece(move.player(), move.coordinates());
+    }
+
+    public void removePiece(Coordinates coordinates) {
+        Group temp = gameBoard.get(coordinates);
+        gameBoard.remove(coordinates);
+        this.getChildren().remove(temp);
     }
 
     public void movePreviewPiece(int player, Coordinates coordinates) {

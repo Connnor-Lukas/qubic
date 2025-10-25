@@ -15,17 +15,21 @@ import javax.swing.*;
 public class MenuUI extends JPanel {
     QubicWindow frame = QubicWindow.getInstance();
     DifficultySelector selector = DifficultySelector.getInstance();
+    GameMaster gameMaster = GameMaster.getInstance();
+    Render3D backgroundPanel = Render3D.getInstance();
 
     public MenuUI() {
         loadMenu();
     }
 
     private void loadMenu() {
+        gameMaster.reset();
+        backgroundPanel.resetBoard();
+
         // Use BorderLayout to center content
         setLayout(new BorderLayout());
 
         // Create the background panel
-        Render3D backgroundPanel = Render3D.getInstance();
         backgroundPanel.setupMenu();
         backgroundPanel.setLayout(new GridBagLayout());
         add(backgroundPanel, BorderLayout.CENTER);
@@ -58,7 +62,7 @@ public class MenuUI extends JPanel {
         start1PGame.addActionListener((ActionEvent e) -> {
             backgroundPanel.remove(0);
             selector.getDifficulty(difficulty -> {
-                GameMaster.getInstance().init(difficulty);
+                gameMaster.init(difficulty);
                 frame.showView(new GameUI());
                 backgroundPanel.fixLighting();
                 backgroundPanel.enableMouseControls();
@@ -70,7 +74,7 @@ public class MenuUI extends JPanel {
         JButton start2PGame = getJButton("2-Player Game", Colours.CUSTOM_MENU_BLUE);
         start2PGame.setPreferredSize(new Dimension(320, 50));
         start2PGame.addActionListener((ActionEvent e) -> {
-            GameMaster.getInstance().init();
+            gameMaster.init();
             backgroundPanel.remove(0);
             frame.showView(new GameUI());
             backgroundPanel.fixLighting();
@@ -114,6 +118,7 @@ public class MenuUI extends JPanel {
         centerPanel.add(bottomPanel, c);
 
         backgroundPanel.add(centerPanel);
+        backgroundPanel.fixLighting();
     }
 
     public static JButton getJButton(String text, String colour) {
