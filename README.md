@@ -1,16 +1,29 @@
 # Qubic (3D Connect-Four)
 
 ## Overview
-Qubic is a 4x4x4 Tic-Tac-Toe game made in Java, primarily using Swing UI and JavaFX. It supports both two-player and single-player modes. Finished games are automatically saved and can be replayed. The interface includes a 3D render of the cube with and input board, move preview, and a move history on the side.
+Qubic is a 4x4x4 Tic-Tac-Toe game made in Java, primarily using Swing UI and JavaFX. It supports both two-player and 
+single-player modes. Finished games are automatically saved and can be replayed. The interface includes a 3D render of 
+the cube with and input board, move preview, and a move history on the side.
 
 ## Installation
 Requires Java 17+
 
 ### Build & Run
+The project is runnable through your ide (intellij and vscode assuming java extensions are installed). It is also
+runnable through a system install of maven using this below, and a universal jar file can be compiled too.
 - Run using Maven:
 * `mvn exec:java -Dexec.mainClass="dev.ccsio.qubic.Main" -X`
 
-Note: If encountering issues with Replays and Winning, especially on Windows, please ensure that folder Qubic under in /AppData/Roaming exists. In this case, please create it manually or ensure you are executing the program with sufficient permissions.
+- Build using Maven:
+* 'mvn clean package'
+
+### Things to Note
+If encountering issues with Replays and Winning, especially on Windows, please ensure that folder Qubic under 
+/AppData/Roaming exists. In this case, please create it manually or ensure you are executing the program with 
+sufficient permissions.
+
+Due to a limitation in JavaFX using directx on Windows the rendering may look funny, this is an unfortunate side
+effect that cannot be fixed without rewriting the entire 3D backend. For best experience please use MacOS or Linux.
 
 ## How to Play
 ### Start a Game
@@ -43,15 +56,18 @@ Note: If encountering issues with Replays and Winning, especially on Windows, pl
 ### Replaying
 * Clicking `Replays` on the home screen, shows up a menu of all your past games.
 * Clicking the blue ▶ on the right shows the finals state of the game
-* Clicking ◀ or ▶ on the top undoes or does 1 move, respectively.
+* Clicking ◀ or ▶ on the top undoes or does 1 move, respectively. You may also use left and right arrows on your keyboard
+or A and D, holding the keyboard options makes it go quicker as well.
 * `Menu` returns you to the main menu.
 
 
 ## Difficulties Explained
-* **Random**: Chooses moves randomly unless you it or the other play can in in the next move.
-* **Defensive OA**: Focuses on blocking your moves, doing its best to prevent you from getting a 3-in-a-line or even 2-in-a-line. Will take a winning move if available.
+All difficulties are based on an abstract class that will always block your immediate wins and score its own immediate
+wins, this means even the easiest mode Random requires _some_ level of strategy. Apart from this they work as follows:
+* **Random**: Chooses moves randomly.
+* **Defensive OA**: Focuses on blocking your moves, doing its best to prevent you from getting a 3-in-a-line or even 2-in-a-line.
 * **Strategic OA**: Calculates the best move 3 moves ahead. A basic Minimax implementation.
-* **Cruel OA**: Tries to block every line where you can possibly win. Will take a winning move if available.
+* **Cruel OA**: Tries to block every line where you can possibly win.
 
 ## Used Resources
 
@@ -78,14 +94,14 @@ Our plans have been split into 2 levels, top level and second level. The level s
 
 ### Second Level
 
-| ID  |                         Plan                         | Dev to Implement |   Status    |
-|:---:|:----------------------------------------------------:|:----------------:|:-----------:|
-| b01 |      [3D Rendering](documentation/3DRender.md)       |      Connor      |  Completed  |
-| b02 | [Game Interaction](documentation/GameInteraction.md) |      Connor      |  Completed  |
-| b03 |    [Player System](documentation/PlayerSystem.md)    |      Lukas       | In-Progress |
-| b04 |             [VFX](documentation/VFX.md)              |       und        |    TODO     |
-| b05 |        [UI Polish](documentation/UIPolish.md)        |       und        |    TODO     |
-| b06 | [Basic Opponent Algorithm](documentation/BasicOA.md) |      Lukas       | In-Progress |
-| b07 |   [Game Master Class](documentation/GameMaster.md)   |      Lukas       |  Completed  |
-| b08 | [Maven Automatic Tests](documentation/MavenTests.md) |      Connor      | In-Progress |
-| b09 |      [Advanced OA](documentation/AdvancedOA.md)      |      Lukas       | In-Progress |
+| ID  |                         Plan                         | Dev to Implement |  Status   |
+|:---:|:----------------------------------------------------:|:----------------:|:---------:|
+| b01 |      [3D Rendering](documentation/3DRender.md)       |      Connor      | Completed |
+| b02 | [Game Interaction](documentation/GameInteraction.md) |      Connor      | Completed |
+| b03 |    [Player System](documentation/PlayerSystem.md)    |      Lukas       |  On-Hold  |
+| b04 |             [VFX](documentation/VFX.md)              |       und        |   TODO    |
+| b05 |        [UI Polish](documentation/UIPolish.md)        |      Connor      | Completed |
+| b06 | [Basic Opponent Algorithm](documentation/BasicOA.md) |      Lukas       | Completed |
+| b07 |   [Game Master Class](documentation/GameMaster.md)   |      Lukas       | Completed |
+| b08 | [Maven Automatic Tests](documentation/MavenTests.md) |  Connor & Lukas  | Completed |
+| b09 |      [Advanced OA](documentation/AdvancedOA.md)      |      Lukas       | Completed |
