@@ -11,11 +11,14 @@ Requires Java 17+
 ### Build & Run
 The project is runnable through your ide (intellij and vscode assuming java extensions are installed). It is also
 runnable through a system install of maven using this below, and a universal jar file can be compiled too.
-- Run using Maven:
-* `mvn exec:java -Dexec.mainClass="dev.ccsio.qubic.Main" -X`
 
-- Build using Maven:
-* 'mvn clean package'
+Run using Maven:
+
+`mvn exec:java -Dexec.mainClass="dev.ccsio.qubic.Main" -X`
+
+Build using Maven:
+
+`mvn clean package`
 
 ### Things to Note
 If encountering issues with Replays and Winning, especially on Windows, please ensure that folder Qubic under 
