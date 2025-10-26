@@ -1,5 +1,6 @@
 package dev.ccsio.qubic.game;
 
+import dev.ccsio.qubic.Main;
 import dev.ccsio.qubic.types.Coordinates;
 import dev.ccsio.qubic.types.MoveHistory;
 import dev.ccsio.qubic.ui.panels.InputPanel;
@@ -35,12 +36,13 @@ public class GameMaster {
             this.opponentAlgorithm = new OpponentAlgorithm(difficulty, 1);
             this.difficulty = difficulty;
             this.gameBoard = new GameBoard();
-            this.inputPanel = InputPanel.getInstance();
+            if (Main.runByUser) {
+                this.inputPanel = InputPanel.getInstance();
+            }
             this.gameMode = "sp";
             this.mark = -1;
             this.winner = 0;
             this.winnerText = null;
-
             initialised = true;
             logGame.start();
         }
@@ -69,7 +71,9 @@ public class GameMaster {
             winnerText = checkWinner();
             if (winnerText != null) {
                 logGame.handleWin(winner, gameMode, this.difficulty, this.gameBoard);
-                HistoryViewer.getInstance().showHistory(winnerText);
+                if (Main.runByUser) {
+                    HistoryViewer.getInstance().showHistory(winnerText);
+                }
             }
             this.mark *= -1;
             return true;
@@ -118,7 +122,9 @@ public class GameMaster {
         winnerText = checkWinner();
         if (winnerText != null) {
             logGame.handleWin(winner, gameMode, this.difficulty, this.gameBoard);
-            HistoryViewer.getInstance().showHistory(winnerText);
+            if (Main.runByUser) {
+                HistoryViewer.getInstance().showHistory(winnerText);
+            }
         }
 
         this.mark *= -1;
