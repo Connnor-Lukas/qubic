@@ -33,22 +33,22 @@ public class CruelMove extends AlgorithmBase {
             }
         }
 
-        System.out.println("New Hashmap Refresh");
-        for (List<Coordinates> line : weightedWinningLines.keySet()) {
-            int lineWeight = weightedWinningLines.get(line);
-            if (lineWeight == 0) continue;
-            System.out.println("Line Weight : " + lineWeight);
-            for (Coordinates coordinates : line) {
-                System.out.println(coordinates + " -> " + coordinateWeight.get(coordinates));
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println("Board at (3,1,0): " + gameBoard.getValueAt(new Coordinates(3,1,0)));
-        System.out.println("Board at (3,1,1): " + gameBoard.getValueAt(new Coordinates(3,1,1)));
-        System.out.println("Board at (3,1,2): " + gameBoard.getValueAt(new Coordinates(3,1,2)));
-        System.out.println("Board at (3,1,3): " + gameBoard.getValueAt(new Coordinates(3,1,3)));
-        System.out.println();
+        // System.out.println("New Hashmap Refresh");
+        // for (List<Coordinates> line : weightedWinningLines.keySet()) {
+        //     int lineWeight = weightedWinningLines.get(line);
+        //     if (lineWeight == 0) continue;
+        //     System.out.println("Line Weight : " + lineWeight);
+        //     for (Coordinates coordinates : line) {
+        //         System.out.println(coordinates + " -> " + coordinateWeight.get(coordinates));
+        //     }
+        //     System.out.println();
+        // }
+        // System.out.println();
+        // System.out.println("Board at (3,1,0): " + gameBoard.getValueAt(new Coordinates(3,1,0)));
+        // System.out.println("Board at (3,1,1): " + gameBoard.getValueAt(new Coordinates(3,1,1)));
+        // System.out.println("Board at (3,1,2): " + gameBoard.getValueAt(new Coordinates(3,1,2)));
+        // System.out.println("Board at (3,1,3): " + gameBoard.getValueAt(new Coordinates(3,1,3)));
+        // System.out.println();
 
         int maxWeight = 0;
         List<Coordinates> highestWeightList = new ArrayList<>();
