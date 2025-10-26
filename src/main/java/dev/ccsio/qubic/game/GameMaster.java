@@ -117,7 +117,10 @@ public class GameMaster {
         if (move == null) return;
 
         gameBoard.placeMark(move, 1);
-        inputPanel.updateOAMove(move);
+
+        if (Main.runByUser) {
+            inputPanel.updateOAMove(move);
+        }
 
         winnerText = checkWinner();
         if (winnerText != null) {
