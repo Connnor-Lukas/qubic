@@ -39,3 +39,4 @@ build/
 
 ### Local Test Files ###
 test.*
+src/main/java/dev/ccsio/qubic/gameHistory/

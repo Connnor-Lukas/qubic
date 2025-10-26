@@ -1,10 +1,9 @@
-package dev.ccsio.qubic.ui.panels;
+package dev.ccsio.qubic.ui.panels.gamehistory;
 
 import dev.ccsio.qubic.game.GameMaster;
 import dev.ccsio.qubic.game.LinkedHistory;
 import dev.ccsio.qubic.types.MoveHistory;
 import dev.ccsio.qubic.ui.Colours;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -52,5 +51,9 @@ public class HistoryPanel extends JPanel {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         label.setFont(new Font(label.getFont().getName(), Font.BOLD, 15));
         this.add(label);
+    }
+
+    public void reset() {
+        INSTANCE = new HistoryPanel();
     }
 }

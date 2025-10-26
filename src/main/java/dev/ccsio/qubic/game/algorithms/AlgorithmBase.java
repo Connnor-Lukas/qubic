@@ -45,7 +45,9 @@ public abstract class AlgorithmBase {
         }
 
         opponentLastMove = LinkedHistory.getMoveHistory(gameBoard).getLastMove().coordinates();
-        return chooseMove();
+        Coordinates move = chooseMove();
+        updateWithNewCoordinates(move);
+        return move;
     }
 
     protected abstract Coordinates chooseMove();

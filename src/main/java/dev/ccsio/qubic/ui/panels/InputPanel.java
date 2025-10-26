@@ -3,6 +3,7 @@ package dev.ccsio.qubic.ui.panels;
 import dev.ccsio.qubic.game.GameMaster;
 import dev.ccsio.qubic.types.Coordinates;
 import dev.ccsio.qubic.ui.Colours;
+import dev.ccsio.qubic.ui.panels.gamehistory.HistoryPanel;
 
 import java.awt.*;
 import javax.swing.*;
@@ -31,6 +32,10 @@ public class InputPanel extends JPanel {
             INSTANCE = new InputPanel();
         }
         return INSTANCE;
+    }
+
+    public void reset() {
+        INSTANCE = new InputPanel();
     }
 
     public void updateOAMove(Coordinates c) {

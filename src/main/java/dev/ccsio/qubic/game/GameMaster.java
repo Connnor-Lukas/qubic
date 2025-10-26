@@ -2,8 +2,11 @@ package dev.ccsio.qubic.game;
 
 import dev.ccsio.qubic.Main;
 import dev.ccsio.qubic.types.Coordinates;
+import dev.ccsio.qubic.types.MoveHistory;
 import dev.ccsio.qubic.ui.panels.InputPanel;
-import dev.ccsio.qubic.ui.panels.WinScreen;
+import dev.ccsio.qubic.ui.panels.gamehistory.HistoryViewer;
+
+import java.util.List;
 
 public class GameMaster {
     private static GameMaster INSTANCE;
@@ -16,7 +19,9 @@ public class GameMaster {
     InputPanel inputPanel;
     public int winner;
     private String winnerText;
-    
+    LogGame logGame = new LogGame();
+    int difficulty = -1;
+
     private GameMaster() {}
 
     public static GameMaster getInstance() {
@@ -28,8 +33,9 @@ public class GameMaster {
 
     public void init(int difficulty) {
         if (!initialised) {
-            this.gameBoard = new GameBoard();
             this.opponentAlgorithm = new OpponentAlgorithm(difficulty, 1);
+            this.difficulty = difficulty;
+            this.gameBoard = new GameBoard();
             if (Main.runByUser) {
                 this.inputPanel = InputPanel.getInstance();
             }
@@ -37,8 +43,8 @@ public class GameMaster {
             this.mark = -1;
             this.winner = 0;
             this.winnerText = null;
-
             initialised = true;
+            logGame.start();
         }
     }
 
@@ -50,6 +56,7 @@ public class GameMaster {
             this.winner = 0;
             this.winnerText = null;
             initialised = true;
+            logGame.start();
         }
     }
 
@@ -60,10 +67,12 @@ public class GameMaster {
     public Boolean handleInput(Coordinates input) {
         if (this.gameBoard.canPlaceMark(input, mark)) {
             this.gameBoard.placeMark(input, mark);
+            // System.out.println(input + " -> " + mark);
             winnerText = checkWinner();
-            if (Main.runByUser) {
-                if (winnerText != null) {
-                    WinScreen.getInstance().showWinScreen(winnerText);
+            if (winnerText != null) {
+                logGame.handleWin(winner, gameMode, this.difficulty, this.gameBoard);
+                if (Main.runByUser) {
+                    HistoryViewer.getInstance().showHistory(winnerText);
                 }
             }
             this.mark *= -1;
@@ -87,6 +96,9 @@ public class GameMaster {
                 default:
                     return null;
             }
+        } else if (gameBoard.isFull()) {
+            this.winner = 0;
+            return "Draw";
         }
         return null;
     }
@@ -112,7 +124,10 @@ public class GameMaster {
 
         winnerText = checkWinner();
         if (winnerText != null) {
-            WinScreen.getInstance().showWinScreen(winnerText);
+            logGame.handleWin(winner, gameMode, this.difficulty, this.gameBoard);
+            if (Main.runByUser) {
+                HistoryViewer.getInstance().showHistory(winnerText);
+            }
         }
 
         this.mark *= -1;
@@ -128,5 +143,9 @@ public class GameMaster {
 
     public String getGameMode() {
         return gameMode;
+    }
+
+    public List<MoveHistory.PlayerMove> getMoveHistory() {
+        return LinkedHistory.getMoveHistory(gameBoard).list();
     }
 }
