@@ -34,7 +34,6 @@ public class RandomMove extends AlgorithmBase {
         int i = 0;
         for (Coordinates coordinates : availableCoordinates) {
             if (i == stop) {
-                updateWithNewCoordinates(coordinates);
                 return coordinates;
             }
             i++;

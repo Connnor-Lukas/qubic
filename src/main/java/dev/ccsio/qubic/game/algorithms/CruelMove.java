@@ -73,7 +73,6 @@ public class CruelMove extends AlgorithmBase {
             }
         }
 
-        updateWithNewCoordinates(bestCoordinate);
         return bestCoordinate;
     }
 

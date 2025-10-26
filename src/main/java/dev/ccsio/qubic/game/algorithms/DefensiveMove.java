@@ -30,14 +30,12 @@ public class DefensiveMove extends AlgorithmBase {
 
             if (sum == 2) {
                 // System.out.println(lastEmptyCoordinates);
-                updateWithNewCoordinates(lastEmptyCoordinates);
                 return lastEmptyCoordinates;
             }
         }
 
 
         if (lastEmptyCoordinates.getX() != -oaMark) {
-            updateWithNewCoordinates(lastEmptyCoordinates);
             return lastEmptyCoordinates;
         } else {
             while (true) {
