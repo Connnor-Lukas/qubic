@@ -10,8 +10,18 @@ public class Main {
     public static boolean useAlternateRender = false;
     public static boolean runByUser = false;
     public static void main(String[] args) {
+        String osName = System.getProperty("os.name").toLowerCase();
+        String osArch = System.getProperty("os.arch").toLowerCase();
+
+        // If it's Linux AND ARM64, force the GPU.
+        // Otherwise, leave it alone and let JavaFX decide safely.
+        if (osName.contains("linux") && (osArch.contains("aarch64") || osArch.contains("arm"))) {
+            System.out.println("Arm Linux detected: Forcing Hardware Acceleration...");
+            System.setProperty("prism.forceGPU", "true");
+        }
+
         // Windows Render Fix (Mac & Linux work)
-        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+        if (osName.contains("windows")) {
             useAlternateRender = true;
         }
 
